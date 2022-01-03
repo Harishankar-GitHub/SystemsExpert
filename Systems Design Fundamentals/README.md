@@ -1,4 +1,3 @@
-
 # [SystemsExpert](https://www.algoexpert.io/systems/product)
  
 ## Systems Design Fundamentals
@@ -33,28 +32,55 @@
 >* This type of **investigation** in a Systems Design interview is gonna **require a lot of fundamental Systems Design knowledge**.
 
 >* Now the second thing that's important to note about Systems Design interviews is that, unlike with coding interviews, where a solution to coding interview question is either objectively correct or incorrect.
->* With Systems Design interview questions, there's a lot more subjectivity.
->* A proposed solution to a Systems Design interview question may very well not be objectively correct or objectively incorrect.
+>* With **Systems Design interview questions**, there's a **lot more subjectivity**.
+>* A **proposed solution** to a Systems Design interview question **may very well not be objectively correct or objectively incorrect**.
 >* There might be certain concepts in Systems Design that could be used objectively incorrectly, if misinformed or if one doesn't have appropriate knowledge.
 >* But, if you have the appropriate knowledge, if you are well informed, if you are prepared, then a suggested solution to a Systems Design interview question is not gonna be objectively correct or incorrect.
->* It's gonna be your job to very confidently justify your solution.
->* It's gonna be your job to explain, to rationalize why you've made certain choices, why you've designed parts of your system in one way instead of another.
->* It's gonna be your job to make your interviewer understand 
+>* It's gonna be **your job** to **very confidently justify your solution**.
+>* It's gonna be **your job** to explain, to **rationalize** why you've made certain choices, why you've **designed** parts of your system in **one way instead of another**.
+>* It's gonna be **your job** to **make your interviewer understand** 
 why your proposed solution is reasonable, why it's sound, and why it might be the best one. Or perhaps why it might not be the best one, why it might be one of many potential solutions.
->* It's gonna be your job to eliminate any doubts that your interviewer might have in some of your design choices.
->* It's gonna be your job to defend your position, or to adapt your position if your interviewer challenges it.
->* This is gonna be nearly impossible to do without the proper fundamental knowledge about Systems Design.
+>* It's gonna be **your job** to **eliminate any doubts that your interviewer might have** in some of your design choices.
+>* It's gonna be **your job** to **defend your position, or to adapt your position** if your interviewer challenges it.
+>* This is gonna be nearly **impossible** to do **without** the **proper fundamental knowledge** about Systems Design.
 >* That's why Design Fundamentals are so critical to Systems Design interviews.
 
 ##### Categories of Systems Design
 >* Design Fundamentals come in a lot of different flavors.
->* More specifically, they can be bucketed in 4 broad categories, categories that are equally important, categories that are very much intertwined, and categories that kind of build upon each other.
+>* More specifically, they can be bucketed in **4 broad categories**, categories that are equally important, categories that are very much intertwined, and categories that kind of build upon each other.
 
 ###### 1st Category
->* The 1st category of design fundamentals is the underlying or the foundational knowledge.
+>* The 1st category of design fundamentals is the **underlying or the foundational knowledge**.
 >* These are gonna be design fundamentals where, if you don't understand them, you will at best have severe gaps in knowledge that will undermine your positions or your ability to defend your positions in a Systems Design interview and that will, at worst, make you basically incapable of even beginning to tackle a Systems Design interview.
 
->* For example, you have to know what the client server model is to be able to design any modern day system.
+>* **For example**, you have to know what the client server model is, to be able to design any modern day system.
 >* Things like network protocols. You have to have some understanding of how machines communicate and interact with one another in order to be able to properly design a complex system.
 
 > So that is the 1st category of Design Fundamentals, foundational Systems Design knowledge.
+
+###### 2nd Category
+>* The 2nd category of design fundamentals is **key characteristics of systems**.
+>* These are gonna be the thiings that a you might want a System to have.
+>* These are gonna be the things that you might be trading off when making certain design decisions.
+
+>* Design fundamentals like availability, wait and see, throughput, redundancy, consistency etc., are the key characteristics of systems that one has to know about.
+
+###### 3rd Category
+>* The 3rd category of design fundamentals is **actual components of a system**.
+>* These are gonna be the slightly more tangible things that you can **either have in a system or implement in a system**.
+>* Things like load balancers, proxies, caches, rate limiting, leader election etc., are really gonna be the bread and butter of a system that you are designing.
+>* These are the **key components** that are gonna allow your system to have the **key characteristics** that we just mentioned above.
+
+###### 4th Category
+>* The 4th category of design fundamentals is **actual tech, real existing products or services** that you can actually use in a system either as actual components in a system, or to achieve a certain characteristic in a system.
+>* These are gonna be real tools, things like Zookeeper, Redis, Amazon S3, Google Cloud Storage etc.
+>* These existing real-life tools that you can actually use in a Systems Design interview to build up your system.
+
+>* The 4th category of design fundamentals is the one that's **often overlooked**.
+>* Also, this is **very important** one that can really **round you off and make you shine** in a Systems Design interview,
+
+> ***This is what design fundamentals really are.***
+
+> And **being very well versed** in these design fundamentals, is what's gonna **allow you to tackle** these very vague Systems Design interview questions, **to make sound reasonable** design choices, **to justify** them, and **to convince** your interviewer that you are a great systems designer.
+
+> There are a lot of design fundamentals to know and these are complicated subjects.
