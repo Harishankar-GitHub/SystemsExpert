@@ -12,3 +12,4 @@
 ## [Systems Design Fundamentals](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals)
 1. [Design Fundamentals - Introduction](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#1-design-fundamentals---introduction)
 2. [What Are Design Fundamentals?](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#2-what-are-design-fundamentals)
+3. [Client-Server Model]()

@@ -45,11 +45,11 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >* This is gonna be nearly **impossible** to do **without** the **proper fundamental knowledge** about Systems Design.
 >* That's why Design Fundamentals are so critical to Systems Design interviews.
 
-##### Categories of Systems Design
+#### Categories of Systems Design
 >* Design Fundamentals come in a lot of different flavors.
 >* More specifically, they can be bucketed in **4 broad categories**, categories that are equally important, categories that are very much intertwined, and categories that kind of build upon each other.
 
-###### 1st Category
+##### 1st Category
 >* The 1st category of design fundamentals is the **underlying or the foundational knowledge**.
 >* These are gonna be design fundamentals where, if you don't understand them, you will at best have severe gaps in knowledge that will undermine your positions or your ability to defend your positions in a Systems Design interview and that will, at worst, make you basically incapable of even beginning to tackle a Systems Design interview.
 
@@ -58,20 +58,20 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 
 > So that is the 1st category of Design Fundamentals, foundational Systems Design knowledge.
 
-###### 2nd Category
+##### 2nd Category
 >* The 2nd category of design fundamentals is **key characteristics of systems**.
 >* These are gonna be the thiings that a you might want a System to have.
 >* These are gonna be the things that you might be trading off when making certain design decisions.
 
 >* Design fundamentals like availability, wait and see, throughput, redundancy, consistency etc., are the key characteristics of systems that one has to know about.
 
-###### 3rd Category
+##### 3rd Category
 >* The 3rd category of design fundamentals is **actual components of a system**.
 >* These are gonna be the slightly more tangible things that you can **either have in a system or implement in a system**.
 >* Things like load balancers, proxies, caches, rate limiting, leader election etc., are really gonna be the bread and butter of a system that you are designing.
 >* These are the **key components** that are gonna allow your system to have the **key characteristics** that we just mentioned above.
 
-###### 4th Category
+##### 4th Category
 >* The 4th category of design fundamentals is **actual tech, real existing products or services** that you can actually use in a system either as actual components in a system, or to achieve a certain characteristic in a system.
 >* These are gonna be real tools, things like Zookeeper, Redis, Amazon S3, Google Cloud Storage etc.
 >* These existing real-life tools that you can actually use in a Systems Design interview to build up your system.
@@ -84,3 +84,42 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > And **being very well versed** in these design fundamentals, is what's gonna **allow you to tackle** these very vague Systems Design interview questions, **to make sound reasonable** design choices, **to justify** them, and **to convince** your interviewer that you are a great systems designer.
 
 > There are a lot of design fundamentals to know and these are complicated subjects.
+
+---
+
+### 3. Client-Server Model
+> A client is a thing that talks to servers. A server is a thing that talks to clients.
+> The client-server model is a thing made up of a bunch of clients and servers talking to one anotther.
+
+#### 6 Key Terms
+
+- ***Client***
+> A machine or process that **requests data or service from a server**.
+
+> Note that a single machine or piece of software can be both a client and a server at the same time. For instance, a single machine could act as a server for end users and as a client for a database.
+
+- ***Server***
+> A machine or a process that **provides data or service for a client**, usually by listening for incoming network calls.
+
+> Note that a single machine or piece of software can be both a client and a server at the same time. For instance, a single machine could act as a server for end users and as a client for a database.
+
+- ***Client-Server Model***
+> A paradigm by which modern systems are designed, which consists of clients requesting data or service from servers and servers providing data or service to clients.
+
+- ***IP Address***
+> An address given to each machine connected to the public internet.
+> IPv4 addresses consist of four members separated by dots: **a.b.c.d** where all four members are between 0 and 255. Special values include:
+	>- **127.0.0.1**: Your own local machine. Also referred to as **localhost**.
+	>- **192.168.x.y**: Your **private network**. For instance, your machine and all machines on your private wifi network will usually have the **192.168 prefix**.
+
+- ***Port***
+> In order for **multiple programs to listen** for new network connections on the **same machine without colliding**, they pick a port to listen on. A port is an integer between **0 and 65,535 (2<sup>16</sup> ports total)**.
+
+> Typically, ports 0-1023 are reserved for system ports (also called well-known ports) and shouldn't be used by user-level processes. Certain ports have pre-defined uses, and although you usually won't be required to have them memorized, they can sometimes come in handy. Below are some examples:
+	>- **22**: Secure Shell
+	>- **53**: DNS lookup
+	>- **80**: HTTP
+	>- **443**: HTTPS
+
+- ***DNS***
+> Short for **Domain Name System**, it describes the entities and protocols involved in the translation from domain names to IP Addresses. Typically, machines make a DNS query to a well known entity which is responsible for returning the IP address (or multiple ones) of the requested domain name in the response.
