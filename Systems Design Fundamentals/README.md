@@ -123,3 +123,23 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 
 - ***DNS***
 > Short for **Domain Name System**, it describes the entities and protocols involved in the translation from domain names to IP Addresses. Typically, machines make a DNS query to a well known entity which is responsible for returning the IP address (or multiple ones) of the requested domain name in the response.
+
+---
+
+#### Understanding Client-Server Model
+> This is an incredibly **important concept**.
+> It's the **foundation of the modern internet**.
+> The foundation of how computers speak to one another.
+> And it's very important thing to understand in the context of system design interviews.
+
+> To understand Client-Server Model, let's explore/understand **what happens when we go to [algoexpert.io](algoexpert.io)**?
+> What happens when you open up your browser and type in your URL bar [www.algoexpert.io](www.algoexpert.io) and then press Enter?
+	>* Well, your browser, be it Google Chrome, or Safari, or Firefox, **your browser is a client**, and **AlgoExpert**, for the sake of this example, **is the server**.
+	>* One important note to make here, is that the **client**, that is the browser, **doesn't know** actually what the server, or in this case, AlgoExpert is.
+	>* All that it knows, is that it can communicate with it. It can speak to it, it can request stuff from it.
+	>* But it doesn't actually know what the server represents.
+	>* It will request information from the server, and then, based on that information, based on the response from the server, it'll be able to do stuff.
+
+> So, when you type [algoexpert.io](algoexpert.io) in your URL bar, at first your browser doesn't even know how to talk to AlgoExpert, or the server.
+	>* What it does behind the scenes, actually, is it makes what's called a DNS query, to find out what the IP Address of [algoexpert.io](algoexpert.io) is, and only then it can really speak to AlgoExpert, the server.
+	>* A **DNS Query** is a special request, that goes to a predetermined set of servers, and basically says "Hey, what's the IP Address of [algoexpert.io](algoexpert.io)?"
