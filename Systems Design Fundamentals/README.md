@@ -133,13 +133,52 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > And it's very important thing to understand in the context of system design interviews.
 
 > To understand Client-Server Model, let's explore/understand **what happens when we go to [algoexpert.io](algoexpert.io)**?
-> What happens when you open up your browser and type in your URL bar [www.algoexpert.io](www.algoexpert.io) and then press Enter?
-	>* Well, your browser, be it Google Chrome, or Safari, or Firefox, **your browser is a client**, and **AlgoExpert**, for the sake of this example, **is the server**.
-	>* One important note to make here, is that the **client**, that is the browser, **doesn't know** actually what the server, or in this case, AlgoExpert is.
-	>* All that it knows, is that it can communicate with it. It can speak to it, it can request stuff from it.
-	>* But it doesn't actually know what the server represents.
-	>* It will request information from the server, and then, based on that information, based on the response from the server, it'll be able to do stuff.
+> What happens when you open up your browser and type in your URL bar [www.algoexpert.io](www.algoexpert.io) and then press Enter? 
+  >- Well, your browser, be it Google Chrome, or Safari, or Firefox, **your browser is a client**, and **AlgoExpert**, for the sake of this example, **is the server**.
+  >- One important note to make here, is that the **client**, that is the browser, **doesn't know** actually what the server, or in this case, AlgoExpert is.
+  >- All that it knows, is that it can communicate with it. It can speak to it, it can request stuff from it.
+  >- But it doesn't actually know what the server represents.
+  >- It will request information from the server, and then, based on that information, based on the response from the server, it'll be able to do stuff.
 
 > So, when you type [algoexpert.io](algoexpert.io) in your URL bar, at first your browser doesn't even know how to talk to AlgoExpert, or the server.
-	>* What it does behind the scenes, actually, is it makes what's called a DNS query, to find out what the IP Address of [algoexpert.io](algoexpert.io) is, and only then it can really speak to AlgoExpert, the server.
-	>* A **DNS Query** is a special request, that goes to a predetermined set of servers, and basically says "Hey, what's the IP Address of [algoexpert.io](algoexpert.io)?"
+  >- What it does behind the scenes, actually, is it makes what's called a DNS query, to find out what the IP Address of [algoexpert.io](algoexpert.io) is, and only then it can really speak to AlgoExpert, the server.
+  >- A **DNS Query** is a special request, that goes to a predetermined set of servers, and basically says "Hey, what's the IP Address of [algoexpert.io](algoexpert.io)?"
+  >- An **IP Address** is just a **unique identifier** for a machine.
+  >- All computers connected to the internet, have ways to find public IP Addresses, or at least, they have ways to discover routes to those addresses.
+  >- And that means that, they can send data to IP Addresses.
+  >- They can send packets of information, in the form of bytes, to IP Addresses.
+  >- You can almost think of an IP Address as a mailbox, that some entity has granted to a machine.
+
+  >- **For example**, in the case of AlgoExpert, it turns out that the entity that has granted AlgoExpert an IP Address is AlgoExpert's cloud provider, which happens to be Google Cloud Platform, in other words, Google.
+  >- If you're on a mac or a unix machine, open the terminal, type ```dig algoexpert.io```
+  >- This command allows us to do DNS Queries and then displays the answer in the terminal.
+  >- This **command gives the [algoexpert.io](algoexpert.io)'s IP Address**.
+  >- And something very similar happens behind the scenes when in your browser, you type in [algoexpert.io](algoexpert.io).
+  >- Your client, the browser, **makes a DNS Query**, **gets the IP Address back**, and then **knows how to communicate** directly with AlgoExpert.
+
+> So what happens next ?
+  >- Your browser, let's say, Google Chrome, knows what [algoexpert.io](algoexpert.io) is because it has the IP Address.
+  >- And it **sends an HTTP request** to this IP Address.
+  >- HTTP is a **way to send information**, that server can understand.
+  >- So, when we say that a browser, or a client, sends an HTTP request to the AlgoExpert servers, basically it sends a bunch of bytes, or characters, that are gonna get packed into what we call packets, in some special format, and that's gonna be sent over to the AlgoExpert servers.
+  >- And that **request** is also gonna **contain** the **IP Address of the browser, or the computer**, and that's gonna be called as the **source of the request**. And that's gonna be really important because when the server gets that request, it's gonna know what IP Address it should send a response to.
+  >- So the AlgoExpert server will use that source IP Address, which is contained in the HTTP request, and use it to send it's response, it'll know that it should send it's response to that source address.
+
+> There's one more thing that we need to talk about, which is **ports**.
+  >- Servers are machines that are waiting to receive requests from other machines called clients.
+  >- And once they get those requests, they can send responses to those clients.
+  >- Now it turns out that a server usually listens for requests on specific ports.
+  >- Any machine that has a distinct IP Address, has **16000 ports** that programs on the machine can listen to.
+  >- And so when you are **communicating with another machine**, you actually have to **specify what port you wanna communicate on**.
+  >- So as a client, when you are communicating with a server, you actually have to specify the port that you wanna communicate on.
+
+> When we're talking about the Client-Server Model here, it turns out that **most clients actually know the port that they should use, depending on the protocol** that they are trying to speak to the server with.
+  >- So for instance, if a client is trying to speak to a server, using the **HTTP** Protocol, it's always going to use **port 80**.
+  >If it's trying to speak to a server with **HTTPS**, it's gonna use **port 443**.
+
+> So, when you type [algoexpert.io](algoexpert.io) in your browser, and everything that is mentioned above has happened, and eventually the AlgoExpert server receives the request, it's able to read the requests because it understands the HTTP format.
+  >- And so the server understands that when you go to [algoexpert.io](algoexpert.io), you are trying to see the HTML of AlgoExpert and it returns in its response to the client.
+  >- And the browser **receives the response** and then **renders the HTML** on the page.
+
+> **This is incredibly important concept, because it's really through this Client-Server paradigm, that all computers talk to one another, all over the world.**
+> **All the modern technologies that we see day to day are built on top of these concepts.**
