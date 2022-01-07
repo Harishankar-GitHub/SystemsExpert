@@ -183,3 +183,40 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 
 > **This is incredibly important concept, because it's really through this Client-Server paradigm, that all computers talk to one another, all over the world.**
 > **All the modern technologies that we see day to day are built on top of these concepts.**
+
+---
+
+### 4. Network Protocols
+> IP packets. TCP headers. HTTP requests.
+
+> As daunting as they may seem, these low-level networking concepts are essential to understanding how machines in a system communicate with one another. And as we all know, proper communication is key for thriving relationships! :smile:
+
+#### 4 Key Terms
+
+- ***IP***
+> Stands for **Internet Protocol**. This network protocol outlines how almost all machine-to-machine communications should happen in the world. Other protocols like **TCP**, **UDP**, and **HTTP** are built on top of IP.
+
+- ***TCP***
+> Network protocol **built on top of the Internet Protocol (IP)**. Allows for **ordered, reliable data delivery** between machines over the public internet by creating a **connection**.
+
+> TCP is usually **implemented in the kernel**, which exposes **sockets** to applications that they can use to stream data through an open connection.
+
+- ***HTTP***
+> The **H**yper**T**ext **T**ransfer **P**rotocol is a very common network protocol **implemented on top of TCP**. Clients make HTTP requests, and servers respond with a response.
+
+##### Requests typically have the following schema:
+>- host: string (exmaple: algoexpert.io)
+>- port: integer (example: 80 or 443)
+>- method: string (example: GET, PUT, POST, DELETE, OPTIONS or PATCH)
+>- headers: pair list (example: "Content-Type" => "application/json")
+>- body: opaque sequence of bytes
+
+##### Responses typically have the following schema:
+>- status code: integer (example: 200, 401)
+>- headers: pair list (example: "Content-Length" => 1238)
+>- body: opaque sequence of bytes
+
+- ***IP Packet***
+> Sometimes more broadly referred to as just a (network) **packet**, an IP packet is effectively the **smallest unit used to describe data** being sent over **IP**, aside from bytes. An IP packet consists of:
+  >- an **IP header**, which contains the source and destination **IP addresses** as well as other information related to the network.
+  >- a **payload**, which isi just the data being sent over the network.
