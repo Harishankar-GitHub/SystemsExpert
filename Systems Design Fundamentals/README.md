@@ -122,7 +122,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 	>- **443**: HTTPS
 
 - ***DNS***
-> Short for **Domain Name System**, it describes the entities and protocols involved in the translation from domain names to IP Addresses. Typically, machines make a DNS query to a well known entity which is responsible for returning the IP address (or multiple ones) of the requested domain name in the response.
+> Short for **Domain Name System**, it describes the entities and protocols involved in the translation from domain names to IP Addresses. Typically, machines make a DNS query to a well known entity which is responsible for returning the IP Address (or multiple ones) of the requested domain name in the response.
 
 ---
 
@@ -219,4 +219,66 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 - ***IP Packet***
 > Sometimes more broadly referred to as just a (network) **packet**, an IP packet is effectively the **smallest unit used to describe data** being sent over **IP**, aside from bytes. An IP packet consists of:
   >- an **IP header**, which contains the source and destination **IP addresses** as well as other information related to the network.
-  >- a **payload**, which isi just the data being sent over the network.
+  >- a **payload**, which is just the data being sent over the network.
+
+---
+
+#### Understanding Network Protocols
+> The topic of network protocols is one of those topics that tends to intimidate a lot of people. The words network and protocol put together just sound scary.
+> The actual network protocols that exists out there are typically referred to by their acronyms like **IP**, **TCP**, **UDP**, and they naturally sound mysterious, foreign, and the majority of network protocols are admittedly very low level.
+> They're things that most software engineers aren't gonna be dealing with on a day to day basis. And so all of these things put together make the topic of network protocols very intimidating.
+
+> That being said, in the context of Systems Design interviews, network protocols actually aren't that intimidating.
+> They are quite simple because you only need to know them at a high level.
+
+#### What is a Protocol?
+> A protocol is really just an **agreed upon set of rules for an interaction between two parties**.
+> If two human beings cross each other on the streets and they vaguely know each other, they just exchange a few words, say hello to each other and all that.
+> This is fairly common and this is effectively a commmunication protocol.
+
+> In the context of networking, a protocol isn't going to be something for communication between two human beings but instead for **communication between two machines** (Clients/Servers).  
+> Well these machines, clients and servers, interact with one another following network protocols.
+
+#### What a Network Protocol consists of?
+> A network protocol consists of the kinds of **messages** that are gonna be sent and received by machines, by clients and servers.
+> The **format** of those messages, **how they are structured**, the **order** of those messages if they have an order, and whether or not they should be **some sort of response** to a message if there should be, what that **response should look like**, whether or not there should be **rules around when messages can be sent**, all of that stuff.
+
+> There are a **lot of network protocols** out there.
+> The majority of them you really don't need to know about at least in the context of Systems Design interviews and just general Software Engineering.
+> There are few that are very popular and that are important to know about.
+> We are gonna cover specifically **IP**, **TCP**, and **HTTP**.
+
+- **IP**
+	- IP stands for **Internet Protocol**.
+	- IP is the acronym used in **IP** Address.
+	- So an IP Address is literally an **Internet Protocol Address**.
+	- There's a lot to know about Internet Protocol and the way it works.
+	- The modern internet effectively runs on IP.
+	- The modern internet effectively operates following the Internet Protocol.
+	- And what that means is that, when a machine or a client for instance tries to interact with another machine or a server and it sends data to that other machine, that data is going to be sent in the form of what's known as an **IP Packet**.
+	- IP Packet is the **fundamental unit of data** that is sent from one machine to another.
+	- IP Packets are the **building blocks of communication between machines over the internet**.
+	- Now, truthfully, there are other units beyond IP Packets because **IP Packets are actually made up of bytes**.
+	- IP Packets have **2** main sections: ***IP Header*** and the ***Data***.
+	- **IP Header** is the section of an IP Packet that is gonna be at the **beginning** of the packet.
+	- Headers **contain all the information about the packet** and that is **stored in bytes**.
+	- Namely, it contains the **source IP Address** of the packet. It contains **destination IP Address**.
+	- If you have a single IP Packet, you know where that IP Packet is coming from and where it is going to.
+	- **This is how information flows over the network, on the internet**.
+	- This is how information knows to go from one machine to another.
+	- Because all these IP Packets have the source and destination IP Addresses of the machines that they are coming from and going to.
+	- The header also has other information like the **total size** of the packet, **version of the Internet Protocol** that this IP Packet is operating by.
+	- There are **multiple versions of Internet Protocol** and today, there are really **2 versions in practice**.
+	- There's **version 4 known as IPV4**, this is really what most of the modern day internet uses, and then there's **version 6, IPV6** which is now being used more and more.
+	- **Based on the IP version**, the packet might look different. It might be structured a little differently, and a machine will know how it should interpret it based on that version.
+	- The header is very small, anywhere between 20 and 60 bytes, and then the rest of the IP Packet is the data part of the IP Packet.
+	- This is where the information that a machine is trying to send to another machine is gonna be stored.
+	- Now IP Packets are limited in size. They are only **2 to the power of 16 bytes** which is only about **65,000 bytes**. This is only 0.065 mega bytes. That's really nothing.
+	- If you are sending information over the network, you could imagine you might be sending an email, you might be sending a big file, you might be sending an image.
+	- You are gonna be sending way more than 65,000 bytes.
+	- In other words, if you are sending information over the network, that information, that data is likely not gonna fit in one IP Packet.
+	- Now what happens is that, **it will fit into multiple IP Packets**,
+	- This is where things get complicated. When you have multiple IP packets that are sent from one machine to another, if all you are using is the Internet Protocol, you don't actually have a way of guaranteeing that these packets are actually gonna be received. It's very possible that some of the packets are gonna get lost, over the network. And if that's the case, you won't have sent all of the data that you were trying to send.
+	- You are also not guaranteeing the order in which the packets will be read or interpreted, and that's obviously not great because you want your packets to be ordered correctly such that your original data is sent in the correct order and in the correct structure that it's meant to be sent in.
+>- **So Internet Protocol alone kind of falls apart here**.
+>- **And this is where TCP comes into play**.
