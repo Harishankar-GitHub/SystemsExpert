@@ -282,3 +282,32 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 	- You are also not guaranteeing the order in which the packets will be read or interpreted, and that's obviously not great because you want your packets to be ordered correctly such that your original data is sent in the correct order and in the correct structure that it's meant to be sent in.
 >- **So Internet Protocol alone kind of falls apart here**.
 >- **And this is where TCP comes into play**.
+
+- **TCP**
+	- TCP stands for **Transmission Control Protocol**.
+	- TCP is **built on top of the Internet Protocol**.
+	- It's really **meant to solve the issues that exists in the IP**.
+	- It's meant to send IP Packets in an ordered way, meaning that you are guaranteeing the order in which the IP Packets will be read by the destination machine.
+	- In a **reliable** way meaning that you are guaranteed to get those packets actually received by the destination machine or at the very least you will know if some packets keep failing from getting received and in an error-free way.
+	- If some **IP Packets get corrupted for whatever reason** when they are being sent over the network, you will know and **you will be able to resend** those packets to make sure that they're received in an uncorrupted way.
+	- This is what **TCP aims to solve** in a nutshell.
+	- TCP is used in virtually all web applications and it allows you to send arbitarily long pieces of data to other machines because of those things that it solves that the Internet Protocol alone can't really accomplish.
+	- An IP Packet has IP Header and the Data. **In TCP**, as TCP is built on top of IP, the IP Packet's data portion will have **TCP Header** and it contains the **information about the ordering** of the packets and some **information about the packet**.
+
+>- Now, the core idea behind TCP is that when a machine wants to communicate with another machine over TCP like for instance, when a browser, your browser wants to communicate with a website's servers, with AlgoExpert's servers, it's first going to **create a TCP connection with the destination computer/server**.
+>- And the way that's gonna happen is through what's known as a handshake.
+
+>- A **Handshake** is a special TCP interaction where one computer basically contacts the other by sending a packet or a few packets saying "*Hey, I wanna connect with you.*"
+>- The other computer responds and says, "*Okay, we can connect, we can chat.*" And then the client or the machine that was trying to establish the connection re-responds again and says, "*Okay, we're now connected, we've got an open connection.*"
+>- And this is known as a Handshake.
+
+> And then once the connection is established, **both machines can freely send data to one another** but there are few things that might be worth knowing.
+>- Like for instance, the fact that if one of the two machines doesn't send data in a given amount of period, the connection can be timed out.
+>- If one of the machines wants to end the connection for whatever reason, it can do so by sending some sort of special message to let the other one know that "*Hey, I'm about to end the connection.*" and then the TCP connection is done.
+
+> This is **TCP in a nutshell**.
+> To summarize, it is basically a **more powerful**, and **more functional wrapper around IP**,  around the Internet Protocol.
+> But still what it **lacks** is a really **robust framework** that developers, software engineers can use to really define meaningful and easy to use communication channels for clients and servers in the system.
+> Because with TCP, all that you're really sending is arbitrary data that fits into these underlined IP packets.
+
+> **And this is where HTTP comes into play**.
