@@ -272,7 +272,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 	- There's **version 4 known as IPV4**, this is really what most of the modern day internet uses, and then there's **version 6, IPV6** which is now being used more and more.
 	- **Based on the IP version**, the packet might look different. It might be structured a little differently, and a machine will know how it should interpret it based on that version.
 	- The header is very small, anywhere between 20 and 60 bytes, and then the rest of the IP Packet is the data part of the IP Packet.
-	- This is where the information that a machine is trying to send to another machine is gonna be stored.
+	- In the data portion of the IP Packet, the information that a machine is trying to send to another machine is gonna be stored.
 	- Now IP Packets are limited in size. They are only **2 to the power of 16 bytes** which is only about **65,000 bytes**. This is only 0.065 mega bytes. That's really nothing.
 	- If you are sending information over the network, you could imagine you might be sending an email, you might be sending a big file, you might be sending an image.
 	- You are gonna be sending way more than 65,000 bytes.
@@ -311,3 +311,29 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > Because with TCP, all that you're really sending is arbitrary data that fits into these underlined IP packets.
 
 > **And this is where HTTP comes into play**.
+
+- **HTTP**
+	- HTTP stands for **HyperText Transfer Protocol**.
+	- HTTP is **built on top of TCP**.
+	- It introduces a **higher level abstraction above TCP** and of course IP.
+	- And this abstraction is the **request-response paradigm**.
+	- So the HTTP protocol introduces this idea of having machines communicate with one another following this request-response paradigm where one machine sends request to another machine and that other machine returns a response to the first machine.
+	- And this request response paradigm with of course a set of accompanying rules makes it very easy for developers to create robust and easy to maintain systems.
+	- And so this is why **most modern day systems rely on the HTTP protocol for communication**.
+	- So with HTTP, we completely forget about IP packets, we forget about TCP.
+	- All that we deal with are HTTP requests and responses.
+	- Request are gonna be the things that machines that wanna interact with other machines send.
+	- And these request are gonna have a lot of properties defined by the HTTP protocol.
+	- And perhaps the best way to really understand or rather appreciate the power and the rigor that HTTP gives you, is to try to visualize what these request and responses look like.
+	- One can think of them as objects with important fields or properties that describe them.
+	- For example, HTTP Request and Response where requests have fields such as url, port, method, headers, body etc., and responses have fields such as status code, response body, headers etc.
+
+>- If we go back to **IP and TCP**, those two protocols were more **just for transportation of data**.
+>- **HTTP** on the other hand introduces the **opportunity to add a lot of business logic** which is of course what you're gonna want if you're developing a large scale system or any kind of system to be honest.
+
+>- **TP**, **TCP** and **HTTP** are **three very important protocols** that basically any modern day system on the internet is gonna be relying on.
+>- **IP** and **TCP** are **very very low level** and you're typically not gonna be thinking about them much.
+>- **HTTP is more relevant** to you.
+>- It's this protocol that's gonna allow you to implement all of the business logic in your system and you have to be familiar with some of these HTTP concepts and terms like requests, responses, methods, path names and so on and so forth.
+
+---
