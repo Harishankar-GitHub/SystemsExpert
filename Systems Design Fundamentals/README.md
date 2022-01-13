@@ -364,3 +364,27 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > Usually refers to disk, but in general it is any form of storage that persists if the process in charge of managing it dies.
 
 ---
+
+#### Understanding Storage
+>- If you think of any system that you might wanna design, you're probably gonna realize that, that **system** is gonna **require some form of storage**. Imagine any system, and that system probably requires some form of storage.
+>- Maybe you need to store user information, maybe you need store metrics about the system itself, you'll likely need to store something in that system.
+
+> This is where databases come into play.
+
+- ***Database***
+	- A database is a thing, let's call it a thing for now, that really serves two primary purposes:
+		- To **store/write/set/record** data
+		- To **retrieve/read/get/query** data
+	- Now one common **misconception** about databases or rather, a **common gap in knowledge** about databases, is thinking that a database is this magical opaque box that lives somewhere in the ether.
+	- And that's really a limited understanding of what a database is.
+	- What a database really is, there are of course some exceptions, but what a database almost always is, is just a server.
+	- A **database is just a server**. It is just like any other machine/computer.
+	- Any machine/computer can genuinely serve as a database for a system. Now that might not be the best decision to make for your system, but the point is it can be.
+	- So database is **really just a server**.
+	- Now one **very important concept** in storage and in databases is **persistence**.
+	- The persistence of the data that you store in a database.
+	- A lot of people take for granted or assume, that if they store data in a database, that data will persist through any outage or issue that might occur in your system.
+	- People tend to assume that if you store data in a database and then there's a power outage or a network issue or your database server crashes, once everything is booted back up, that the data will still be there.
+	- And while that assumption is often fair because a lot of databases do ensure that data stored in them is gonna persist through outages or issues, it isn't always correct.
+
+> And this leads us to two fundamental things in storage: **Disk** and **Memory**
