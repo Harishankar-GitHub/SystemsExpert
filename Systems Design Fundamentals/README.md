@@ -388,3 +388,36 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 	- And while that assumption is often fair because a lot of databases do ensure that data stored in them is gonna persist through outages or issues, it isn't always correct.
 
 > And this leads us to two fundamental things in storage: **Disk** and **Memory**
+
+>- If you have a database server, and that database writes data to disk, that data will persist even if the database server goes down.
+
+>- **Writing data to disk** is basically what happens when you save a file on your computer.
+>- If you shut down your computer afterwards or if your computer crashes, that file that you saved is still gonna be there unless there's some catastrophic issue with your hardware or some other exceptional issue that data, that file, is still gonna be there.
+
+>- In contrast, if your **database writes data in memory**, and this is what happens when for instance you've got your server code and you have maybe an array or a hash table declared in your server code and you store data in that array or in that hash table if that server goes down, if your database server goes down, and then gets booted back up, the array or the hash table in which you might have stored data is no longer gonna have that data.
+>- That's what it essentially means to store data in memory.
+
+>- By the way, if you're wondering why you'd ever want to use memory instead of disk, the simple reason is that **reading data from memory or writing data in memory is much faster than reading data from disk or writing to disk**.
+
+>- Storage is actually a very complex subject area in Systems Design.
+>- It's got a lot of depth and a lot of breadth.
+>- To give you an idea there are **hundreds of database offerings out there**.
+>- If you take Google Cloud Platform alone, it offers eight different storage products.
+>- If you're wondering why there's so many database offerings, it's because there are a lot of different things that databases can offer you.
+>- For example, database with some kind of structure to store data.
+>- Then once we get into **availability**, when we start talking about the uptime of your system, then your choice of database is gonna be really important and different databases are gonna give you different things.
+>- You can imagine if your database goes down, like earlier when we brought our server down in the code example, because your database is such a critical part of your system, then your entire system effectively goes down with your database if it goes down.
+
+> And so then this brings us to the topic of **distributed storage**.
+>- Because so far we've only talked about storing data on one machine.
+>- But if you don't want your entire system to get brought down when your database goes down, then you're probably gonna need to store your data not on one machine but on multiple machines and that comes with a lot of complexity.
+
+>- Then we start asking questions like, "*Well how do you store data on multiple machines?, Do you split the data up?, Do you replicate the data across multiple machines?"* then this leads us to consistency issues.
+
+>- **Consistency** is a concept in storage that basically refers to the staleness or the up-to-dateness of data.
+>- For instance if you access data from a database, especially if that database is distributed across multiple machines, are you ever gonna get stale data or will you always get the most up-to-date version of that data?
+>- That's consistency in a nutshell.
+
+>- And here this is where those hundreds of database offerings are gonna come into play because some databases are gonna give you certain properties or certain guarantees but they're gonna trade off others and other databases are gonna give you different properties in exchange for other trade-offs.
+
+---
