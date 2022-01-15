@@ -406,7 +406,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- If you're wondering why there's so many database offerings, it's because there are a lot of different things that databases can offer you.
 >- For example, database with some kind of structure to store data.
 >- Then once we get into **availability**, when we start talking about the uptime of your system, then your choice of database is gonna be really important and different databases are gonna give you different things.
->- You can imagine if your database goes down, like earlier when we brought our server down in the code example, because your database is such a critical part of your system, then your entire system effectively goes down with your database if it goes down.
+>- You can imagine if your database goes down, because your database is such a critical part of your system, then your entire system effectively goes down with your database if it goes down.
 
 > And so then this brings us to the topic of **distributed storage**.
 >- Because so far we've only talked about storing data on one machine.
@@ -419,5 +419,23 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- That's consistency in a nutshell.
 
 >- And here this is where those hundreds of database offerings are gonna come into play because some databases are gonna give you certain properties or certain guarantees but they're gonna trade off others and other databases are gonna give you different properties in exchange for other trade-offs.
+
+---
+
+### 6. Latency And Throughput
+> If you've ever experienced **lag** in a video game, it was most likely due to a **combination of high latency and low throughput**. And lag sucks.
+
+#### 2 Key Terms
+
+- ***Latency***
+> The **time it takes for a certain operation** to complete in a system. Most often this measure is a time duration, like milliseconds or seconds. You should know these orders of magnitude:
+>- ***Reading 1 MB from RAM:*** 250 μs (0.25 ms)
+>- ***Reading 1 MB from SSD:*** 1,000 μs (1 ms)
+>- ***Transfer 1 MB over Network:*** 10,000 μs (10 ms)
+>- ***Reading 1 MB from HDD:*** 20,000 μs (20 ms)
+>- ***Inter-Continental Round Trip:*** 150,000 μs (150 ms)
+
+- ***Throughput***
+> The **number of operations that a system can handle properly per time unit**. For instance the throughput of a server can often be measured in requests per second (RPS or QPS).
 
 ---
