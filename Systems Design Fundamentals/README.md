@@ -435,7 +435,42 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- ***Reading 1 MB from HDD:*** 20,000 μs (20 ms)
 >- ***Inter-Continental Round Trip:*** 150,000 μs (150 ms)
 
+> And there are a **million microseconds** in **1 second**.
+> **10<sup>6</sup> microseconds** in **1 second**.
+
 - ***Throughput***
 > The **number of operations that a system can handle properly per time unit**. For instance the throughput of a server can often be measured in requests per second (RPS or QPS).
 
 ---
+
+#### Understanding Latency And Throughput
+>- Latency and throughput are two things that are **extremely important in the context of systems design interviews**.
+>- They're actually **not that difficult** to grasp.
+>- But they are often misunderstood. Because a lot of people actually know the terms latency and throughput. They might even use them in sentences every so often. But, a lot of people also don't quite understand exactly what the two words mean.
+>- Latency and throughout are the **two most important measures of the performance of a system**.
+
+>- **Latency**, to put it simply, is basically **how long it takes for data to traverse a system**. And more specifically, how long does it take for data to get data from one point in a system, to another point in a system.
+>- When talking about **latency**, we might refer to a lot of **different kinds** of things **in a system**.
+>- **For instance**, we might be talking about the **latency of a network request**. How long does it take for one request to go from a client to a server, and then back from server to the client ?
+>- We would refer to the time that it takes for a request to go from a client to a server, and then back from the server to the client as latency.
+>- The time that it's gonna take to **read data from memory or disk** is also gonna be referred to as latency.
+>- The most important aspect of latency is the fact that these **different things in systems, have different latencies**.
+>- And so basically **there's a trade off** between different ways that a system is built.
+>- Because certain things are gonna have higher latencies, and other things are gonna have lower latencies.
+
+> Examples of latencies of various operations is mentioned in the [key terms section](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#2-key-terms).
+
+>- When you are gonna be designing systems, you're typically going to **optimize those systems**, by lowering the overall latencies of the systems.
+>- Some systems will not warrant optimizing for latency as much as others.
+>- For instance, you could imagine that certain types of systems might really, really care about having low latencies. A good example here is video games.
+>- If you've ever played an online video game, especially a multiplayer video game where you're competing against people or playing with people.
+>- When we talk about lag in those types of video games, what we really mean is, those video games or those systems have a high latency, or you as a player have a high latency.
+>- And that might literally be because the server that you're playing on is located halfway across the world from you, and it just takes a while for your computer, the client, to make a network requests to the video games server.
+>- And even though 150,000 microseconds **seems really fast**, you could imagine that if you're sending a lot more data over the network, then these 150,000 microseconds **quickly add up** and if you're **playing a video game** where you need almost **instantaneous actions**, or things to happen, then this is gonna be a really bad experience for the user, and so you're gonna have designed your system really poorly if you have high latency.
+
+>- On the other hand, you might imagine certain websites that might care less about latency because maybe they don't really care if it takes a couple seconds for the page or the website to load.
+>- But what they care about more is maybe accuracy or up time.
+>- They want their website to always show accurate information, or never to be down. But they're okay to lose some latency.
+
+>- **When tackling System Design interviews**, you're gonna have to **think of** these kinds of **trade offs**, or the kinds of **priorities** that you have when you're designing a system.
+>- **And latency is something that you're definitely going to consider**.
