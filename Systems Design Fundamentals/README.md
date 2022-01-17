@@ -447,8 +447,9 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- Latency and throughput are two things that are **extremely important in the context of systems design interviews**.
 >- They're actually **not that difficult** to grasp.
 >- But they are often misunderstood. Because a lot of people actually know the terms latency and throughput. They might even use them in sentences every so often. But, a lot of people also don't quite understand exactly what the two words mean.
->- Latency and throughout are the **two most important measures of the performance of a system**.
+>- Latency and throughput are the **two most important measures of the performance of a system**.
 
+- ***Latency***
 >- **Latency**, to put it simply, is basically **how long it takes for data to traverse a system**. And more specifically, how long does it take for data to get data from one point in a system, to another point in a system.
 >- When talking about **latency**, we might refer to a lot of **different kinds** of things **in a system**.
 >- **For instance**, we might be talking about the **latency of a network request**. How long does it take for one request to go from a client to a server, and then back from server to the client ?
@@ -474,3 +475,37 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 
 >- **When tackling System Design interviews**, you're gonna have to **think of** these kinds of **trade offs**, or the kinds of **priorities** that you have when you're designing a system.
 >- **And latency is something that you're definitely going to consider**.
+
+- ***Throughput***
+>- **Throughput** is **how much work a machine can perform in a given period of time**.
+>- And so typically, at least in the context of System Design interviews, but also in computing in general.
+>- When we talk about throughput, and we talk about this amount of work that a computer or machine can perform in a given amount of time, we're really referring to how much data can be transferred from one point in a system to another point in a system, in a given amount of time.
+>- And so typically, we **measure** this throughput, in **gigabits per second**, or **kilobits per second**, **megabits per second**.
+>- **For example**, transferring 1 MB over 1 Gbps Network literally means that this network can support 1 gigabit per second or a billion bits per second.
+
+>- A good way to think about throughput is with an image, if a lot of clients are requesting an image from a server, and they're all issuing requests to the server, the throughput is basically gonna be how many of these requests can this server handle in a given amount of time, or in this case a second.
+>- And more specifically if we reduced these requests to bits, how many bits can this server handle or let through per second?
+>- You could almost imagine that this is kind of like a bottleneck where you can only fit so many bits during a given amount of time, again in this case seconds, and that's throughput.
+
+#### How to increase throughput ?
+>- So how to increase throughput or how do I optimize a system for throughput?
+>- And so the simple answer, perhaps even the naive answer is, **you just pay for it**. You pay to increase throughput.
+>- Well, if you take a look at AlgoExpert for example, the thing that determines how many bits can go in and out of AlgoExpert's servers, at any given time, or during a second for instance, is determined by the cloud provider, which happens to be Google Cloud Platform, Google in this case.
+>- So basically we can pay Google, or at least in theory we can pay Google to just increase throughput.
+
+> **Just increasing throughput doesn't necessarily fix a potential problem that you might have in a system**.
+
+>- As an example, imagine we have a system, where we have just a single server, that's handling request from tons of different clients.
+>- You could imagine that this system might be a system like, Google Search or Facebook Messenger, that might expect to serve thousands of requests, perhaps even millions of requests per second.
+>- And just trying to blindly increase throughput on this network probably won't make sense because you'll still eventually have some sort of bottleneck here.
+>- So perhaps a better way to fix this system would be to have multiple servers handle all these requests.
+>- And that might be a better way to design the system.
+
+>- **One last thing** that's important to mention **about latency and throughput**, is that even though they are very much related in a way, and they're very important measures of a systems performance, **they're not necessarily correlated**.
+>- For instance, you might have a system, or rather parts of a system, smaller parts of a system, that have very low latency.
+>- In other words, they support really fast data transfers.
+>- But then you might have a part of the system that has very low throughput, and so that ends up meaning that the low latency data transfers or operations that the system had, are kind of canceled out.
+>- In other words, you can not make assumptions about latency or throughput based on the other.
+>- They are not necessarily correlated things.
+
+---
