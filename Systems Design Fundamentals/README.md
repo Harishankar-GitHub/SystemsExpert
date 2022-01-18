@@ -509,3 +509,16 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- They are not necessarily correlated things.
 
 ---
+
+### 7. Availability
+#### 3 Prerequisites
+- ***Process***
+> A program that is currently running on a machine. You should always assume that any process may get terminated any time in a suffeciently large system.
+
+- ***Server***
+> A machine or process that provides data or service to a client, usually by listening for incoming network calls.
+
+> Note that a single machine or piece of software can be both a client and a server at the same time. For instance, a single machine could act as a server for end users and as a client for a database.
+
+- ***Node/Instance/Host***
+> These three things refer to the same thing most of the time: a virtual or physical machine on which the developer runs processes. Sometimes the word **server** also refers to the same concept.

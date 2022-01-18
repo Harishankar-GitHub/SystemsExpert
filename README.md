@@ -16,3 +16,4 @@
 4. [Network Protocols](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#4-network-protocols)
 5. [Storage](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#5-storage)
 6. [Latency And Throughput](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#6-latency-and-throughput)
+7. [Availability](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#7-availability)
