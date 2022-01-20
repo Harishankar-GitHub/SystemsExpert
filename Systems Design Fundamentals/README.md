@@ -450,9 +450,9 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- Latency and throughput are the **two most important measures of the performance of a system**.
 
 - ***Latency***
->- **Latency**, to put it simply, is basically **how long it takes for data to traverse a system**. And more specifically, how long does it take for data to get data from one point in a system, to another point in a system.
+>- **Latency**, to put it simply, is basically **how long it takes for data to traverse a system**. And more specifically, how long does it take for data to get from one point in a system, to another point in a system.
 >- When talking about **latency**, we might refer to a lot of **different kinds** of things **in a system**.
->- **For instance**, we might be talking about the **latency of a network request**. How long does it take for one request to go from a client to a server, and then back from server to the client ?
+>- **For instance**, we might be talking about the **latency of a network request**. How long does it take for one request to go from a client to a server, and then back from the server to the client ?
 >- We would refer to the time that it takes for a request to go from a client to a server, and then back from the server to the client as latency.
 >- The time that it's gonna take to **read data from memory or disk** is also gonna be referred to as latency.
 >- The most important aspect of latency is the fact that these **different things in systems, have different latencies**.
@@ -504,7 +504,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- **One last thing** that's important to mention **about latency and throughput**, is that even though they are very much related in a way, and they're very important measures of a systems performance, **they're not necessarily correlated**.
 >- For instance, you might have a system, or rather parts of a system, smaller parts of a system, that have very low latency.
 >- In other words, they support really fast data transfers.
->- But then you might have a part of the system that has very low throughput, and so that ends up meaning that the low latency data transfers or operations that the system had, are kind of canceled out.
+>- But then you might have a part of the system that has very low throughput, and so that ends up meaning that the low latency data transfers or operations that the system had, are kind of cancelled out.
 >- In other words, you can not make assumptions about latency or throughput based on the other.
 >- They are not necessarily correlated things.
 
@@ -551,3 +551,78 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > Short for "**service-level objective**", an SLO is a guarantee given to a customer by a service provider. SLOs typically make guarantees on a system's availability, amongst other things. SLOs constitute an SLA.
 
 ---
+
+#### Understanding Availability
+>- When evaluating a system, two of the things that you wanna think about are the system's latency and the system's throughput. And that's certainly true.
+>- But there's another thing that you wanna think about and that's the system's availability.
+
+- ***What is Availability?***
+>- **One way to think** about it is how resistant a system is to failures.
+>- For instance, what happens if a server in your system fails? What happens if your database fails?
+>- Is your system gonna completely go down or your system still gonna be operational?
+>- And this is often described a system's fault tolerance, how fault tolerant is a system.
+
+>- **Another way to think** about availability is as the percentage of time in a given period of time, like a month or a year, are at least operational enough such that all of its primary functions are satisfied.
+
+> **Availability is a very important thing to think about when evaluating a system.**
+
+>- And in this day and age, especially, **most systems almost have an implied guarantee of availability**.
+>- An example of this would be AlgoExpert. If you take AlgoExpert, the website, the product, the platform, when someone purchases AlgoExpert, the main thing that you purchase is access to our platform, access to our content, the ability to watch these videos.
+>- But if you think about it, there's an implied guarantee of availability that comes with the purchase of AlgoExpert.
+>- Because if you are a customer and go to the [website](algoexpert.io) you expect the website to be up and you expect the website to be fully operational.
+>- If the website ever isn't fully operational, you are not gonna be happy.
+>- This not only makes the customer unhappy, but also make the company lose money.
+>- This is just one example.
+
+> **There are varying degrees of availability that you might expect from different systems.**
+
+>- In the case of AlgoExpert, if the website were down for a few hours or if parts of the platform weren't operational for a few hours, well, it would be upsetting for customers. And while it would be bad for us as the service providers, it wouldn't really be the end of the world, it wouldn't be the most unacceptable thing to ever happen.
+>- Now imagine that we were dealing with a system that supported airplane software, the software that allows an airplane to function properly when it's in flight.
+>- You could imagine that if that system were to ever go down when an airplane were flying, that would be absolutely unacceptable.
+>- So in that type of system, you would expect a extremely high amount of availability.
+>- Any amount of complete downtime in the system would just be unacceptable.
+>- And by the way, here we don't necessarily have to reach so far into life or death examples like airplane software.
+>- You can take a step back and look at platforms like YouTube. If YouTube ever goes down, that's really bad because hundreds of millions of people use YouTube everyday.
+>- Or take cloud providers, for instance. Take cloud providers like Google Cloud Platform or Amazon Web Services.
+>- If parts of these cloud providers' systems ever go down, that can be really bad because it then affects all of the businesses and customers that rely on their services for their own platforms.
+
+>- **As an example**, in the summer of 2019, in June or July, Google Cloud Platform had a really bad outage that affected a bunch of its products and services.
+>- This outage lasted at least a couple of hours. Many or all of the businesses that relied on Google Cloud Platform were affected.
+>- So, for instance, Vimeo, which apparently runs on Google Platform, at least in part, was affected.
+>- This meant that people on AlgoExpert couldn't watch our videos because our videos are hosted on Vimeo. And AlgoExpert received something like 10 customer messages in the span of one hour saying, "Hey, how come I can't watch videos? Are the videos down? Is there a problem?"
+>- And so as you can imagine, this was just really bad all around.
+>- One outage on Google Cloud Platform has huge and far-reaching repercussions.
+
+> **All that to say that availability matters a lot.**
+
+- ***How do you measure Availability?***
+>- What does it mean for a system to be available?
+>- Well, it turns out that we typically measure availability as the **percentage of a system's uptime in a given year**.
+>- So, for instance, if a system is up and operational for half of an entire year, then you would say that that system has **50% availability**.
+>- Now, in practice, you could imagine that 50% availability would be really, really bad for most services.
+>- Imagine if Facebook were down 50% of the year. Imagine if Uber were down 50% of the year. That would not be acceptable. These products would never survive in the market.
+>- So when we're dealing with availability, we're usually dealing very, very high percentages.
+>- In fact, it can be pretty deceptive because even an **availability of 90% isn't really great**.
+>- If you do the math, 90% means that your system is gonna be down about 35 or 36 days out of the year.
+>- Again, imagine if Facebook or Uber were down 36 days out of the year. They would never survive in the marketplace.
+
+> So what that means is that in the industry, most services or most systems aim for really high availabilities and so we often end up measuring availability not exactly in percentages but rather in what we call **nines**.
+
+>- **Nines** are effectively percentages but they are specifically percentages with the number nine.
+>- If you have a system that has **99%** availability, meaning that it is up 99% of the time during a year.
+>- Then, in the industry, we say that your system has **two nines** of availability because literally the number nine appears two times in this percentage.
+>- If your system has **99.9%** availability, then we say that it has **three nines** of availability.
+>- If it has **99.99%**, then we say it has **four nines** of availability and so on and so forth.
+>- And this is really the standard way that people talk about availability in the industry.
+
+> [High Availability - Wikipedia](https://en.wikipedia.org/wiki/High_availability)
+
+>- **Five nines** of availability is typically regarded as the **gold standard of availability**.
+>- If your system has five nines of availability, then we would really say that it is a highly available system.
+>- And by the way, that's an actual term.
+>- Calling a system highly available or saying that a system has high availability is an actual **recognized term in systems design**.
+>- And it's often abbreviated as **HA** for **high availability** or **highly available**.
+>- So a lot of systems aim to be highly available systems because they really care about availability, they really care about having a high level of availability, they wanna shoot for that ideal five nines of availability, maybe even more.
+>- And so we say that they wanna be highly available systems or if the actually have that kind of availability that they are highly available systems.
+
+> **Availability is really important and it's something that matters a lot both to the end users of systems and to systems designers.**
