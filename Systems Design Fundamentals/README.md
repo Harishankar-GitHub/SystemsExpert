@@ -626,3 +626,41 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- And so we say that they wanna be highly available systems or if the actually have that kind of availability that they are highly available systems.
 
 > **Availability is really important and it's something that matters a lot both to the end users of systems and to systems designers.**
+
+>- In fact, it matters so much that for certain systems, they don't have an implied guarantee of availability, they have an **explicit guarantee of availability**.
+>- Many service providers out there have what are known as SLAs.
+>- SLA stands for **service-level agreement**.
+>- SLA is an agreement between a service provider, basically the people who are behined the service or system that is being sold or provided, and the customers or end users of this service or of this system, **an agreement on that system's availability** amongst other things.
+>- So many service providers out there have these explicit written SLAs, service-level agreements, that basically tell customers, _"Hey, we guarantee you this amount of availability. This percentage of uptime, for instance, in our system."_
+>- SLO, which is often used synonymously with SLA in the industry but that's incorrect because SLO is not the same thing as SLA, it's related but not the same thing.
+>- SLO stands for **service-level objective**. 
+>- SLO can be considered as components of SLA.
+>- In other words a **service-level agreement is made up of service-level objectives**.
+>- If a provide a service for you and I guarantee you a percentage of uptime for that service, for example, that percentage of uptime guarantee would be an SLO.
+>- If I guarantee you that you will only get X number of errors when you use my service, and here let's just imagine that we're talking about arbitrary errors, then that is another SLO.
+
+>- And so all these major cloud service providers, for example, like Google Cloud Platform or Amazon Web Services have very clearcut SLAs.
+>- In fact, you can actually see them online on their product pages.
+>- And these are very important when you're considering buying their services because depending on your use case and your need for their services, you might require some percentage of availability.
+>- And so you're gonna want something very clearly and unambiguously specified in an SLA to give you that peace of mind.
+
+> SLAs are very serious and availability is taken very seriously, which means that availability is extremely important in systems design and of course in systems design interviews.
+
+>- Even though availability is something to be taken very seriously and is really valued when designing a system, **it's not always super important** or it's not always the case that you need to have five nines of availability.
+>- Because having **high availability comes with trade-offs**.
+>- It's **difficult to achieve** high availability.
+>- And so you, as the systems designer, have to think long and hard about whether or not your system should be highly available.
+>- You have to think long and hard about what parts of your system should be highly available or don't need high availability.
+>- **Stripe** is a very popular product that provides, amongst other things, payment services for businesses.
+>- So, for instance, AlgoExpert relies heavily on Stripe. All of their credit card processing and all of their payments, basically, that don't use PayPal are done through Stripe.
+>- And so if you take a service like Stripe and you dissect it a little bit, you can start to understand what parts of a system do require high availability and what parts of a system don't necessarily require the same levels of availability.
+>- For Stripe, you could imagine that their core services of handling payments and of charging customers, that is likely a highly available service.
+>- If that service would ever go down, that would be really bad and their customers could lose thousands if not millions of dollars of revenue. They could lose millions of dollars of revenue, so that part of their system probably has to be highly available.
+>- But then other parts of their system might not have to be highly available.
+>- For example, they have a dashboard that businesses can use to monitor their sales. That dashboard is not as critical as the core payment service that Stripe provides.
+>- If that dashboard goes down, that's still pretty bad but it's not the end of the world, it's not outrageous.
+
+>- When designing systems, in systems design interviews or even on the job, you're gonna have to ask yourself: _What parts of my system are absolutely critical?_ Well, not necessarily critical but are critical to the point that they require high availability.
+>- And what parts of my systems don't actually require high availability?
+>- What parts of my systems would be okay to fail?
+>- That's gonna be something that you'll have to think about.
