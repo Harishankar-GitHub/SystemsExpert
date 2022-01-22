@@ -664,3 +664,41 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- And what parts of my systems don't actually require high availability?
 >- What parts of my systems would be okay to fail?
 >- That's gonna be something that you'll have to think about.
+
+- ***How do you improve Availability?***
+>- It's really conceptually quite simple.
+>- You wanna **make sure**, first and foremost, that your **system doesn't have single points of failure**: Single places in your system that if they fail cause your entire system to fail.
+>- And how do you **eliminate single points of failure**? Answer is **redundancy**.
+>- **Redundancy** is basically the act of duplicating or triplicating or multiplying even more certain parts of your system.
+>- So, as an example, if you've got a very simple system where you've got clients that interact with your server, then your server interacts with a database, you can clearly see that this single server here is a single point of failure.
+>- If this single server gets overloaded or if there's a problem with it for whatever reason and it dies, then your entire system fails.
+>- So what would you wanna do? You would wanna make this part of your system redundant.
+>- And you would do so by basically adding servers.
+>- Now, if you add servers, you probably wanna have a load balancer in between your clients and your servers to distribute the load of your clients across your three servers.
+>- What if your load balancer becomes overloaded? Now your load balancer is a single point of failure.
+>- And so you can have redundancy at the load balancer layer in your system.
+>- For example, on AlgoExpert, it has 5 load balancers that take in all of the user traffic and then forward that traffic to the servers.
+>- The point is that you can introduce redundancy in a lot of different parts of your system just by literally adding machines to those parts of your system.
+>- **This is known as Passive Redundancy.**
+
+- ***Passive Redundancy***
+
+>- Passive redundancy is loosely speaking when you have **multiple components at a given layer in your system**.
+>- And if at any point one of those components, like, for instance, one of these servers or one of these load balancers, if at any point in time one of them dies, nothing's really gonna happen.
+>- The other two servers or the other two load balancers are basically gonna be able to continue running smoothly.
+>- They might have a little bit more load but they'll be fine until the broken load balancer or the broken server gets fixed.
+>- And here an example of passive redundancy that's often used is airplane engines.
+>- When you're dealing with a twin engine airplane, an airplane that has two engines, both engines are being used, but if one engine fails, it gets completely broken, the airplane can still fly completely smoothly and even land and take off with just one engine.
+>- So that's an example of passive redundancy.
+
+- ***Active Redundancy***
+>- Active redundancy is a little bit more complicated.
+>- Active redundancy is when you have multiple machines that work together in such a way that only one or few of the machines are gonna be typically handling traffic or doing work.
+>- And if one of the ones that is handling traffic or doing work fails, maybe it's the only one handling traffic or doing work, and it fails, **the other machines are gonna somehow know that that other one failed and they're gonna take over**.
+>- This is known as active redundancy.
+
+>- If you wanna make a system available or even highly available, you're gonna need to eliminate single points of failure in that system, and you can do so by making these parts of your system redundant.
+>- And of course it's important to mention that you'll also wanna make sure that you **have a rigorous processes in place to handle system failures** because it's possible that system failures are gonna require human intervention.
+>- Maybe if servers in your system crash, you're gonna need a human to bring them back up.
+>- And you're gonna need to have processes in place that ensure that that happens in the proper timeframe.
+---
