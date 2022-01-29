@@ -560,14 +560,14 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- **One way to think** about it is how resistant a system is to failures.
 >- For instance, what happens if a server in your system fails? What happens if your database fails?
 >- Is your system gonna completely go down or your system still gonna be operational?
->- And this is often described a system's fault tolerance, how fault tolerant is a system.
+>- And this is often described as a system's fault tolerance, how fault tolerant is a system.
 
->- **Another way to think** about availability is as the percentage of time in a given period of time, like a month or a year, are at least operational enough such that all of its primary functions are satisfied.
+>- **Another way to think** about availability is, as the percentage of time in a given period of time, like a month or a year, are at least operational enough such that all of its primary functions are satisfied.
 
 > **Availability is a very important thing to think about when evaluating a system.**
 
 >- And in this day and age, especially, **most systems almost have an implied guarantee of availability**.
->- An example of this would be AlgoExpert. If you take AlgoExpert, the website, the product, the platform, when someone purchases AlgoExpert, the main thing that you purchase is access to our platform, access to our content, the ability to watch these videos.
+>- An example of this would be AlgoExpert. If you take AlgoExpert, the website, the product, the platform, when someone purchases AlgoExpert, the main thing that purchased is the access to the platform, access to the content, the ability to watch the videos.
 >- But if you think about it, there's an implied guarantee of availability that comes with the purchase of AlgoExpert.
 >- Because if you are a customer and go to the [website](algoexpert.io) you expect the website to be up and you expect the website to be fully operational.
 >- If the website ever isn't fully operational, you are not gonna be happy.
@@ -576,10 +576,10 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 
 > **There are varying degrees of availability that you might expect from different systems.**
 
->- In the case of AlgoExpert, if the website were down for a few hours or if parts of the platform weren't operational for a few hours, well, it would be upsetting for customers. And while it would be bad for us as the service providers, it wouldn't really be the end of the world, it wouldn't be the most unacceptable thing to ever happen.
+>- In the case of AlgoExpert, if the website were down for a few hours or if parts of the platform weren't operational for a few hours, well, it would be upsetting for customers. And while it would be bad for the service providers, it wouldn't really be the end of the world, it wouldn't be the most unacceptable thing to ever happen.
 >- Now imagine that we were dealing with a system that supported airplane software, the software that allows an airplane to function properly when it's in flight.
 >- You could imagine that if that system were to ever go down when an airplane were flying, that would be absolutely unacceptable.
->- So in that type of system, you would expect a extremely high amount of availability.
+>- So in that type of system, you would expect an extremely high amount of availability.
 >- Any amount of complete downtime in the system would just be unacceptable.
 >- And by the way, here we don't necessarily have to reach so far into life or death examples like airplane software.
 >- You can take a step back and look at platforms like YouTube. If YouTube ever goes down, that's really bad because hundreds of millions of people use YouTube everyday.
@@ -589,7 +589,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- **As an example**, in the summer of 2019, in June or July, Google Cloud Platform had a really bad outage that affected a bunch of its products and services.
 >- This outage lasted at least a couple of hours. Many or all of the businesses that relied on Google Cloud Platform were affected.
 >- So, for instance, Vimeo, which apparently runs on Google Platform, at least in part, was affected.
->- This meant that people on AlgoExpert couldn't watch our videos because our videos are hosted on Vimeo. And AlgoExpert received something like 10 customer messages in the span of one hour saying, "Hey, how come I can't watch videos? Are the videos down? Is there a problem?"
+>- This meant that people on AlgoExpert couldn't watch our videos because our videos are hosted on Vimeo. And AlgoExpert received something like 10 customer messages in the span of one hour saying, _"Hey, how come I can't watch videos? Are the videos down? Is there a problem?"_
 >- And so as you can imagine, this was just really bad all around.
 >- One outage on Google Cloud Platform has huge and far-reaching repercussions.
 
@@ -628,12 +628,12 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > **Availability is really important and it's something that matters a lot both to the end users of systems and to systems designers.**
 
 >- In fact, it matters so much that for certain systems, they don't have an implied guarantee of availability, they have an **explicit guarantee of availability**.
->- Many service providers out there have what are known as SLAs.
->- SLA stands for **service-level agreement**.
+>- Many service providers out there have what are known as **SLAs**.
+>- **SLA** stands for **service-level agreement**.
 >- SLA is an agreement between a service provider, basically the people who are behined the service or system that is being sold or provided, and the customers or end users of this service or of this system, **an agreement on that system's availability** amongst other things.
 >- So many service providers out there have these explicit written SLAs, service-level agreements, that basically tell customers, _"Hey, we guarantee you this amount of availability. This percentage of uptime, for instance, in our system."_
->- SLO, which is often used synonymously with SLA in the industry but that's incorrect because SLO is not the same thing as SLA, it's related but not the same thing.
->- SLO stands for **service-level objective**. 
+>- **SLO**, which is often used synonymously with SLA in the industry but that's incorrect because SLO is not the same thing as SLA, it's related but not the same thing.
+>- **SLO** stands for **service-level objective**. 
 >- SLO can be considered as components of SLA.
 >- In other words a **service-level agreement is made up of service-level objectives**.
 >- If a provide a service for you and I guarantee you a percentage of uptime for that service, for example, that percentage of uptime guarantee would be an SLO.
@@ -660,7 +660,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- For example, they have a dashboard that businesses can use to monitor their sales. That dashboard is not as critical as the core payment service that Stripe provides.
 >- If that dashboard goes down, that's still pretty bad but it's not the end of the world, it's not outrageous.
 
->- When designing systems, in systems design interviews or even on the job, you're gonna have to ask yourself: _What parts of my system are absolutely critical?_ Well, not necessarily critical but are critical to the point that they require high availability.
+>- When designing systems, in systems design interviews or even on the job, you're gonna have to ask yourself: _"What parts of my system are absolutely critical?"_ Well, not necessarily critical but are critical to the point that they require high availability.
 >- And what parts of my systems don't actually require high availability?
 >- What parts of my systems would be okay to fail?
 >- That's gonna be something that you'll have to think about.
@@ -668,7 +668,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 - ***How do you improve Availability?***
 >- It's really conceptually quite simple.
 >- You wanna **make sure**, first and foremost, that your **system doesn't have single points of failure**: Single places in your system that if they fail cause your entire system to fail.
->- And how do you **eliminate single points of failure**? Answer is **redundancy**.
+>- And how do you **eliminate single points of failure**? Answer is **Redundancy**.
 >- **Redundancy** is basically the act of duplicating or triplicating or multiplying even more certain parts of your system.
 >- So, as an example, if you've got a very simple system where you've got clients that interact with your server, then your server interacts with a database, you can clearly see that this single server here is a single point of failure.
 >- If this single server gets overloaded or if there's a problem with it for whatever reason and it dies, then your entire system fails.
