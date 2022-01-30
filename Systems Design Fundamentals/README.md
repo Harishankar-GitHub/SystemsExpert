@@ -725,3 +725,47 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 
 - ***Content Delivery Network***
 > A **CDN** is a third-party service that acts like a cache for your servers. Sometimes, web applications can be slow for users in a particular region if your servers are located only in another region. A CDN has servers all around the world, meaning that the latency to a CDN's servers will almost always be far better than the latency to your servers. A CDN's servers are often referred to as **PoPs** (Points of Presence). Two of the most popular CDNs are Cloudflare and Google Cloud CDN.
+
+---
+
+#### Understanding Caching
+>- Caching is one of the important topics or techniques in Systems Design.
+>- In fact, you're likely going to be using caching in all, or almost all, of your Systems Design interviews.
+>- Caching is **used in a lot of algorithms**.
+>- The **reason** is to typically **avoid redoing the same operations**, especially computationally complex operations that might take a lot of time, multiple times.
+>- So caching is **used to improve the time complexity of the algorithms**, to speed up the algorithms.
+
+>- And **in the context of systems design**, caching is actually pretty similar.
+>- To put it simply, caching is used to speed up a system.
+>- Caching is **used to reduce or to improve the latency** of a system.
+>- Caching is going to be a way to design a system in such a way that, if we were originally gonna be using types of operations or data transfers that take a lot of time, like for example, network requests, we're gonna design a system in such a way that we don't have to do those network requests, and we can do different types of operations or different types of data transfers that are going to be faster.
+>- A much simpler way to put it is, caching is gonna be storing data in a location that's different from the one where the data originally is, such that it's faster to access this data from this new location.
+
+>- **Caching can be used in a bunch of different places in a system**.
+>- For instance, you can cache at the **client level**. So that the client caches some data such that it no longer has to go to the server to retrieve it.
+>- Similarly, you could cache at the **server level**. Maybe you need the client to always interact with the server, but maybe the server doesn't always need to go to the database to retrieve data. Maybe it only needs to go to the database once and we can have some form of cache here at the server level.
+>- You could also have a **cache in-between two components** in a system. So maybe you could have a cache in-between a server and a database.
+>- In fact, you can even have **caching at the hardware level**. Now, perhaps this is less important in the context of Systems Design interviews, but it's still good to know about this.
+>- There is actually a lot of caching that happens at the hardware level in modern-day computers.
+>- For example, there's CPU caches, which are caches, as the name implies, that live at the CPU level, that basically make it faster to retrieve data from memory.
+
+> **It is good to know that caching can occur, or occurs by default, at many different levels of a system.**
+
+#### Concrete instances where caching is really helpful
+> The **first instance** where caching is gonna be really helpful is if you're doing a lot of network requests and you basically wanna avoid doing all of these network requests.
+
+> **Another instance** where caching is very helpful is if you're doing some very computationally long operation. So perhaps it's not the network request that you're trying to avoid doing, but some other computationally long operation.
+
+> In both of these cases, the goal behind the caching is to speed up the system.
+
+>- **But there's another instance** where caching is gonna be very useful, and it's not necessarily gonna be to speed up the system in that case.
+>- Imagine that you had multiple servers and all of these servers were hitting the database.
+>- They all hit the database with the same network requests that this first server does.
+>- Maybe you've got a bunch of clients that are all doing the same thing, maybe they're all making individual requests to different servers to get a certain Instagram profile for instance.
+>- Let's say there's a popular celebrity and you've got a million users who are trying to view that popular celebrity's Instagram profile.
+>- Here you can use caching not so much to increase the speed of each network request when it's trying to get the profile, cause that's not necessarily something you need to optimize on, an individual network request would be very quick, but maybe you don't want to read from the database a thousand times or a million times because that might overload the database for instance.
+>- So, you would use caching to not have to read from the database that many times.
+
+>- So these are three very good examples of when you might want to use caching in a system. Either to speed up an operation that involves a network request by avoiding having to do the network request all together, or at least avoiding having to do it multiple times.
+>- Maybe you want to speed up an operation because it's computationally long, and so you just cache the results so that you don't have to do that computationally long operation.
+>- Or maybe you have an operation that's done tons of times, you don't necessarily need to speed them up individually, but you just don't wanna perform it that many times because it might affect your system in other ways, and you might wanna use caching there.
