@@ -769,3 +769,42 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- So these are three very good examples of when you might want to use caching in a system. Either to speed up an operation that involves a network request by avoiding having to do the network request all together, or at least avoiding having to do it multiple times.
 >- Maybe you want to speed up an operation because it's computationally long, and so you just cache the results so that you don't have to do that computationally long operation.
 >- Or maybe you have an operation that's done tons of times, you don't necessarily need to speed them up individually, but you just don't wanna perform it that many times because it might affect your system in other ways, and you might wanna use caching there.
+
+#### Concrete examples of caching in action
+>- **First example** is on **AlgoExpert**.
+>- If you go on AlgoExpert and you go to the questions list on AlgoExpert, the list of coding interview questions, you might notice that the first time that you go on that page there's going to be a loader.
+>- There's going to be a little loading icon and depending on how fast your internet connection is, you might see that loading icon for just a split second or for a few seconds.
+>- Now if you go to another page afterwards, you don't close your browser or your tab but just go to another page, and then you go back to that same questions list, you'll notice that the icon is no longer there and the questions list is almost pre-loaded.
+>- It's like it's there on the page immediately.
+>- Why is that the case? Because of caching.
+>- AlgoExpert caches the questions list on the client.
+>- Because AlgoExpert knows that the questions list is a static piece of content, it's the same every time that you get it, or at least if we put aside you know, marking questions as completed or changing the order of questions, that adds a little bit of complexity.
+>- But the questions list is static content. It's the same every time.
+>- And so instead of having the user or the client make a network request to our server every time that they go on the page to see the questions, we just cache the result on the client after the first time that we make the network request and that way you just get a faster experience on the website.
+
+>- So **another concrete example** of caching would be when you're **running code on AlgoExpert**.
+>- So running code on AlgoExpert takes, on average, about one second.
+>- There's a lot of stuff behind the scenes so it takes a non-trivial amount of time.
+>- Now as you can imagine, when people run code on AlgoExpert with AlgoExpert's solutions, that don't change no matter what user is running them, AlgoExpert doesn't need to do that one second computation every time.
+>- What they can do instead is cache the results for running code with AlgoExpert's solutions, and when users do that AlgoExpert just return to them the values that are in our cache.
+>- And that's going to be much faster. That's going to be on the order of milliseconds rather than one full second, or even more.
+>- And so here, by the way if you're wondering _"well how do you cache the result of running code?"_ because when you're running code you're making a network request, where would you store the cache?
+>- Well you might store the cache at the server level or maybe detached from the server in some independent component.
+>- And here you might use something like Redis, which is a very popular in-memory database, it's actually a key value store.
+>- But so the way that this caching would work is the client, meaning you the user, would go on AlgoExpert on the coding workspace, you would run code with one of AlgoExpert's solutions.
+>- This would send an http request to AlgoExpert servers. Then what AlgoExpert servers would do is they would say, _"hey we've got this request which is just a bunch of bytes."_
+>- AlgoExpert is gonna hash it down, gonna hash this request, these bytes down to a single signature, very much like a hash table.
+>- So they might hash it down to, for instance, an integer. And then they'd check the cache, which might either be in memory on the server or in some detached component, like Redis for instance which is a key value store, and we check if the key is in the cache.
+>- If it is they take the value associated with that key and they return it to the client.
+>- And so AlgoExpert has avoided doing that additional one second computation of actually running the code and they've just used the value that they had in the cache.
+
+>- Okay, but so far all the examples of caching that we've looked at involve storing data that only needs to be read not data that needs to be written.
+>- Let's imagine that we were designing a system, or a web application, where users can read and write posts and they can edit their posts.
+>- So you can imagine writing Facebook posts or writing LinkedIn posts.
+>- So you can image that you'd have a client, the browser that you the user are interacting with. Then you'd have a server.
+>- So when you're a user who's writing a post you make a request to the server to write the post and then the posts are stored in a database.
+>- But now if you wanna cache those posts, let's say that you're caching the posts at the server level in memory.
+>- You now have two sources of truth. Your posts are stored both in the database and in the server.
+>- So let's say that you edit a post. You're the user, you've written a post, so behind the scenes what happened is that the client made a network request with your new post, the server made a network request to the database and stored the post in the database.
+>- And then you wanna display that post on the page and somehow the post got stored in the cache, how do you deal with these two sources of truth and how do you know when you write to the cache for instance, when to write to the database? You do that at the same time? Do you not do that at the same time?
+>- Well here we're gonna cover two popular types of caches.
