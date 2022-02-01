@@ -808,3 +808,87 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- So let's say that you edit a post. You're the user, you've written a post, so behind the scenes what happened is that the client made a network request with your new post, the server made a network request to the database and stored the post in the database.
 >- And then you wanna display that post on the page and somehow the post got stored in the cache, how do you deal with these two sources of truth and how do you know when you write to the cache for instance, when to write to the database? You do that at the same time? Do you not do that at the same time?
 >- Well here we're gonna cover two popular types of caches.
+
+- ***Write Through Cache***
+>- A write through cache is a type of caching system where when you make an edit to a piece of data, when you write a piece of data, your system will write that piece of data both in the cache and in the main source of truth (Database) at the same time, or rather in the same operation.
+>- So here for instance, let's say that you have a post, your post is stored in the database, it's also stored in your cache, and you're a user and you want to make an edit to that post, You're gonna make a network request to the server and the server is gonna overwrite whatever is in the cache and then it's also gonna make the request to the database and overwrite what's in the database.
+>- That way the **cache and the database are always in sync**.
+>- Now the down side to this is that you end up having to still go to the database, whereas in some of the previous examples of caching we were able to avoid certain network calls and certain operations, here with this kind of write through caching every single time you're gonna overwrite something in the cache or in the database you're gonna be doing two things, and you're still gonna be going to the database.
+>- So this brings us to the second popular type of cache.
+
+- ***Write Back Cache***
+>- A write back cache behaves a little bit differently.
+>- Let's say again that you're a user, you're editing your post.
+>- You're gonna make a network request to the server, and the server's gonna update the cache but only the cache.
+>- And it's gonna immediately go back to the client.
+>- And so now your **cache will actually be out of sync with your database**.
+>- And what'll happen behind the scenes is that your **system will asynchronously update the database with the values that are stored in the cache**.
+>- And **this can be done in different ways**.
+>- Maybe it's on certain intervals, so maybe every five seconds, every five minutes, every five hours. Who knows.
+>- Or maybe it's gonna be following a different type of schedule.
+>- Maybe it'll be whenever your cache gets filled up and you have to evict stuff out of the cache.
+>- But so, the point is, with a write back caches in this example whenever the user makes a network request to the server to edit their post, only the cache will be updated, and then at some other point asynchronously the database is gonna get updated.
+>- Now you can image that one of the downsides here is that if something ever happens to your cache and you lose the data in the cache, for instance, before the database has been updated asynchronously, then you're gonna lose data and that's really bad.
+>- But of course there might be ways to mitigate that.
+>- Now where things get tricky is when you're dealing with very large systems that might have a lot of different components.
+
+>- Let's assume that we've been charged with designing the YouTube comments section system.
+>- And we've decided that we've got a bunch of servers.
+>- Every server caches in memory the comments on a single video.
+>- And then we've got all of our clients that communicate with the respective servers, and when they're reading comments, they just read from the caches in their respective servers.
+>- So now let's assume that our first client has posted a comment on the video and our second client goes to the video.
+>- The server goes to the database first to fetch all the comments and stores them in cache, and then some time elapses, the clients do kind of whatever, and then eventually this client goes back and edits it's comment.
+>- So the user behind the client edits their comment.
+>- And then the second client goes back to the video but this time the server doesn't go to the database because it has the comments already stored in memory here, cached in memory.
+>- And so the second client sees the old version of the first client's comment, not the newly edited one.
+>- And second client responds to that old comment, not the newly edited one.
+>- As you can imagine, that would be really bad from a product point of view.
+>- That would likely be unacceptable for something like YouTube comments.
+>- You don't want people to be responding to older versions or stale versions of comments.
+>- And of course this applies to any written content. Things like posts would definitely fall into this category.
+>- So here we are getting into the concept of **Staleness**.
+>- **Caches can become stale if they haven't been updated properly**.
+>- So here, this particular system the way that we've designed it, would be really bad because our clients would often be dealing with stale caches, or rather with caches that hold stale data, and that would not be good.
+>- In this particular system, **perhaps a solution would be to move our cache out of the servers and to put our cache, a single cache**.
+>- Maybe this would be **Redis**.
+>- And all of the servers would hit the cache and we'd have this single source of truth for the caching mechanism.
+
+>- **On the other hand** you might imagine that for certain parts of our system, or rather certain features that we're trying to build out with our system, we might actually not care that much about the staleness or non-staleness of the data in our caches.
+>- As an example, let's take view count on YouTube videos.
+>- View count isn't necessarily the most important piece of information on a YouTube video.
+>- And if one user sees a slightly stale version of a view count on a video, that's probably not gonna be the end of the world.
+
+> **So this is the kind of stuff that you need to start asking in a Systems Design interview and you obviously have to work with your interviewer here and ask them questions.**
+
+> **Few questions**
+	>- ***"What are the things that we're trying to build out?"***
+	>- ***"What are the requirements?"***
+	>- ***"Do we care about the accuracy of data that much?"***
+	>- If we do, for things like posts where we definitely don't wanna be answering, posts that have been edited but we don't see the edit because we're seeing a stale version of that data, then we might not be able to use caching in a naive way.
+	>- But if it's the kind of data where we don't really care if it's stale, then maybe we can use caching in a more naive way like we had it originally, and that'll be fine.
+
+>- So the summary here is that caching, while it's great, has a lot of pitfalls. And you have to watch out for those pitfalls.
+>- In general, if the data that you're dealing with is static data, or immutable data, like for instance the questions list on AlgoExpert, then caching is beautiful and it typically works very easily.
+>- But if you're dealing with data that is mutable then things are gonna be trickier because you're gonna have two different locations where the data exists, you're gonna have to make sure that these locations are in sync otherwise the data might become stale, and depending on your use case that might not be good.
+
+>- So as a **rule of thumb**, you should definitely **consider caching** if you're only storing immutable data or static data.
+>- You should consider using caching if you're only gonna have a single thing reading or writing that data, because the second that you introduce multiple things reading or writing data then things become a little bit more complex.
+>- If you don't care about consistency, if you don't care about the staleness of data, then you can totally consider caching because you might not have to worry about the potential pitfalls of caching.
+>- Or, if you're able to design your system in such a way that you can properly invalidate or get rid of stale data in your cache or in your caches, especially in a distributed manner if you're dealing with a distributed system, then caching is certainly gonna be something you're gonna wanna consider.
+
+- ***Eviction Policies In Caching***
+>- As you can imagine, not only do we not have infinite space, so you can't store an infinite amount of data in a cache, but also sometimes you're gonna be left with stale data in your cache and you're gonna wanna get rid of that stale data.
+>- And so this is where we get into eviction policies.
+>- How do we actually get rid of data in caches, or rather what policy or rules do we follow to get rid of data in caches?
+>- And here there are a **few popular rules or a few popular policies**.
+>- One that you may have heard of from coding interviews, because it's a popular coding interview question, the LRU policy.
+>- The **Least Recently Used policy**.
+>- Basically what that means is you get rid of the least recently used pieces of data in a cache and you have some way of tracking what pieces of data are the least recently used.
+>- Because basically you make the assumption that the piece of data that was used least recently is likely the one that we no longer care about, or that we least care about.
+>- There's also the **Least Frequently Used policy** where you have a bunch of data in your cache, the least frequently used of that data, not necessarily the least recently used, but the least frequently used is the one you get rid of.
+>- You could also get rid of data in your cache in a **last in, first out or a first in, first out basis**.
+>- Or **even just randomly**.
+>- The point is **there's lots of ways to evict data from a cache**, and here this is something **that's gonna depend on your use case**, on the **product or the system** that you're building or designing.
+
+> **And here you would obviously have to talk with your interviewer to figure out what things are valued**.
+---
