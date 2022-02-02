@@ -772,7 +772,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 
 #### Concrete examples of caching in action
 >- **First example** is on **AlgoExpert**.
->- If you go on AlgoExpert and you go to the questions list on AlgoExpert, the list of coding interview questions, you might notice that the first time that you go on that page there's going to be a loader.
+>- If you go on AlgoExpert and you go to the questions list on AlgoExpert, the list of coding interview questions, you might notice that the first time that you go on that page there's going to be a loader (The icon that appears near the tab name when the page loads).
 >- There's going to be a little loading icon and depending on how fast your internet connection is, you might see that loading icon for just a split second or for a few seconds.
 >- Now if you go to another page afterwards, you don't close your browser or your tab but just go to another page, and then you go back to that same questions list, you'll notice that the icon is no longer there and the questions list is almost pre-loaded.
 >- It's like it's there on the page immediately.
@@ -793,12 +793,12 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- And here you might use something like Redis, which is a very popular in-memory database, it's actually a key value store.
 >- But so the way that this caching would work is the client, meaning you the user, would go on AlgoExpert on the coding workspace, you would run code with one of AlgoExpert's solutions.
 >- This would send an http request to AlgoExpert servers. Then what AlgoExpert servers would do is they would say, _"hey we've got this request which is just a bunch of bytes."_
->- AlgoExpert is gonna hash it down, gonna hash this request, these bytes down to a single signature, very much like a hash table.
+>- And then AlgoExpert is gonna hash it down, gonna hash this request, these bytes down to a single signature, very much like a hash table.
 >- So they might hash it down to, for instance, an integer. And then they'd check the cache, which might either be in memory on the server or in some detached component, like Redis for instance which is a key value store, and we check if the key is in the cache.
 >- If it is they take the value associated with that key and they return it to the client.
 >- And so AlgoExpert has avoided doing that additional one second computation of actually running the code and they've just used the value that they had in the cache.
 
->- Okay, but so far all the examples of caching that we've looked at involve storing data that only needs to be read not data that needs to be written.
+>- Okay, but so far all the examples of caching that we've looked at involve storing data that only needs to be read, not data that needs to be written.
 >- Let's imagine that we were designing a system, or a web application, where users can read and write posts and they can edit their posts.
 >- So you can imagine writing Facebook posts or writing LinkedIn posts.
 >- So you can image that you'd have a client, the browser that you the user are interacting with. Then you'd have a server.
@@ -839,7 +839,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- So now let's assume that our first client has posted a comment on the video and our second client goes to the video.
 >- The server goes to the database first to fetch all the comments and stores them in cache, and then some time elapses, the clients do kind of whatever, and then eventually this client goes back and edits it's comment.
 >- So the user behind the client edits their comment.
->- And then the second client goes back to the video but this time the server doesn't go to the database because it has the comments already stored in memory here, cached in memory.
+>- And then the second client goes back to the video but this time the server doesn't go to the database because it has the comments already stored in memory, cached in memory.
 >- And so the second client sees the old version of the first client's comment, not the newly edited one.
 >- And second client responds to that old comment, not the newly edited one.
 >- As you can imagine, that would be really bad from a product point of view.
@@ -860,12 +860,12 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 
 > **So this is the kind of stuff that you need to start asking in a Systems Design interview and you obviously have to work with your interviewer here and ask them questions.**
 
-> **Few questions**
-	>- ***"What are the things that we're trying to build out?"***
-	>- ***"What are the requirements?"***
-	>- ***"Do we care about the accuracy of data that much?"***
-	>- If we do, for things like posts where we definitely don't wanna be answering, posts that have been edited but we don't see the edit because we're seeing a stale version of that data, then we might not be able to use caching in a naive way.
-	>- But if it's the kind of data where we don't really care if it's stale, then maybe we can use caching in a more naive way like we had it originally, and that'll be fine.
+- **Few questions**
+	- ***"What are the things that we're trying to build out?"***
+	- ***"What are the requirements?"***
+	- ***"Do we care about the accuracy of data that much?"***
+	- If we do, for things like posts where we definitely don't wanna be answering/replying to posts that have been edited but we don't see the edit because we're seeing a stale version of that data, then we might not be able to use caching in a naive way.
+	- But if it's the kind of data where we don't really care if it's stale, then maybe we can use caching in a more naive way like we had it originally, and that'll be fine.
 
 >- So the summary here is that caching, while it's great, has a lot of pitfalls. And you have to watch out for those pitfalls.
 >- In general, if the data that you're dealing with is static data, or immutable data, like for instance the questions list on AlgoExpert, then caching is beautiful and it typically works very easily.
