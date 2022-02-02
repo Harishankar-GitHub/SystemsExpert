@@ -18,3 +18,4 @@
 6. [Latency And Throughput](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#6-latency-and-throughput)
 7. [Availability](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#7-availability)
 8. [Caching](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#8-caching)
+9. [Proxies](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#9-proxies)
