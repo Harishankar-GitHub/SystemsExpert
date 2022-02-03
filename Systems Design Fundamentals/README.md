@@ -894,6 +894,8 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 ---
 
 ### 9. Proxies
+> Often used by nefarious hackers to conceal their identity and obfuscate their location, these special intermediary servers boast many important real-life applications within the context of caching, access control, and censorship bypassing, amongst other things.
+
 #### 3 Key Terms
 - ***Forward Proxy***
 > A server that sits between a client and servers and acts on behalf of the client, typically used to mask he client's identity (IP Address). Note that forward proxies are often referred to as just proxies.
@@ -904,3 +906,33 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 - ***Nginx***
 > Pronounced "engine X", not "N jinx". Njinx is a very popular webserver that's often used as a **reverse proxy** and **load balancer**.
 > Learn more [https://www.nginx.com/](https://www.nginx.com/)
+
+---
+
+#### Understanding Proxies
+>- In the industry, it turns out that people use the term proxy pretty loosely and when they use the term proxy, they often mean forward proxy.
+>- They just don't mention the word forward, but then things can get pretty confusing because sometimes you'll say proxy meaning a forward proxy and other times you'll refer to a reverse proxy as a proxy.
+
+- ***Forward Proxy***
+>- A forward proxy is a server that sits in between a client or a set of clients and another server or a set of other servers.
+>- But more specifically a forward proxy is a **server that acts on behalf of the client or clients**.
+>- You can almost think of the forward proxy as being on the client's team or on the client side of an interaction between a client and a server.
+>- In practice, what this means is that if a client wants to communicate with a server, assuming the forward proxy has been configured correctly by the client, when the client is gonna issue a **request to the server, instead of going directly to the server, it's first gonna go to the proxy**, to the forward proxy, **which then is gonna forward the request to the server**.
+>- So you can think of it as, the client does a request that's meant to go to the server, but first goes to the forward proxy.
+>- It's almost like the client is saying, _"hey forward proxy, communicate with the server on my behalf please."_
+>- And then the forward proxy will forward the request to the server.
+>- Then the server gets the request, but the server gets it from the forward proxy.
+>- The **server doesn't get the request directly from the client**.
+>- So **when the server responds, it's gonna give its response to the proxy**, and the forward proxy is gonna give the response to the client.
+
+> **A forward proxy can serve as a way to hide the identity of a client that's requesting something from a server.**
+
+>- Because when the client issues the request that goes to the forward proxy, the forward proxy then forwards the request to the server, but the source IP address that's gonna be in this request that gets sent to the server from the forward proxy, is going to be the IP Address of the forward proxy.
+>- In other words, the source IP address from the initial request, from the client can (in some cases) get removed and replaced by forward proxy's IP Address in this new request.
+>- Because there are **some types of forward proxies** that might still **make this source IP address retrievable or visible** in some way to the server, but typically this original source IP address is not gonna be visible.
+
+>- And so by the way, if you're familiar with VPNs, this is basically how VPNs work in a simplified way.
+>- You have a forward proxy that sits in between you, the client and servers and the forward proxy or the VPN is gonna basically hide your identity.
+>- And by the way this means that a client might be able to access restricted servers that it's otherwise not supposed to access because the forward proxy might hide who this client really is.
+>- So this is how you might be able to access websites that are unavailable in your country, for instance, or that are restricted by your organization using a forward proxy.
+>- So that's a forward proxy.
