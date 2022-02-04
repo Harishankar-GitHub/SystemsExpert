@@ -936,3 +936,42 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- And by the way this means that a client might be able to access restricted servers that it's otherwise not supposed to access because the forward proxy might hide who this client really is.
 >- So this is how you might be able to access websites that are unavailable in your country, for instance, or that are restricted by your organization using a forward proxy.
 >- So that's a forward proxy.
+
+- ***Reverse Proxy***
+>- Reverse proxies are a little bit trickier.
+>- Whereas forward proxies act on behalf of clients in an interaction between a client and a server, **reverse proxies act on behalf of a server** in an interaction between a client and a server.
+>- So the best way to think about it here, is that if a client wants to interact with a server, so the client wants to send a request to the server, if the reverse proxy has been configured properly by the server or by the entity that owns the server, then when the client is gonna issue a request to the server, the request is actually gonna go to the reverse proxy.
+>- The **client won't know** that its **request is going to a reverse proxy**.
+>- The client will think that it's just sending a request to the destination server, but it'll actually be going to the reverse proxy.
+>- The client is gonna issue a request to the server, but if the reverse proxy has been configured properly, the request is actually gonna go to the reverse proxy, then the reverse proxy is going to forward the request to the server then the server is gonna return a response to the reverse proxy and finally the reverse proxy is gonna return the response to the client.
+>- But so the key thing here is that the client thinks that it's interacting with the server.
+>- In other words, to the client, there are no two entities (reverse proxy and server).
+>- There's only one entity, they're one and the same and the client happens to think that that entity is the reverse proxy.
+
+>- **For example**, what happens behind the scenes when you type [algoexpert.io](algoexpert.io) in your browser or [google.com](google.com) in your browser, and the browser makes a DNS query to get the IP address of [algoexpert.io](algoexpert.io) or of [google.com](google.com), if algoexpert or google use a reverse proxy and have it configured correctly, what's gonna happen is the DNS query is gonna return the IP address of the reverse proxy and not the one of the actual server.
+
+>- So **this is really the opposite of forward proxy**.
+>- In forward proxy, it's the server that has no idea that the client and the forward proxy are kind of one and the same, whereas with the reverse proxy, it's the client that has no idea that the reverse proxy and the server are effectively one and the same.
+
+>- Now reverse proxies are really useful.
+>- They're really useful because you can do a lot with them.
+>- So when you're gonna be designing systems, especially complex systems, reverse proxies are definitely gonna be a tool that you're gonna want to have in your tool belt.
+
+>- For instance, you might configure your reverse proxy such that it can filter out requests that you want to ignore.
+>- Maybe for your system you don't want your servers to ever deal with certain kinds of requests so you can have your reverse proxy, kind of filter them out.
+>- You can maybe **have your reverse proxy take care of logging** for your system.
+>- If you wanna log stuff, if you wanna gather metrics, maybe your reverse proxy can do that.
+>- If you wanna cache stuff, **maybe you wanna cache certain things like HTML pages**.
+>- You might be able to do that at the reverse proxy layer and that way your server doesn't get bothered too much.
+
+>- Perhaps **one of the best use cases** of a reverse proxy is using a reverse proxy as a **load balancer**.
+>- In a sentence, a load balancer is something like a server that is gonna effectively distribute or that can distribute load, like request load between a bunch of servers.
+
+>- So for instance, you can imagine that if you're designing a very complex system, you might have more than one server, you might have a bunch of servers, right?
+>- You're gonna have a bunch of servers in your application and you can have your reverse proxy serve as a load balancer, that's gonna basically decide to what servers, all of these incoming requests from clients, has to be distributed across the servers following a specific pattern.
+>- This might also have security ramifications.
+>- For instance, imagine you had a client that was a malicious client that wanted to bring down a server by maybe issuing a ton of requests to a given server.
+>- Well maybe your reverse proxy can act as a shield for that because it will distribute, again as a load balancer, it will distribute the requests maybe evenly amongst the various servers such that no single server gets all of the requests and gets taken down by this malicious client.
+>- This is a simple example. But there are a lot of use cases for reverse proxies.
+
+---
