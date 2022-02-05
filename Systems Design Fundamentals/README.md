@@ -948,7 +948,7 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- In other words, to the client, there are no two entities (reverse proxy and server).
 >- There's only one entity, they're one and the same and the client happens to think that that entity is the reverse proxy.
 
->- **For example**, what happens behind the scenes when you type [algoexpert.io](algoexpert.io) in your browser or [google.com](google.com) in your browser, and the browser makes a DNS query to get the IP address of [algoexpert.io](algoexpert.io) or of [google.com](google.com), if algoexpert or google use a reverse proxy and have it configured correctly, what's gonna happen is the DNS query is gonna return the IP address of the reverse proxy and not the one of the actual server.
+>- **For example**, what happens behind the scenes when you type [algoexpert.io](www.algoexpert.io) in your browser or [google.com](www.google.com) in your browser, and the browser makes a DNS query to get the IP address of [algoexpert.io](www.algoexpert.io) or of [google.com](www.google.com), if algoexpert or google use a reverse proxy and have it configured correctly, what's gonna happen is the DNS query is gonna return the IP address of the reverse proxy and not the one of the actual server.
 
 >- So **this is really the opposite of forward proxy**.
 >- In forward proxy, it's the server that has no idea that the client and the forward proxy are kind of one and the same, whereas with the reverse proxy, it's the client that has no idea that the reverse proxy and the server are effectively one and the same.
