@@ -994,3 +994,33 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > Learn more [https://www.nginx.com/](https://www.nginx.com/)
 
 ---
+
+#### Understanding Load Balancers
+>- Load Balancers are used in almost any system that you can imagine, you'll likely be using them in most, if not all your systems design interviews, and so it's very important that you know what they are and that you understand how they work.
+>- Perhaps the best way to understand what a load balancer is to look at a very simple use case for a load balancer.
+
+>- **For example**, let's assume there's a client and a server. The client issues requests and the server responds to the client.
+>- Imagine what would happen if our system became a little bit bigger?
+>- In other words, imagine instead of having one client issuing a request to our server, we had multiple clients, so maybe 2, 3 or 4 clients, all of them issuing requests to this server.
+>- And you could imagine that one of our clients might be issuing more than one request, one of our clients might be issuing a lot of requests.
+>- Our single server has limited resources. Our system has limited throughput.
+>- Our single server can only handle a limited amount of requests in a given amount of time.
+>- So what that means is that the more requests are being sent to the server, either from many clients or even just all from a single client, the more requests are being sent to our server, the more likely our server is to become overloaded, to receive more requests than it can handle.
+>- And that might lead to a failure in our system or maybe it'll just make our system very slow.
+
+>- So how do we handle this?
+>- Well, the simple answer is, we scale our system.
+>- And we have a couple of ways of doing this.
+
+>- The **first way** is to vertically scale our system, meaning to increase the power of our server.
+>- But as you can imagine, that's also going to be limited, there's only so much that we can do to increase the power or the performance of a single server of a single machine.
+
+>- So then there's our **second option**, which is to horizontally scale our system, meaning to add more machines, to add more servers to our system.
+>- And as you can imagine, horizontally scaling our system seems like a pretty obvious solution because if we have, let's say, 4 servers, we can now handle all of the requests from our clients in a balanced way.
+>- And assuming that our servers have the same resources, have the same power, our system will be able to handle four times the load that it was previously able to handle with only one server.
+>- But of course, this is assuming that all of our clients are going to be issuing requests to our servers in a balanced way.
+
+>- But this begs the question, how did our clients know to issue their requests or rather to direct their requests to the servers in a balanced way?
+>- How come none of the clients issued their requests to the same server leading to the same problem that we had before?
+
+> **And this is of course where load balancers come into play.**
