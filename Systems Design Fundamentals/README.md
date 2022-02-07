@@ -1024,3 +1024,32 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- How come none of the clients issued their requests to the same server leading to the same problem that we had before?
 
 > **And this is of course where load balancers come into play.**
+
+>- A load balancer is going to be a server that sits in between a set of clients and a set of servers and that basically has the job of, as its name suggests, balancing workloads across resources.
+>- So in this case, **balancing or rerouting traffic from clients**, meaning requests, to these servers in a balanced way.
+>- Because what would happen in this system with the load balancer is that our clients would be issuing requests, that would go to the load balancer.
+>- And then the load balancers' job would be to redirect these requests in a balanced way or in some preconfigured way.
+>- The **traffic is evenly distributed** across the servers.
+>- And now, we have achieved our goal of horizontally scaling our system as it grew.
+
+>- So load balancer is really useful because not only does it prevent resources like a single server or even multiple servers from getting overloaded, but it also makes your overall system have a better throughput.
+>- if you have multiple servers that aren't being overloaded, then the throughput of your system is going to go up, your system might naturally get better latencies because your servers are going to be able to respond to requests faster because they won't be clogged or bogged down.
+>- And you might make better use of your resources, because as you could imagine, if you are adding servers as you're horizontally scaling your system, the load balancer is going to know to make use of these new resources by distributing traffic to these new resources.
+>- And so you'll be able to make use of them and perhaps alleviate the load to these other servers.
+
+>- And by the way, you can think of load balancers as types of **reverse proxies** most of the time because load balancers sit between clients and servers, and they typically act on behalf of these servers, which is exactly what a reverse proxy does.
+
+>- Load balancing can happen at a lot of different places in the system.
+>- For instance, you can have a load balancer between the clients and servers, another one between the servers and databases or when dealing with a website, you might even have load balancing at the DNS layer.
+
+>- Well, it turns out that there's something called **DNS Round Robin**, which is basically a type of load balancing that happens at the DNS layer, where a single domain name gets multiple IP addresses.
+>- And when a DNS query is made to get back IP address of that domain name, the multiple IP addresses that are associated with that domain name are going to be returned in a load balanced way.
+
+- ***How does this load balancer actually distribute this load***
+>- Does it follow a special algorithm?
+>- Does it do so randomly?
+>- It is important, however, to note that there are different types of load balancers namely, there are some load balancers that are **software load balancers** and there are others that are **hardware load balancers**.
+>- They are different.
+>- **Hardware load balancers** are literally **physical machines** that are dedicated to load balancing.
+>- The main difference between hardware load balancers and software load balancers is that you can **do more with software load balancers**, you have **more power**, **customization** and **scaling** with software load balancers.
+>- With hardware load balancers, you're **limited to the hardware** that you're given. And hardware is often expensive.
