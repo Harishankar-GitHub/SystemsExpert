@@ -1053,3 +1053,55 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- **Hardware load balancers** are literally **physical machines** that are dedicated to load balancing.
 >- The main difference between hardware load balancers and software load balancers is that you can **do more with software load balancers**, you have **more power**, **customization** and **scaling** with software load balancers.
 >- With hardware load balancers, you're **limited to the hardware** that you're given. And hardware is often expensive.
+
+> **We will look at software load balancers and the techniques that software load balancers use to distribute traffic to servers.**
+>- So the first thing that you might be wondering is, how does a load balancer even know that it has servers to distribute traffic to?
+>- And this is where basically, the people who are in charge of the system can **configure the load balancer and the servers** to know about each other.
+>- You can make it such that when you add a new server or when you remove an old server, it registers itself with the load balancer or perhaps it deregisters itself with a load balancer so that the load balancer knows of its existence.
+
+> **As for how load balancers actually select servers to send traffic to, there are a lot of different ways that they can do that.**
+>- The **first one** that you might imagine is literally **pure random redirection**.
+>- If you wanted to, you could configure your load balancer such that it would redirect traffic to all of your servers, following a purely random order.
+>- Now, this might be fine. But as you can imagine, it could cause problems.
+>- It could be possible that one server would by chance get overloaded.
+
+>- So **another way** that load balancers often select servers is following a **Round Robin approach**.
+>- So Round Robin is basically a method that goes through all of your servers in one order.
+>- And so as you can imagine, that's pretty nice because you guarantee that you will be evenly distributing traffic across your servers.
+
+>- A **slightly more complex type of Round Robin strategy** that you can have your load balancer follow is what's called a **Weighted Round Robin**, where you basically place weights on specific servers, meaning you would still follow the order of going to the first one first, then the second one, then the third one.
+>- But you might put a weight on, let's say, the second server, which would mean that when your load balancer is redirecting traffic to your second server, it's going to redirect a couple more requests, a little bit more traffic than it redirects to the other servers.
+>- And you could imagine that you might want to do that if, let's say, one of your servers is more powerful than the others.
+>- And so you could have your load balancer follow a weighted Round Robin server selection strategy, where it would place more weight on this bigger server.
+
+>- **Another way** for a load balancer to select servers is **based on performance or based on load**.
+>- This strategy is a little bit more involved.
+>- Basically, your load balancer performs health checks on your servers to know how much traffic a server is handling at any given time, how long a server is taking to respond to traffic, how many resources a server is using, and based on that, it'll redirect traffic accordingly.
+>- So this can be a pretty good way for a load balancer to distribute traffic, depending on your use case.
+
+>- **Another very common server selection strategy is an IP-based server selection strategy**, where basically, when your load balancer gets requests from clients, it's going to hash the IP address of the clients, and depending on the value of the hash, it will redirect the traffic accordingly.
+>- IP-based load balancing can be really useful if you've got for instance, caching going on in your servers.
+>- You could imagine that within your system you're caching the results of requests in your servers, it would be very helpful to have requests from a specific client always be redirected to the server in which the response of that particular client's request has been cached.
+>- And that can be accomplished through this IP-based load balancing.
+>- **IP-based load balancing can help you maximize cache hits**.
+
+>- **One final method** of server selection for load balancers that can be very useful is a **path-based server selection strategy**.
+>- With this strategy, a load balancer basically distributes requests to servers according to the path of the requests.
+>- AlgoExpert uses this and they distribute some requests to different servers according to their path.
+>- So basically, what this means is that all requests related to running code on AlgoExpert are going to be redirected to a specific server or a specific set of servers.
+>- All requests related to payments on AlgoExpert, meaning purchasing the product are going to be redirected to another server or to another set of servers.
+>- And this can be really useful because what it means is that if AlgoExpert ever wants to deploy a big change to their servers, like for instance, imagine that AlgoExpert wants to deploy a big change to their code execution engine, this deployment would only affect the servers handling the code execution engine requests, and all of the requests that are related to payments on AlgoExpert would still get routed to their own specific set of servers.
+>- So if their code execution servers start dying for whatever reason, all the other services on the platform are unaffected.
+
+> **So, there are a lot of different server selection strategies that your load balancers can have.**
+>- And when you're going to be designing systems, you're going to want to **pick server selection strategies according to your use case**.
+>- And the interesting thing about all of this is that when you're designing a system, it might actually **make sense to have multiple load balancers at different parts of the system that use different server selection strategies**.
+>- And you're likely to **even have multiple load balancers at the same part of a system** because as you might be wondering, what happens if a load balancer starts to get overloaded?
+>- Well, this is where you could have a second load balancer or even a third load balancer.
+>- These load balancers could communicate between each other, and depending on that, reroute traffic accordingly.
+
+> **Ultimately, load balancers are very simple, but they're extremely important.**
+>- They are critical to large scale systems.
+>- You will very likely, if not certainly, be using them in your systems design interviews.
+
+---
