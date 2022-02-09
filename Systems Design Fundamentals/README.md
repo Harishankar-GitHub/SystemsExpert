@@ -1045,13 +1045,13 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- Well, it turns out that there's something called **DNS Round Robin**, which is basically a type of load balancing that happens at the DNS layer, where a single domain name gets multiple IP addresses.
 >- And when a DNS query is made to get back IP address of that domain name, the multiple IP addresses that are associated with that domain name are going to be returned in a load balanced way.
 
-- ***How does this load balancer actually distribute this load***
+> ***How does this load balancer actually distribute this load***
 >- Does it follow a special algorithm?
 >- Does it do so randomly?
 >- It is important, however, to note that there are different types of load balancers namely, there are some load balancers that are **software load balancers** and there are others that are **hardware load balancers**.
 >- They are different.
 >- **Hardware load balancers** are literally **physical machines** that are dedicated to load balancing.
->- The main difference between hardware load balancers and software load balancers is that you can **do more with software load balancers**, you have **more power**, **customization** and **scaling** with software load balancers.
+>- The main difference between hardware load balancers and software load balancers is that you can **do more with software load balancers**, you have **more power over customization** and **scaling** with software load balancers.
 >- With hardware load balancers, you're **limited to the hardware** that you're given. And hardware is often expensive.
 
 > **We will look at software load balancers and the techniques that software load balancers use to distribute traffic to servers.**
