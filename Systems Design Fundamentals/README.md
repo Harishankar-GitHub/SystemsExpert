@@ -1105,3 +1105,24 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- You will very likely, if not certainly, be using them in your systems design interviews.
 
 ---
+
+### 11. Hashing
+> Hashing? Like from hash tables? Should be simple enough, right?
+> The good news is that, yes, hashing like from hash tables.
+> The bad news is that, no, not simple enough.
+
+#### 1 Prerequisite
+- ***Hashing Function***
+> A function that takes in a specific data type (such as a string or an identifier) and outputs a number. Different inputs may have same output. But a good hashing function attempts to minimize those **hashing collisions** (which is equivalent to maximizing uniformity).
+
+#### 3 Key Terms
+- ***Consistent Hashing***
+> A type of hashing that minimizes the number of keys that need to be remapped when a hash table gets resized. It's often used by load balancers to distribute traffic to servers; it minimizes the number of requests that get forwarded to different servers when new servers are added or when existing servers are brought down.
+
+- ***Rendezvous Hashing***
+> A type of hashing also coined **highest random weight** hashing. Allows for minimal re-distribution of mappings when a server goes down.
+
+- ***SHA***
+> Short for "_**S**ecure **H**ash **A**lgorithms_", the SHA is a collection of cryptographic hash functions used in the industry. These days, SHA-3 is a popular choice to use in a system.
+
+---
