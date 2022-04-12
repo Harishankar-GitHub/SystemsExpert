@@ -1126,3 +1126,173 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > Short for "_**S**ecure **H**ash **A**lgorithms_", the SHA is a collection of cryptographic hash functions used in the industry. These days, SHA-3 is a popular choice to use in a system.
 
 ---
+
+#### Understanding Hashing
+>- Hashing is an action that you can perform to transform an arbitrary piece of data into a fixed size value, typically an integer value.
+>- In the context of systems design interview, that arbitrary piece of data can be an IP address, a username, an HTTP request, anything that can be hashed or transformed into an integer value.
+
+#### Where exactly does hashing come into play in a system?
+>- Well for that, we can look at a pretty simple example.
+>- We've got a fairly simple system consisting of clients, 4 clients in this case C1, C2, C3, C4.
+>- These clients are going to be speaking with servers, four servers, A, B, C, and D.
+>- But there's gonna be a load balancer in the middle.
+>- So when the clients are gonna issue requests, these requests are first gonna go to the load balancer which is then gonna have to reroute them to the four servers.
+>- When a load balancer has to redirect or reroute a request from a client to a server, it has to have some sort of server selection strategy (such as ramdom selection of servers, round robin approach etc.) to pick what server to reroute that request to.
+>- And while a lot of these server selection strategies are fine at face value, they can introduce some problems depending on your system.
+
+>- Let's assume, requests that are computationally expensive are gonna hit the servers and the servers have to perform very complex operations that take a long time to complete and so these requests are just so **expensive**.
+>- One way to deal with these kinds of requests in a system is to use Caching.
+>- So one way to implement caching here would be to have every server store an in-memory cache where every request that goes through a server, the server first checks if that request's response has been cached.
+>- If it hasn't been, then it actually performs the operations and gets the response.
+>- But if it has been cached, then it skips the operations that it would otherwise have to do and then immediately returns the cache response.
+>- That would be a pretty reasonable way to design your system if you knew that these requests were gonna be very computationally expensive.
+>- But this is where if your load balancer is selecting servers to reroute requests, following a round robin or a random strategy, this is where you're gonna have problems.
+>- If you've designed your system in such a way that it relies heavily on in-memory caches in its servers, but your load balancer is rerouting requests from clients following a server selection strategy that doesn't guarantee that requests from a single client or the same requests will be rerouted to the same server every time, then your in-memory caching system is gonna fall apart and it's not gonna be as useful as it could be otherwise.
+>- Basically, you're gonna miss a bunch of cache hits when your requests get routed to a server that doesn't have the responses cached.
+
+#### And this is where hashing comes into play.
+
+>- With hashing, what we can do is we can hash the requests that come in to the load balancer and then based on the hash, we can bucket the requests according to the position of the servers.
+>- And then once we've hashed them, we can bucket the requests in the servers by performing a tiny bit of business logic.
+>- For the sake of simplicity what we're gonna do here is we're just gonna hash the names of our clients.
+>- We're gonna say that our goal is basically to get every client to have all of its requests rerouted to the same server so we're gonna be hashing the client's names themselves.
+>- So we're gonna be hashing C1, C2, C3, C4.
+>- And for the sake of this example, let's assume that we've got a hashing function that's been given to us and that when we pass C1, C2, C3, C4 through that hashing function, we get the following results.
+>- We get 11 for C1, we get 12 for C2, we get 13 for C3 and we get 14 for C4.
+>- Because remember that a hashing function basically transforms your arbitrary pieces of data into some fixed size value, typically an integer value.
+
+#### So now what do we do with these four integer values?
+>- Well the simplest thing that we can do, and this is really the simplest hashing strategy in the context of systems design interviews, is to ***mod these hashes here by the number of servers*** that we have.
+>- So we're gonna mod all of these hashes by the number of servers, four servers, and this is gonna give us C1 -> 11%4 -> 3, C2 -> 12%4 -> 0 and so on.
+>- So, C1 is associated with Server number 3 and so on.
+>- And one important thing here is that, when you're dealing with a hashing function, it's important that the hashing function have what's known as uniformity.
+>- You see how our clients got kind of evenly distributed amongst our four servers.
+>- That didn't necessarily happen by chance.
+>- But a really good hashing function would be able to do that as well, it would give you that sort of uniformity.
+>- That's not to say that you might not have two clients mapping to the same server, you certainly could. Imagine you had more than four or eight or 12 clients.
+
+>- But the point is, a good hashing function would still evenly distribute your data values.
+>- That's just something to keep in mind when you're dealing with hashing.
+>- And **in practice, you typically never write your own hashing function**.
+>- **You use a pre-made industry-grade hashing function or hashing algorithm**.
+>- A few popular examples are the MD5 hashing algorithm or the SHA-1 hashing algorithm, the Bcrypt hashing function, and you can trust that these hashing functions have that uniformity about them.
+
+>- So now we will be maximizing our chance of getting cache hits for a client's requests.
+>- So we fixed the problem that we described before where we were gonna miss our cache hits because of the server selection strategy of our load balancer which would make all of our clients' requests potentially hit different servers every time.
+
+>- But of course, as you might expect, we have another problem now.
+>- As you see we're dealing with a large-scale distributed system and when you have such a system, a lot of things can happen.
+>- For instance, your servers can die.
+>- We could very easily have server A fail on us and completely die.
+>- Similarly, our system could be experiencing a ton of traffic and we might need to add servers to our system.
+>- So maybe our server A doesn't die, but maybe we need to add a new server to our system, server E to handle some new incoming traffic.
+>- What do we do if we need to add a fifth server which is not an unreasonable thing to expect if we're dealing with a large-scale system.
+>- What do we do if we need to add server E?
+>- We can't continue to mod all of our hashes by four because we no longer have four servers. We have five servers.
+>- If we keep modding our hashes for our clients by four, then all of our requests are always only gonna go to servers A, B, C, and D. They're never gonna go to E.
+>- And before if server A had died and we hadn't added E, then we wouldn't have been able to continue to mod by four 'cause requests would've continued to get routed to A and A would've been dead and so our users would not have been happy.
+
+>- So the point is, if a server dies or here, if we add a new server, we have to change some logic here.
+>- Namely, we have to mod our hashes by the new number of servers.
+>- In this case, the new number of servers is five.
+>- Okay, so let's mod all these hashes by five.
+>- C1 -> 11%5 -> 1 and so on.
+>- So as you can see, when we mod our hashes by 5 instead of 4, we get completely different results for the servers that our clients are going to be rerouted to.
+>- And what that means is that we're gonna once again face our problem of missing a bunch of cache hits 'cause if C1 which was previously going to server D now goes to server B, all of the value that we had from our in-memory cache at server D is lost 'cause server B has never cached stuff related to client 1.
+>- And the same thing applies to all of the other servers and all of the other clients and this is really, really bad when you've got a huge system.
+
+>- So all this to say our very simple hashing strategy of hashing our clients or usernames or requests or IP addresses, whatever, and then modding the hashes by the number of servers to figure out what server to reroute stuff to just doesn't work because the second that one of your servers dies, or the second that you have to add another server, everything becomes a mess and all of your in-memory caches that you may have had in your system are no longer useful.
+
+#### Okay, so how do we solve this problem?
+>- What do we do when we have to add a server or when we have to remove a server?
+>- Well, this is where consistent hashing and rendezvous hashing come into play.
+
+> ***These two slightly more complicated hashing strategies basically fix this problem and we're gonna cover them now.***
+
+>- For consistent hashing, we're gonna imagine that instead of having our servers A, B, C, D, E.
+>- We're gonna actually put them on a circle.
+>- This circle is not an actual thing, it's more a concept that helps us visualize this consistent hashing strategy better.
+>- So imagine that you had this big circle here and that you've placed your servers on the circle in a sort of evenly distributed way.
+>- How exactly are we placing these servers on the circle?
+>- Well you can imagine that this circle basically represents a bunch of numbers, so it might start at the top with zero and then it would increment as you move along the circle in a clockwise way, all the way until you reach the top again, at which point maybe you would reach the number 360 if you wanna make this seem like degree angles or maybe it would be some other number.
+>- The point is, this circle can be represented as a bunch of back to back numbers.
+>- But conceptually, it looks like a circle that loops around and the way that you place these servers here on the circle is by putting them through a hashing function.
+>- You could imagine that you could put the servers, let's say the server names in a hashing function. You get a value and depending on the value, you position them on the circle.
+>- If you're hashing function is a good hashing function that has that uniformity about it, then the servers will be sort of evenly distributed.
+
+>- Okay, so what comes next?
+>- Well you do the exact same thing with your clients.
+>- So let's take our four clients that we had in the previous example.
+>- Our four clients are gonna go through a hashing function and again here this might be the client's IP addresses, maybe we're talking about actual HTTP requests, maybe we're talking about the client's usernames, for the sake of the example, it doesn't really matter.
+>- We're kind of using these terms loosely, but you put them through the hashing function and then you position them on the circle.
+>- So now you've positioned your servers on the circle, and you've positioned your clients on the circle.
+>- How do you determine where requests or where clients are going to be routed to?
+>- Well, you go to each client and from each client, you move clockwise in a clockwise direction and here of course, you could actually move in a counter-clockwise direction if you wanted to, it's really a matter of preferences.
+>- You just have to decide how you wanna implement this consistent hashing strategy.
+>- Let's go with clockwise for the sake of this example.
+>- So you move in a clockwise direction from each client, and the first server that you encounter is gonna be the server that your load balancer is gonna reroute this client to, or this client's requests to.
+>- So C1 might be directed to Server A and so on.
+>- So as you can see, this is kind of uniformly distributed because we used these hashing functions to position our servers and our clients.
+
+>- But what does this accomplish?
+>- Well let's see what happens if one of our servers dies.
+>- What if server C dies? Remember in the previous example with a simple hashing strategy, like we said, if a server died, we'd have to redo all of our calculations.
+>- We would no longer be able to mod by let's say four if one of our servers died, we would have to mod by three.
+>- Here, if one of our servers dies, let's say server C, we're gonna go back to our clients, move in a clockwise direction, and find the closest servers.
+
+>- What happens if we add a new server?
+>- We go through our clients, move clockwise.
+>- So as you can see with this system, with this system of putting the servers and the clients on a circle and moving in a clockwise direction, what we accomplish is that if we ever add or remove a server, we actually still maintain most of the previous mappings or associations between clients and servers.
+>- Only a few of them change.
+
+>- This is why consistent hashing is so powerful because basically, it maintains some level of consistency between hashes and their target buckets.
+>- And so in the context of systems design interviews, it maintains some good level of consistency in the mappings between the clients or the requests or the IP addresses, whatever you use and the servers or whatever else you're mapping them to.
+
+>- What's also cool about consistent hashing that you can with this circle concept, is let's say you wanna even more evenly distribute your traffic.
+>- Because here you might argue that hey, maybe a lot of your clients or a lot of your requests are gonna somehow get hashed in a section of the circle where one of the servers isn't present.
+>- Maybe most of your clients and requests are gonna appear on the right side of the circle.
+>- So what you can do is you can pass all of your servers through multiple hashing functions and then place all of the hashes that you get for your servers on the circle and so basically each server will have multiple places that are associated with it.
+>- So before this, it was like.. Imagine in a circle, clockwise, the servers and clients are mapped as follows:
+>- C1, E, C4, A, C3, B, C2, C and so on.
+>- Now the circle looks like..
+>- C1, E, C4, A, C3, A, C2, E and so on.
+>- So, a server, for example, A can be placed at multiple places in the circle.
+
+>- What this also allows you to do is let's say that one of your servers is more powerful than the others.
+>- Imagine at the very beginning of the life of your system, you only had one server, server A, and when your system started to grow, you decided to scale it vertically by making your main server A more and more powerful.
+>- Eventually, you decided to scale horizontally by adding servers like B, C, D, and E.
+>- But they were all weaker, not as powerful at server A so now you're faced with a situation where you wanna evenly distribute your traffic amongst your servers, but you want A to get a little bit more of the load because it's a more powerful server and you still wanna use this consistent hashing strategy.
+>- Well what you can do is you can pass server A through more hashing functions than all the other servers and so what ends up happening is server A will have more locations on the circle.
+>- Servers B, C, D, and E might have two locations, But then you might give A let's say five locations.
+>- So basically now, there's just a higher likelihood that any given client or request is gonna bump into A when you move clockwise from it.
+>- ***So this is consistent hashing and it's very powerful***.
+
+> ***Now let's look at another kind of complicated hashing strategy, or at least more complicated than the arguably naive one that we used at the very beginning.***
+
+>- This one is rendezvous hashing.
+>- So imagine that you've got a bunch of usernames (Username 0, 1, 2, 3, 4, 5, 6, 7, 8, 9) and servers (Server 0, 1, 2, 3, 4, 5).
+>- So what the rendezvous hashing strategy is gonna do is for every username, it's going to calculate a score or rather a ranking of the servers or the destinations, whatever the destinations may be in your use case.
+>- So in this case, it's gonna say hey, for username0, I'm gonna rank these six servers using some formula or some piece of logic, and I'm gonna pick the highest ranking server.
+>- Then for username1, I'm gonna do the exact same thing and so on.
+>- So let's say that username0 finds server0 as the highest ranking server for itself.
+>- That's the server that it's going to be associated with.
+>- And so when you remove a server, you could imagine that if username0 had server0 as its highest ranking server, removing server5 isn't gonna do anything and username0 is still gonna map to server0.
+>- On the other hand, let's say that username2 mapped to server5 and then you remove server5, then that means that you will naturally have to change the mapping of username2 and you will just take the second highest ranking server which would be whatever other server, it doesn't matter, and that would change.
+>- ***So that's how rendezvous hashing works in a nutshell.***
+>- Basically calculate scores for your servers or for your destination buckets. Pick the highest one, and that's the thing that your value, in this case your username is gonna be associated with.
+>- And so as you can see, just like with consistent hashing, we maintain some consistency in these mappings, in these associations, and that is really useful in the context of systems design.
+>- And I think that it's easy not to appreciate how useful it is when you don't work with a large-scale system.
+>- Here, we're seeing kind of small examples so, it seems sort of trivial.
+>- Imagine that you have a large-scale system.
+>- Let's say an e-commerce website like Amazon and you're getting ready for Cyber Monday where you're expecting huge amounts of traffic and you're gonna be relying heavily on in-memory caching strategies, for instance.
+>- Do you want your users to experience really high latencies because some of your servers are dying or if you have to add new servers and your hashing strategy is poor in making it such that you're missing a bunch of cache hits?
+>- No, you don't want that, 'cause that can lead to a ton of lost business, you could be talking about millions of dollars on the line.
+>- The point is, when you've got a large-scale system, this becomes really really important.
+
+> ***So when you walk into your systems design interviews, make sure to have these hashing strategies in your tool belt to be aware of when you might need to use something like consistent hashing or rendezvous hashing.***
+
+>- Both of those are fairly interchangeable, they both accomplish kind of the same thing.
+>- But the naive hashing strategy, the one where you just mod the hashes by the number of servers that you have for instance, that one is certainly not as good.
+>- And if your system is gonna be relying on something like in-memory caching, you're definitely gonna wanna be able to bring up these hashing strategies.
+
+---
