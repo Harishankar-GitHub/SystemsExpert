@@ -1296,3 +1296,47 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- And if your system is gonna be relying on something like in-memory caching, you're definitely gonna wanna be able to bring up these hashing strategies.
 
 ---
+
+### 12. Relational Databases
+> ***Tables*** and ***ACID***.
+
+> No, we're not describing a drug lord's desk, but rather referring to key properties of relational databases. There's a lot of material to cover here, so kick back, and get ready to store tons of knowledge in the biggest database of them all: your brain.
+
+#### 10 Key Terms
+
+- ***Relational Database***
+> A type of structured database in which data is stored following a tabular format; often supports powerful querying using SQL.
+
+- ***Non-Relational Database***
+> In contrast with relational database (SQL database), a type of database that is free of imposed, tabular-like structure. Non-relational databases are often referred to as NoSQL databases.
+
+- ***SQL***
+> Structured Query Language. Relational databases can be used using a derivative of SQL such as PostgreSQL in the case of Postgres.
+
+- ***SQL Database***
+> Any database that supports SQL. This term is often used synonymously with "Relational Database", though in practice, not every relational database supports SQL.
+
+- ***NoSQL Database***
+> Any database that is not SQL-compatible is called NoSQL.
+
+- ***ACID Transaction***
+> A type of database transaction that has four important properties:
+
+>- ***Atomicity:*** The operations that constitute the transaction will either all succeed or all fail. There is no in-between state.
+>- ***Consistency:*** The transaction cannot bring the database to an invalid state. After the transaction is committed or rolled back, the rules for each record will still apply, and all future transactions will see the effect of the transaction. Also named ***Strong Consistency***.
+>- ***Isolation:*** The execution of multiple transactions concurrently will have the same effect as if they had been executed sequentially.
+>- ***Durability:*** Any commmitted transaction is written to non-volatile storage. It will not be undone by a crash, power loss, or network partition.
+
+- ***Database Index***
+> A special auxillary data structure that allows your database to perform certain queries much faster. Indexes can typically only exist to reference structured data, like data stored in relational databases. In practice, you create an index on one or multiple columns in your database to greatly speed up ***read*** queries that you run very often, with the downside of slightly longer ***writes*** to your database, since writes have to also take place in the relevant index.
+
+- ***Strong Consistency***
+> Strong Consistency usually refers to the consistency of ACID transactions, as opposed to ***Eventual Consistency***.
+
+- ***Eventual Consistency***
+> A consistency model which is unlike ***Strong Consistency***. In this model, reads might return a view of the system that is stale. An eventually consistent datastore will give guarantees that the state of the database will eventually reflect writes within a time period (could be 10 seconds, or minutes).
+
+- ***Postgres***
+> A relational database that uses a dialect of SQL called PostgreSQL. Provides ACID transactions.
+
+---
