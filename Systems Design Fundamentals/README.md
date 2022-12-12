@@ -1340,3 +1340,75 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > A relational database that uses a dialect of SQL called PostgreSQL. Provides ACID transactions.
 
 ---
+
+> It is difficult to make generalising statements about these databases. It's hard to categorize these databases into specific bucket.
+
+> However there's one characteristic that we can use to actually categorize all of these databases specifically into two major categories.
+
+> And that characteristic is the **structure that is imposed on the data** that you store in these databases.
+
+> This is where relational databases come into play.
+
+> It turns out that one of the **two major categories of databases**, if we are specifically looking at the structure imposed on the data stored in these databases, is relational databases.
+
+> So we have **relational databases vs non-relational databases**.
+
+-  ***So what is a relational database ?***
+
+>- A relational database is a type of database that imposes on the data stored in it, a **tabular-like structure**.
+
+>- In other words, data stored in a relational database is gonna be stored in the form of tables.
+
+>- So tables, which are also called as relations and relational databases, are these structures that store a bunch of data.
+
+>- They typically **represent a specific entity**.
+
+>- Rows in a relational databases are often referred to as records.
+
+>- All the tables that are stored in a relational database are going to **have defined schemas, the specific rules or plans about how the data should be stored in them**.
+
+>- And the systems designer or the person setting up these relational databases, is gonna be the one defining these schemas.  
+
+-  ***Non-relational database ?***
+
+> In contrast with the relational databases, non-relational databases are databases that don't impose this tabular-like structure on the data stored in them.
+
+> While non-relational databases do sometimes impose some type of structure on the data stored in them, it's typically not gonna be in the form of tables and it's typically gonna be a lot more flexible and a lot less rigorous.
+
+> Prehaps one of the **most important aspects of relational databases** is that most relational databases out there, there are always exceptions, but **most of them support SQL**.
+
+>- SQL, which stands for **S**tructured **Q**uery **L**anguage, SQL is effectively a programming/database/querying language.
+
+>- But SQL is a very powerful language that is **used to perform complex queries** in relational databases.
+
+>- A SQL Database must use what are known as **ACID** transactions.
+
+>  - **A** - Atomicity
+>  - **C** - Consistency
+>  - **I** - Isolation
+>  - **D** - Durability
+
+-  ***Database Index***
+
+>- Imagine you have a table (Payments table in this case) in a relational database.
+>- And imagine that you want to look for the name of the customer who paid the largest amount of money.
+>- To do that, you naturally gonna have to look through the entire database to find the largest amount.
+>- This is a **linear time operation O(N)**.
+>- And if you are dealing with huge tables that have millions of rows, then this is gonna be really slow, especially if you need to perform these types of operations over and over and over again.
+>- And this is where a **database index comes into play**.
+
+>- Database indexes are very complicated.
+>- There're a lot of types of database indexes out there, different ways that they can be implemented under the hood.
+>- There're bitmap indexes, reverse indexes, dense indexes etc.
+>- **An example** for database index: An auxillary data structure, almost like an additional table, that stored the amounts of all of the payments, that stored the amounts in sorted order.
+>- And they would all point to the relavent records in the table.
+>- You can think of a database index as a table of contents.
+
+>- So database indexes are a good thing to keep in mind when designing the database part of a system.
+>- If you go with a relational database and you happen to know that you're gonna be searching that database a lot, you may want to have certain database indexes for some of your tables.
+
+>- **The trade-off** to keep in mind when thinking about adding a database index is that having a database index, because it's effectively an auxillary data structure, is gonna take up more space.
+>- And it's gonna mean that whenever you write to the database that has a database index, you're also gonna have to write in the database index.
+>- So write operations are gonna be a little bit slower and taking up more space, but read operations might be a lot faster.
+
+---
