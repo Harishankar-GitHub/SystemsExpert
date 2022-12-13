@@ -1412,3 +1412,66 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- So write operations are gonna be a little bit slower and taking up more space, but read operations might be a lot faster.
 
 ---
+
+### 13. Key-Value Stores
+> One of the most commonly used NoSQL paradigms today, the key-vaue store bases its data model on the associative array data type.
+
+> The result ? A fast, flexible storage machine that resembles a hash table. That's right folks, our favorite frendly neighbourhood data structure strikes again!
+
+#### 4 Key Terms
+-  ***Key-Value Store***
+> A Key-Value Store is a flexible NoSQL database that's often used for caching and dynamic configuration. Popular options include DynamoDB, Etcd, Redis and ZooKeeper.
+
+- ***Etcd***
+> Etcd is a strongly consistent and highly available key-value store often used to implement leader election in a system.
+> Learn more: [https://etcd.io/](https://etcd.io/)
+
+- ***Redis***
+> An in-memory key-value store. Does offer some persistent storage options but is typically used as a really fast, best-effort caching solution. Redis is also often used to implement **rate limiting**.
+> Learn more: [https://redis.io/](https://redis.io/)
+
+- ***ZooKeeper***
+> ZooKeeper is a strongly consistent, highly available key-value store. It's often used to store important configuration or to perform leader election.
+> Learn more: [https://zookeeper.apache.org/](https://zookeeper.apache.org/)
+
+---
+
+>- The structure of relational databases is often very useful because it typically comes with very powerful querying capabilities.
+>- But sometimes, that same structure is actually more cumbursome than useful.
+>- And in those cases, a non-relational database, a **NoSQL database** is preferred, **a database, that doesn't come with any structure**.
+
+>- And it turns out that one of the **most popular** types of non-relational databases out there is the **key-value store**.
+>- The key-value store, as it's name implies, is a type of database that allowes you to store key-value pairs.
+>- And these values are typically stored as strings, but some key-value stores do actually come with specific typings, so that'll allow to store actual integers or actual arrays, all sorts of other values.  
+
+>- Now, what's great about key-value stores, is that they are **incredibly flexible** and **incredibly simple**.
+>- Flexible because they don't have the imposed structure and simple because there's arguably no simpler type of storage at least from a conceptual point of view than a key-value type of mapping.
+>- And so this makes key-value stores, awesome candidates for databases in a system where there's no use for that imposed structure.
+>- **Example:** *Caching*  
+
+>- If you think about caching, it's actually something that lands itself perfectly to key-value stores, because when you implement caching, you're typically storing values like reponses to network requests.
+>- You typically store these values somewhere and access them using a hash, using an IP address, a username.
+>- The point is, you access them using some sort of key.
+>- So conceptually, you're precisely using the key-value pair model.
+>- And so key-value stores are often great databases to use for caching in a system.
+
+>- **Another use case** that comes to mind is for **dynamic configuration**.
+>- Sometimes the system might have special parameters, or constants that different parts of system can rely on.
+
+>- Key-value stores have a lot of use cases.
+>- And one other thing that makes them really nice is that because you are accessing values directly through keys, **you don't have to search through the database by sequentially going through every entry** or by doing some other fancy lookup.
+>- You can just access values directly through keys and that makes them very fast.
+>- So often by using a key-value store, you'll actually get **lowered latencies** and **increased throughput** in whatever part of your system uses a key-value store.  
+
+>- One more important thing to mention about key-value stores is that they come in **various shapes and flavors**.
+>- There are a lot of databases out there and naturally there are a lot of key-value stores out there.
+>- Few examples are DynamoDB, Etcd, Redis, ZooKeeper etc., and **different key-value stores might behave differently**.  
+
+>- For instance, **some key-value stores writes data to disk**. Meaning, the data that is stored is gonna persist even if key-value store goes down. 
+>- Other key-value stores **might write data only to memory**. Redis is a very popular example for that. Redis is an in-memory key-value store.
+
+>- So if those type of key-value stores crash, the data stored in them is lost.
+> Now this is a **trade-off** for faster operations and depending on the use case, it might be totally acceptable.
+>- Some key-value stores might give **strong consistency**, others might give only **eventual consistency**.
+
+---
