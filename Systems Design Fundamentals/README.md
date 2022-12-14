@@ -904,8 +904,8 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > A server that sits between clients and servers and acts on behalf of the servers, typically used for logging, load balancing, or caching.
 
 - ***Nginx***
-> Pronounced "engine X", not "N jinx". Njinx is a very popular webserver that's often used as a **reverse proxy** and **load balancer**.
-> Learn more [https://www.nginx.com/](https://www.nginx.com/)
+>- Pronounced "engine X", not "N jinx". Njinx is a very popular webserver that's often used as a **reverse proxy** and **load balancer**.
+>- Learn more [https://www.nginx.com/](https://www.nginx.com/)
 
 ---
 
@@ -990,8 +990,8 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > When distributing a workload across a set of servers, that workload might be spread unevenly. This can happen if your **sharding key** or your **hashing function** are suboptimal, or if your workload is naturally skewed: some servers will receive a lot more traffic than others, thus creating a "hot spot".
 
 - ***Nginx***
-> Pronounced "engine X", not "N jinx". Njinx is a very popular webserver that's often used as a **reverse proxy** and **load balancer**.
-> Learn more [https://www.nginx.com/](https://www.nginx.com/)
+>- Pronounced "engine X", not "N jinx". Njinx is a very popular webserver that's often used as a **reverse proxy** and **load balancer**.
+>- Learn more [https://www.nginx.com/](https://www.nginx.com/)
 
 ---
 
@@ -1423,16 +1423,16 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 > A Key-Value Store is a flexible NoSQL database that's often used for caching and dynamic configuration. Popular options include DynamoDB, Etcd, Redis and ZooKeeper.
 
 - ***Etcd***
-> Etcd is a strongly consistent and highly available key-value store often used to implement leader election in a system.
-> Learn more: [https://etcd.io/](https://etcd.io/)
+>- Etcd is a strongly consistent and highly available key-value store often used to implement leader election in a system.
+>- Learn more: [https://etcd.io/](https://etcd.io/)
 
 - ***Redis***
-> An in-memory key-value store. Does offer some persistent storage options but is typically used as a really fast, best-effort caching solution. Redis is also often used to implement **rate limiting**.
-> Learn more: [https://redis.io/](https://redis.io/)
+>- An in-memory key-value store. Does offer some persistent storage options but is typically used as a really fast, best-effort caching solution. Redis is also often used to implement **rate limiting**.
+>- Learn more: [https://redis.io/](https://redis.io/)
 
 - ***ZooKeeper***
-> ZooKeeper is a strongly consistent, highly available key-value store. It's often used to store important configuration or to perform leader election.
-> Learn more: [https://zookeeper.apache.org/](https://zookeeper.apache.org/)
+>- ZooKeeper is a strongly consistent, highly available key-value store. It's often used to store important configuration or to perform leader election.
+>- Learn more: [https://zookeeper.apache.org/](https://zookeeper.apache.org/)
 
 ---
 
@@ -1473,5 +1473,180 @@ why your proposed solution is reasonable, why it's sound, and why it might be th
 >- So if those type of key-value stores crash, the data stored in them is lost.
 > Now this is a **trade-off** for faster operations and depending on the use case, it might be totally acceptable.
 >- Some key-value stores might give **strong consistency**, others might give only **eventual consistency**.
+
+---
+
+### 14. Specialized Storage Paradigms
+
+#### 11 Key Terms
+- ***Blob Storage***
+> Widely used kind of storage, in small and large scale systems. They don't really count as databases per se, partially because they only allow the user to store and retrieve data based on the name of the blob. This is sort of like a key-value store but usually blob stores have different guarantees. They might be slower than KV stores but values can be megabytes large (or sometimes gigabytes large). Usually people use this to store things like **large binaries, database snapshots, or images** and other static assets that a website might have.
+
+> Blob storage is rather complicated to have on premise, and only giant companies like Google and Amazon have infrastructure that supports it. So usually in the context of System Design interviews you can assume that you will be able to use **GCS** or **S3**. These are blob storage services hosted by Google and Amazon respectively, that cost money depending on how much storage you use and how often you store and retrieve blobs from that storage.
+
+- ***Time Series Database***
+> A **TSDB** is a special kind of database optimized for storing and
+analyzing time-indexed data: data points that specifically occur at a given moment in time. Examples of TSDBs are InfluxDB, Prometheus, and Graphite.
+
+- ***Graph Database***
+> A type of database that stores data following the graph data model. Data entries in a graph database can have explicitly defined relationships, much
+like nodes in a graph can have edges.
+
+> Graph databases take advantage of their underlying graph structure to perform complex queries on deeply connected data very fast.
+
+> Graph databases are thus often preferred to relational databases when dealing with systems where data points naturally form a graph and have multiple levels of relationships. For example, social networks.
+
+- ***Cypher***
+> A **graph query language** that was originally developed for the Neo4j
+graph database, but that has since been standardized to be used with other
+graph databases in an effort to make it the "SQL for graphs."
+
+> Cypher queries are often much simpler than their SQL counterparts. Example Cypher query to find data in **Neo4j**, a popular graph database:
+```
+MATCH (some_node:SomeLabel)-[:SOME_RELATIONSHIP]->(some_other_node:SomeLabel {some_property:'value'})
+```
+
+- ***Spatial Database***
+> A type of database optimized for storing and querying spatial data like
+locations on a map. Spatial databases rely on spatial indexes like **quadtrees** to quickly perform spatial queries like finding all locations in the vicinity of a region.
+
+- ***Quadtree***
+> A tree data structure most commonly used to index two-dimensional spatial
+data. Each node in a quadtree has either zero children nodes (and is therefore a leaf node) or exactly four children nodes.
+
+> Typically, quadtree nodes contain some form of spatial data. For example,
+locations on a map with a maximum capacity of some specified number **n**. So long as nodes aren't at capacity, they remain leaf nodes; once they reach capacity, they're given four children nodes, and their data entries are split across the four children nodes.
+
+> A quadtree lends itself well to storing spatial data because it can be
+represented as a grid filled with rectangles that are recursively subdivided into four sub-rectangles, where each quadtree node is represented by a rectangle and each rectangle represents a spatial region. Assuming we're storing locations in the world, we can imagine a quadtree with a maximum node-capacity **n** as follows:
+>	- The root node, which represents the entire world, is the outermost rectangle.
+>	- If the entire world has more than **n** locations, the outermost rectangle is divided into four quadrants, each representing a region of the world.
+> 	- So long as a region has more than **n** locations, its corresponding rectangle is subdivided into four quadrants (the corresponding node in the quadtree is given four children nodes).
+>	- Regions that have fewer than **n** locations are undivided rectangles (leaf nodes).
+>	- The parts of the grid that have many subdivided rectangles represent densely populated areas (like cities), while the parts of the grid that have few subdivided rectangles represent sparsely populated areas (like rural areas).
+
+> Finding a given location in a perfect quadtree is an extremely fast operation that runs in **log<sub>4</sub>(x)** time (where x is the total number of locations), since quadtree nodes have four children nodes.
+
+- ***Google Cloud Storage***
+>- GCS is a blob storage service provided by Google.
+>- Learn more: [https://cloud.google.com/storage](https://cloud.google.com/storage)
+
+- ***S3***
+>- S3 is a blob storage service provided by Amazon by **Amazon Web Services (AWS)**.
+>- Learn more: [https://aws.amazon.com/s3/](https://aws.amazon.com/s3/)
+
+- ***InfluxDB***
+>- A popular open-source time series database.
+>- Learn more: [https://www.influxdata.com/](https://www.influxdata.com/)
+
+- ***Prometheus***
+>- A popular open-source time series database, typically used for monitoring purposes.
+>- Learn more: [https://prometheus.io/](https://prometheus.io/)
+
+- ***Neo4j***
+>- A popular graph database that consists of **nodes, relationships, properties,** and **labels**.
+>- Learn more: [https://neo4j.com/](https://neo4j.com/)
+
+---
+
+- ***What is a blob store ?***
+>- Well, a blob, first of all is an acronym, it stands for **binary large object**, but in the modern day, so to speak and in systems design interview, or in systems design context, when someone uses the word blob, they're really referring to just some **arbitary piece of unstructured data**.
+>- An example for a blob is gonna be a video file or an image file, may be a large text file, or may be a large binary, meaning compiled code that's ready to be shipped out to production.
+
+>- And so a blob store as it's name suggests, is a **storage solution for blobs**.
+>- Because a blob isn't really the type of data that fits into for example a SQL database.
+>- A **blob is unstructured data**.
+>- It's not the type of data that makes sense to store in a tabular format.
+>- And **oftentimes blobs are very large**.
+>- And if you have multiple blobs, if you've got millions of blobs, and you've got really massive amounts of unstructured data.
+>- And that is what a Blobstore specializes in doing.
+>- A Blobstore specializes in storing massive amounts of unstructured data.
+>- Blobstores are optimized for storing and retrieving massive amounts of unstructured data.
+>- And this is actually a **pretty complicated problem to solve**.
+
+>- So you will basically never or very rarely find yourself implementing your own Blobstore solution.
+>- You will **almost always rely on some popular Blobstore solution** like S3 or GCS.
+
+>- Also one last thing to note about Blobstores is that they **sort of behave like key-value stores** in the sense that usually when you're accessing a blob in a Blobstore, you're accessing it through some key, whether that's the blobs ID or the blobs name.
+>- So that's kind of like a key-value store, but you shouldn't mistake or confuse Blobstores and key-value stores.
+>- Because ultimately they are optimized for different functionalities or use cases.
+
+- **Time Series Database**
+>- This one is **a little bit less commonly encountered than the Blobstore**, mainly because you're less likely at least in the context of systems design interview, to encounter time series data than you are to encounter large unstructured data, which is why a blob store is necessary usually.
+>- It's still worth being familiar with the time series databases, knowing that they exist, and being able to refer to a couple of technologies that you could use in the event that you needed a time series database.
+
+>- Time series databases are **often used in logging and monitoring purposes**.
+>- A time series database as its name suggests is a database that is specialized for storing time series data.
+>- So when you've got large amounts of data that are all relevant to time, in other words, they are let's say maybe events that happen at a given time. Let's say every second or every millisecond.
+>- When you've got that type of data and when you're gonna be likely to have to perform very time series like computations on this data, things like computing rolling averages, or computing local maximas and minimas or aggregating data in between two time periods.
+>- When you've got that time type of data or that type of requirement or use case you're likely gonna use a time series database.
+
+> So some of the very common use cases for time series databases are monitoring, if you're monitoring parts of your system, for example, you've got a bunch of events that all occur at a given timestamp. You might wanna use a time series database to store them.
+
+> Or for example, if you're designing an IOT system, an internet of things system where you've got millions of devices that are constantly, sending telemetry data or capturing certain data in their environments, when you've got that type of system, a time series database is likely gonna be useful.
+
+> If you're dealing with stock prices maybe that change every second or cryptocurrency prices, you might need a time series database.
+
+> So here, two of the most popular time series databases out there are InfluxDB and Prometheus.
+
+> **You don't need to be super well versed with time series databases. And so naturally you don't need to know too much about these technologies. Ideally you just wanna know that they exist. You wanna be able to refer to them if you need a time series database in your system, and you can say something like, *"Oh, for the monitoring part of our system, we can rely on InfluxDB"*.**
+
+> So those are time series databases in a nutshell.
+
+- **What is a Graph Database**
+>- It serves as a nice **bridge between data structures & algorithms and systems design**, because it uses the graph data structure or relies on concept of a graph.
+
+>- If you're storing a dataset where within the data, there are a lot of relationships, relationships between individual data points in the dataset.
+>- A tabular format, might not make as much sense.
+
+>- So a graph database is a database that is built on top of the graph data model.
+>- So what that means is that in a graph database, the concept of a relationship between data points is a primary concept. It is something core to a graph database.
+
+>- And so what that means for graph databases is that when you have graph like data, when you have data that lends itself really well to being stored in a graph, meaning data, where there a lot of relationships and here you can think of social networks like Facebook, where people have a lot of friends. And there are a lot of links between people and concepts on the website like pages and posts that are shared, etc. When you've got that type of dataset, a graph database allows you to rely on the natural data model which is the graph that this data set lends itself really well to, for all of your querying functionality and all of your storage functionality.
+>- And so the most popular graph database out there is a database called Neo4j.
+
+- **What is a Spatial Database**
+>- A special database that is optimized for storing spatial data.
+>- What is spatial data ? Anything that has to do with geometric space, but the canonical example in systems design or in the context of systems design interviews is gonna be locations on a map.
+>- Let's say that you're storing hotels in the world or restaurants in a country. Maybe you're designing Google maps. You might very well, want to rely on a spatial database to store all of this data.
+
+#### Now, how does a spatial database work exactly? 
+>- If you wanna perform certain queries very fast, that rely on a particular column in a SQL table, You might wanna create a database index on that column.
+>- And that works really well for standard data.
+>- But when you're dealing with spatial data. So for example, let's say you're storing latitudes and longitudes.
+>- And so you're relying on two different attributes and you might be performing spatial related queries, like finding all locations in the vicinity of a specific location or finding the distance between two locations or multiple locations.
+>- A standard database index might not be as good, might not be optimized for this type of query or this type of computation.
+
+>- And so spatial databases, what they do is they rely on **spatial indices**. So instead of having a classic database index, you have a spatial index.
+>- And here there are a lot of different types of spatial indices out there.
+>- One such index is Quadtree.
+
+- **What is a Quadtree ?**
+>- A lot of spatial indices are based on trees such as R-trees, K-D trees, M-trees etc.
+
+>- Quadtree is fairly straightforward to understand conceptually and it's pretty common and it's just a really cool index.
+>- Basically a quadtree is just like a binary tree except that every node has 4 children nodes instead of two.
+>- Or specifically in a quadtree, every node has either zero children nodes and therefore is a leaf node, or it has exactly four children nodes.
+>- A quadtree would have always four children nodes or no children nodes.
+
+>- We can compare the quadtree to the tree data structure, but conceptually, it is actually in the form of grid format.
+>- And then the nice thing about this quadtree and this grid format is that when you're performing spatial queries on this data, you can traverse through this quadtree, traverse through this grid very easily in log<sub>4</sub>(N) time.
+>- And you can just find what you're looking for very, very fast.
+>- So this quadtree is optimized for performing some of these spatial queries.
+>- So this is what a quadtree is.
+>- It's a very popular spatial index used by spatial databases.
+>- Sometimes you might even find yourself implementing your own quadtree and maybe storing it in memory, depending on the system that you're designing.
+
+>- Let's say you're designing a system where you really, really care about very fast latencies.
+>- You're obviously dealing with a location based system or a system that relies on spatial data, and you don't wanna be querying your database all the time.
+>- You might wanna just stop at your API servers. You might build your own quadtree and store in memory there.
+
+>- In this day and age, a lot of databases, including even standard databases, like let's say Postgres are really, really smart, are really, really optimized for all sorts of queries and data types.
+>- So it's possible that some databases like Postgres might even give you out of the box solutions for spatial data.
+
+>- **So depending on the systems design interview and on your interviewer, you might be able to get away with just relying on a classic database.**
+>- Even if you're relying on spatial data, it's all gonna depend on what your interviewer's looking for.
+>- And it might warrant having a conversation with them where you say, *"Hey, here, we're relying on spatial data. I'm thinking that we could maybe use a specialized spatial database or even implement our own spatial index and memory. Or maybe we can just rely on out of the box optimizations that a database like Postgres might give us, what do you think, what are we looking for here?"*
+>- And hopefully your interviewer would be able to guide you in the right direction for what they're looking for in their systems design interview.
 
 ---
