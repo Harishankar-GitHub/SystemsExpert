@@ -27,4 +27,4 @@
 11. [Hashing](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#11-hashing)
 12. [Relational Databases](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#12-relational-databases)
 13. [Key-Value Stores](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#13-key-value-stores)
-14. [Specialized Storage Paradigms](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#13-specialized-storage-paradigms)
+14. [Specialized Storage Paradigms](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#14-specialized-storage-paradigms)
