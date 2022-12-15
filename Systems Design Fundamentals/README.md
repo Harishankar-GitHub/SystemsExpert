@@ -1650,3 +1650,132 @@ represented as a grid filled with rectangles that are recursively subdivided int
 >- And hopefully your interviewer would be able to guide you in the right direction for what they're looking for in their systems design interview.
 
 ---
+
+### 15. Replication And Sharding
+> A system's performance is often only as good as its database's; optimize the latter, and watch as the former improves in tandem!
+
+#### 3 Key Terms
+
+- ***Replication***
+> The act of duplicating the data from one database server to others. This is sometimes used to increase the redundancy of your system and tolerate regional failures for instance. Other times you can use replication to move data closer to your clients, thus decreasing the latency of accessing specific data.
+
+- ***Sharding***
+> Sometimes called **data partitioning**, sharding is the act of splitting a database into two or more pieces called **shards** and is typically done to increase the throughput of your database. Popular sharding strategies include:
+>	- Sharding based on a client's region
+>	- Sharding based on the type of data being stored (e.g: user data gets stored in one shard, payments data gets stored in another shard)
+>	- Sharding based on the hash of a column (only for structured data)
+
+- ***Hot Spot***
+> When distributing a workload across a set of servers, that workload might be spread unevenly. This can happen if your **sharding key** or your **hashing function** are suboptimal, or if your workload is naturally skewed: some servers will receive a lot more traffic than others, thus creating a "hot spot".
+
+---
+
+>- Because a database is so critical to a system, a system's performance is often very dependent on it's database's performance.
+>- So, for example, if a system's database is unavailable, then the system itself will likely be unavailable.
+>- If a system's database has high latency or low throughput, then the system itself will likely have high latency or low throughput.
+
+>- So when we're designing a system and trying to make it performant, we have to make sure that the system's database is gonna be performant, otherwise the entire system is likely gonna fall apart.
+>- This is where replication and sharding come into play.
+
+#### Let's start with replication
+>- Imagine that you've got a system and the system has got a database. We'll go with a single main database and that database goes down.
+>- Well, suddenly you can't read data from the database, you can't write data to the database, your system is effectively down as well.
+
+>- How would you remedy the situation, or rather, how would you prevent the situation from happening in the first place?
+>- Well, you might do so by having a secondary database, a replica of the main database, and this is replication in a nutshell.
+>- The idea behind replication is that you have a duplicate version of your main database, a replica of the main database. And in this example, you can think of this replica sort of like a standby of the main database.
+>- The main database handles all of the reads and writes coming to it, but it also updates the replica such that the replica is effectively the same as the main database.
+>- The idea is, the replica would take over if the main database fails.
+>- So when the main database goes down, the replica takes over and now becomes the new main database.
+>- And once the original main database comes back up, it gets updates by the replica, and then eventually they can swap roles again.
+
+>- Now in order for this to work, your replica needs to always be exactly up to date with the main database.
+>- So what that means is that whenever someone writes/udates to the main database, that update needs to also happen in the replica in a synchronous way.
+>- If you wanna have your replica be able to take over when your main database fails, you need that replica to always be up to date with the main database, and so that means that whenever there's a write operation to your main database, that write operation needs to synchronously be done on the replica as well.
+>- And for whatever reason, that right operation fails on the replica, there's an issue, a network partition, whatever, then the write operation should not complete on the main database.
+
+>- In this scenario where you want your replica to be able to take over for your main database in the event of database failure, you never want the replica to be out of date with the main database.
+>- And of course, this means that your write operations are gonna take a little bit longer, because they have to be done both on the main database and on the replica.
+
+> So this was a fairly straightforward example of using replication to improve the availability of your database and of your system as a whole, but we can also use replication to improve our database's latency and in turn to improve our system's latency.
+
+>- Let's look at an example for this.
+>- Imagine that we were designing a system like LinkedIn, where people can write posts and other people can view those posts in their feed.
+>- And imagine that we know that we're gonna have a lot of users, both in the US and in India.
+>- What we might do is we might have two databases, one in the US, serving US users, and one in India, serving India users.
+>- That way, US users and India users get very low latencies, because they're served the data from databases located in their regions.
+
+>- Now what happens if I, a user located in the US, write a post on LinkedIn.
+>- That post will be stored in the US database, and I'll experience very low latency when I actually post the post.
+>- But then my post, which is stored in the US database, needs to be replicated in the India database, because you can imagine that I might have a lot of connections or followers on LinkedIn who are based in India, and so they're gonna need to see my post in their feed.
+>- But because we're talking about a feed here where maybe we don't care about having someone's post instantaneously appear in other people's feeds, what we can do is we can have the US database, in this case, I'll treat it as the main database on the screen here, we can have the US database asynchronously update the India database, meaning every minute, every five minutes, every 10 minutes, the US database syncs up with the replica in India and vice versa, and they update each other.
+>- Any updates that happen in the US database get done in the India database, and any updates that were done in the India database gets done in the US database.
+>- And only then do the India users who are hitting the India database see my post.
+>- And that means that we avoided having to do a roundtrip from the US to India when I initially posted the post on LinkedIn.
+>- So I, as the US user, immediately saw my post appear on my feed, Maybe other US users immediately saw it appear on their feed.
+>- Then our US database asynchronously updated the replica in India.
+>- And a minute after I posted the post on LinkedIn, all of my connections or followers based in India saw my post in their feed.
+
+>- Now here to be clear, this is not necessarily how LinkedIn is actually designed, but this is one way that you could design it, and this is one way that you could database replication to have better latency in your system in a place where you don't really care about asynchronous updates between your replicas.
+>- You're fine with having your replicas not be up to date with each other at all times.
+>- Of course there are many types of services and products for which you would not want that to happen, and that's why you may not always use this type of asynchronous replication.
+>- But for certain use cases, it might be viable.
+
+> Another example is imagine you work at a big tech company like let's say Google, and you're deploying a piece of software to production.
+>- Maybe you've got multiple database replicas across the world that serve your piece of software to end users, but you probably don't need that new piece of software that you're about to deploy, like let's say a new binary or a new container image, maybe you don't need the results of this deployment to be experienced in all parts of the world where you've got your database replicas immediately.
+>- So here you might also have asynchronous replication where you deploy the binary or the container image, and it gets written in one database, and then asynchronously will get written to all of the other databases.
+
+> So that's replication.
+
+#### Now let's look at another scenario (Sharding).
+>- Imagine that you've got a system and in your system you have one main database.
+>- And your system is serving hundreds of thousands, if not millions, of requests, and your main database is starting to get overloaded.
+>- Your main database can't handle all of these requests at once.
+>- It's becoming a bottleneck and throughput is just too low.
+
+>- What could you do to improve this?
+>- Of course you could try to scale vertically by making your database server beefier, but there's only so much that you can do with regards to vertical scaling.
+>- So the natural next step is to scale horizontally, meaning to add database servers.
+>- So maybe instead of having one database server, you're gonna have five database servers.
+>- So similar to what is discsussed above, where we had a replica, maybe you're gonna have just five, or 10, or 20 replicas of the main database.
+>- Now you've effectively increased the throughput by a factor of 10 or by a factor of 20.
+
+>- But here we run into another issue.
+>- What if our system is a system that's got tons of data?
+>- Let's say that our system is something like Facebook, where we've got over a billion users, and imagine that we've got huge amounts of data.
+>- Do we really wanna have all of that data replicated across a bunch of different databases? Maybe not.
+>- Maybe that's not the most optimal way to do this.
+>- So maybe what we could do instead is we can actually split up the data.
+>- So just splitting up the data, rather than replicating it a bunch of times.
+>- And this, this idea of splitting up or partitioning your data is what's known as sharding.
+>- You split up your main database into a bunch of little databases, which are named shards or data partitions.
+>- You've increased your throughput by doing this, and you've avoided duplicating so much data so many times by just splitting it up.
+
+> Now of course the natural next question here is, how do you know how to split up the data? How do you know where to put certain chunks of data, in what shard to put certain chunks of data?
+
+>- Well, here you've got a few options.
+>- One option, if you're dealing with a relational database for instance that consists of tables is to actually split up your tables and to store certain rows in some shards, and other rows in other shards.
+
+>- Now this can come with problems though.
+>- Because as you can imagine, you might have what are known as hotspots, where certain shards get a lot more traffic than other shards just by nature of the data they store.
+
+>- So of course here, a very reasonable way to split up your data is by using hashing.
+>- You can use a hashing function, one that guarantees uniformity to determine what shard a piece of data is gonna get written to and read from.
+>- Now of course here, since we're dealing with actual data stored in a database, you're not gonna wanna change your hashing function if you do this, because you need to make sure that reads and writes for a particular piece of data are always going to the same database server.
+
+>- And here, by the way, consistent hashing might be kind of useful.
+>- But if one of our existing database servers were to go down, consistent hashing wouldn't really help us.
+>- If a database server goes down, then you have a problem, because your database is such a critical part of the system.
+>- Consistent hashing is not gonna be the savior here.
+>- In that case, you would probably wanna have actual replicas of each shard that could take over if a single shard goes down.
+
+>- Overall, the point is that, depending on the type of data that you're sharding, you can decide how to split it up in different ways.
+>- You just have to put some thought into it, and this is obviously something that you're gonna wanna do in a systems design interview.
+>- The logic that dictates what shard a database read or write gets forwarded to, you could have it in your application servers.
+>- The application server could have some logic, it might be literally be if-else statements to determine what shard it's gonna request that data from or it's gonna write that data to.
+
+> But what you would probably prefer in practice would be not to have this logic at your actual server level, but instead maybe to have a reverse proxy that would act on behalf of your database servers.
+
+> **All in all, replication and sharding are two very powerful tools that you're definitely going to use in your systems design interviews, especially when you're trying to make your system more performant.**
+
+---

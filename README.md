@@ -28,3 +28,4 @@
 12. [Relational Databases](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#12-relational-databases)
 13. [Key-Value Stores](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#13-key-value-stores)
 14. [Specialized Storage Paradigms](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#14-specialized-storage-paradigms)
+15. [Replication And Sharding](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#15-replication-and-sharding)
