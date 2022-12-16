@@ -1779,3 +1779,103 @@ represented as a grid filled with rectangles that are recursively subdivided int
 > **All in all, replication and sharding are two very powerful tools that you're definitely going to use in your systems design interviews, especially when you're trying to make your system more performant.**
 
 ---
+
+### 16. Leader Election
+> Citizens in a society typically elect a leader by voting for their preferred candidate. But how do servers in a distributed system choose a master node? Via algorithms of course!
+
+> This form of algorithmic democracy is known as "leader election", though we personally think "algorithmocracy" sounds way cooler.
+
+#### 5 Key Terms
+
+- ***Leader Election***
+> The process by which nodes in a cluster (for instance, servers in a set of servers) elect a so-called "leader" amongst them, responsible for the primary operations of the service that these nodes support. When correctly implemented, leader election guarantees that all nodes in the cluster know which one is the leader at any given time and can elect a new leader if the leader dies for whatever reason.
+
+- ***Consensus Algorithm***
+> A type of complex algorithms used to have multiple entities agree on a single data value, like who the "leader" is amongst a group of machines. Two popular consensus algorithms are **Paxos** and **Raft**.
+
+- ***Paxos and Raft***
+> Two consensus algorithms that, when implemented correctly, allow for the synchronization of certain operations, even in a didstributed setting.
+
+- ***Etcd***
+>- Etcd is a strongly consistent and highly available key-value store often used to implement leader election in a system.
+>- Learn more: [https://etcd.io/](https://etcd.io/)
+
+- ***ZooKeeper***
+>- ZooKeeper is a strongly consistent, highly available key-value store. It's often used to store important configuration or to perform leader election.
+>- Learn more: [https://zookeeper.apache.org/](https://zookeeper.apache.org/)
+
+---
+
+>- Leader election is a relatively advanced topic of systems design in general computing.
+>- Especially if you dive into the details of leader election.
+>- But at a high level, it's actually quite simple to grasp.
+>- Unfortunately for us, in the context of systems design interviews, all that you really need as far as leader election is concerned, is a high level understanding of it.
+>- So having a high level understanding of leader election is gonna be a great tool for you to have in your tool belt when you walk into a systems design interview.
+
+>- So imagine that you're designing a system for a product that allows users to subscribe to the product on a recurring basis.
+>- For instance, you can think of Netflix, or of Amazon Prime, where users can subscribe on monthly or annual basis. They pay a monthly or annual fee for a product or service.
+>- You could imagine that for such a system, you might have a database in which you're gonna store information about user subscriptions.
+>- So for instance, you might store whether or not a user is currently subscribed to the service that you're offering.
+>- You might store the date at which point the users subscription is suppose to renew.
+>- You might store the price that the user should be charged on a recurring basis.
+>- You might store all this information in your database. And then, you might be using a third party service that would be the service actually taking care of charging the users, of debiting funds from their bank accounts, of charging their credit cards or debit cards.
+>- And here, you could imagine the maybe your third party service is PayPal or Stripe.
+>- And of course, this means that your third party service needs to somehow communicate with your database. Because your third party service needs to know when a user should be charged again, how much they should be charged, etc.
+>- Now, you may not want to have this third party service actually interact with your database directly.
+>- First of all, that may not be possible because maybe the third party service can't actually be hooked up directly into your database. But even if that is possible, you may not want to do that.
+>- Your database is a pretty sensitive part of your system. It contains important information, and you may not want to have some random third party service connect directly into it.
+
+>- So, a reasonable thing to do, would be to inset some service in the middle, between the third party service and the database.
+>- And this service would be in charge of basically talking to the database, maybe on a periodic basis. Figuring out when certain users subscription is gonna renew, how much that user needs to be charged. And then this service is gonna go to the third party service, to PayPal or to Stripe, and actually tell the third party service to charge the user.
+>- So this service would be in charge of communicating with the database, of getting information back from the database, and then communicating with the third party service, and having the third party service actually charge users. And this seems reasonable.
+
+>- But, as you might be thinking, this could pose a problem.
+>- So presumably this service that lives in between the third party service and the database consists of one server. One machine. And if that's the case, if this service only has one machine or one server, then what happens if this one machine or one server fails? Cause remember, if we're dealing with a large-scale distributed system, we always have to expect that our machines, that our servers, are gonna fail.
+>- And if this single server or single machine fails, then our entire payment system fails. That's obviously terrible.
+>- Okay, so then the natural solution to that is to introduce redundancy in our system.
+>- Specifically, redundancy in this service that lives in between the third party service and the database. So instead of just having one server, let's say we can have five servers.
+>- And these five servers are gonna be the ones in charge of this whole business logic in between the database and the third party service.
+
+>- But this introduces a new problem into our system.
+>- The request going from the servers to the third party service, which probably tells the third party service to actually charge a user, to actually debit funds from their bank account.
+>- This request is the kind of request that we definitely don't want to duplicate.
+>- We only want to make that request, or perform that operation once.
+>- And if we've got five servers in charge of this whole business logic here in the middle, how do we ensure that this request only gets issued, or that this operation only gets performed once?
+
+> Well, this is where leader election comes into play.
+
+>- With leader election, as the name might suggest, if you have a group of machines or a group of servers that are in charge of doing the same thing, instead of having all of them doing that same thing, which might not be something that you want to do multiple times, like in this case, you definitely don't want to make a request for a given user multiple times.
+>- Leader election has the servers in question elect one of themselves as the leader. And that server, and that server alone, is gonna be the one responsible for doing the actions that all of the servers are kind of meant to do.
+>- And if something happens to the leader, then one of the other servers is gonna become the new leader. A new leader is gonna be elected, and one of these other servers is gonna become that leader, and is gonna take over.
+
+>- Well, it turns out that this seemingly simple task of having multiple machines, multiple distributed machines elect a single leader, and all be aware of who the leader is at any given time, and all be capable of re-electing a new leader if something happens to the original leader at any given point in time.
+>- This is actually a very difficult problem to solve. The reason it's difficult, broadly speaking, is because when you've got multiple machines that are distributed, that need to essentially share state. In this case the state would be who the leader is. That's just difficult.
+>- You never know what can happen in a network. What if there's a network partition? In other words, some network failure that makes some machines no longer be able to communicate with other machines. What happens then ? This concept of electing a leader is really non-trivial.
+>- It's not so much the act of electing a leader. It's more the act of having multiple machines gain consensus, or agree upon something together. That's the real difficulty.
+>- And here in this case, it turns out that that thing that these multiple machines are gaining consensus on is who the leader is at any given point in time. But it's the act of gaining that consensus, of sharing some state, in this case, who the leader is, it's the act of doing that that's difficult.
+>- And so here, it turns out that, in order to actually achieve leader election, in order to actually do what we're describing, we can use what's called a consensus algorithm.
+
+>- These consensus algorithms are these very complicated algorithms that are very mathematical, that allow multiple servers in a group, or more broadly speaking, multiple nodes in a cluster, to reach consensus, or to agree on some single data value.
+>- And again, in the case of leader election, that single data value is gonna be who the leader is in a given group of machines or given group of servers. Or a cluster of nodes.
+>- So, it turns out that there are a lot of these consensus algorithms out there. A couple of really popular ones are Paxos and Raft. These algorithms are very complicated and you're really never gonna be expected to implement them yourself in the industry.
+>- Well it turns out that in the industry, typically you use some other third party service that itself might use Paxos or Raft under the hood to achieve leader election.
+
+> There are these two tools called Zookeeper and Etcd.
+>- Zookeeper and Etcd are these two tools that aren't necessarily primarily meant to be used for leader election, but that happen to allow you to implement your own leader election in a very easy way. And they're very often used in the industry.
+>- For instance, at Uber, at least up until 2019, a lot of internal systems that Uber use Zookeeper to implement leader election.
+
+#### What is Etcd ?
+>- Etcd is a key-value store.
+>- So literally a database that allows you to store key-value pairs.
+>- But Etcd is highly available and strongly consistent.
+>- And there aren't that many databases, let alone key-value stores, that are both highly available and strongly consistent.
+
+> How does Etcd achieve high availability and strong consistency?
+>- They do so using leader election, and more precisely, by implementing a concusses algorithm. A real concusses algorithm and it turns out that Etcd implements Raft. The Raft concusses algorithm.
+>- Simply put, they're gonna need multiple machines that can read and write to the main key-value store that Etcd supports, because they need that high availability in case one machine dies, but they also need to make sure that they always have a single source of truth for the key-value pairs in the key-value store to achieve that strong consistency.
+>- And so basically it's the same problem that we had here with our five servers, where we never wanted to have this request be duplicated, so the nodes under the hood in Etcd probably need to have one leader that's elected to take care of the rights in the key-value store, so they have to implement leader election, and they have to use a concusses algorithm to do so.
+>- And this allows them to have a highly a highly available and strongly consistent key-value store.
+
+>- We can then take advantage of that high availability and of that strong consistency to implement our own leader election in our system in a much simpler way.
+
+---
