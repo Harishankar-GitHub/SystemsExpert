@@ -1978,3 +1978,80 @@ represented as a grid filled with rectangles that are recursively subdivided int
 >- And amongst other things, what it accomplishes is that, that main person or main machine that had the original file, doesn't need to send the full file to thousands or hundreds of thousands of people, all that it needs to do is send all of the chunks of the file and then the peers are just gonna take over.
 
 ---
+
+### 18. Polling And Streaming
+> You can think of polling and streaming kind of like a classroom; sometimes students ask the teacher lots of questions, and other times they quiet down and listen attentively to the teacher's lecture.
+
+#### 2 Key Terms
+
+- ***Polling***
+> The act of fetching a resource or piece of data regularly at an interval to make sure your data is not too stale.
+
+- ***Streaming***
+> In networking, it usually refers to the act of continuously getting a feed of information from a server by keeping an open connection between the two machines or processes.
+
+---
+
+>- So far, we've dealt with systems where and servers communicated with each other by having clients issue requests to servers and having servers send responses back to the clients.
+>- What happens when we're designing a system where our clients are gonna want a piece of data that gets updated or that changes very regularly?
+>- As an example, imagine that you were building a system where your clients are gonna have to be able to monitor the temperature outside for example.
+>- The temperature outside is gonna change a lot, your servers are gonna have this changing data and your clients are gonna need to see all these changes.
+
+>- Or similarly, let's assume that you're building a system that consists of a chat app where you have individuals or clients that are meant to be able to communicate with each other in real time, send the messages to each other in real time.
+
+> In both of these examples, we're dealing with data, temperature data or messages that gets updated regularly and that clients are gonna need to see updated regularly.
+
+> How would we build a system to reflect these regular updates, to get these regularly updated pieces of data?
+> Well, this is where polling and streaming come into play.
+
+> Polling and streaming are two techniques that are gonna allow you to do just that.
+> They're gonna accomplish very similar things with a few nuances and they're gonna be great techniques to have in your tool belt when you walk into a systems design interview.
+
+> ***Polling*** is actually very very simple both to grasp and to implement. The idea behind polling is that the client is gonna issue a request for data that it wants on a recurring basis, following a set interval.
+>- The interval can be every second, 2 seconds, every minute etc., depending on the use case.
+>- Polling is very simple.
+>- All that you are doing is having your client issue a request on a recurring basis following some interval and that's it.
+>- Polling is really good because it definitely allows us to support some of our use cases like for instance, the temperature use case that we mentioned before.
+>- If we wanted our clients to monitor the outside temperature and that temperature was stored in our servers, but it changed frequently than we would probably want to have our clients poll for the temperature, let's say every 30 seconds, or every minute or every hour.
+>- That would seem like a reasonable thing to do.
+
+>- But as you can probably already tell, polling has limitations because what if we go with the example of a chat room?
+>- When you're chatting with someone online, let's say on Facebook messenger or on WhatsApp, you're gonna want to receive messages from other people instantly.
+>- And here polling might have some limitations because let's say you were polling for new messages in your chat app every 30 seconds for instance, that would obviously not lead to an instantaneous experience.
+>- You would basically have users or clients see some messages and then see nothing for 30 seconds or rather no update, no new messages for 30 seconds and if the person they were chatting with sent them a message or multiple messages in those 30 seconds, they would only see them after the 30 seconds. So that would be a really bad experience.
+>- Now of course you can try to fix that with polling by basically reducing the amount of time that elapses between requests.
+>- So for instance, you could issue requests to get messages from your servers every one second or every 0.5 seconds, every 0.1 seconds.
+>- The more you reduce, the time between the requests when you're implementing polling, the more instantaneous of an experience you will get. So suddenly our chat app, actually does become satisfied. We do have an acceptable chat app.
+
+> But that comes with the **trade-off** of having a lot of load on your server.
+>- Because you can imagine if you're polling, let's say every 0.1 second because if you really wanna give that instantaneous feeling for a chat app, you're gonna wanna poll even multiple times per second. So let's go with every 0.1 seconds.
+>- That means that you're gonna be issuing 10 requests per second for one client.
+
+>- Now imagine the system at scale, suddenly you've got, thousands, tens of thousands, potentially even millions of users issuing 10 requests per second just to get messages.
+>- That's a lot of load, to put on your server, and so that's where polling starts to lose some of its appeal and that's where streaming comes into play.
+
+> The way that ***streaming*** works is instead of having your client repeatedly request data from your server, you're gonna have your client open a long lived connection with your server and typically this is done through what's called a socket.
+>- A socket is basically a file that lives on your computer that your computer can write to and read from, to communicate with another computer, in a long lived connection kind of way.
+>- You can loosely think of a socket as a portal into another computer, into another machine that you can reach through or rather communicate through if you wanna have two machines communicate with each other without having to repeatedly send requests.
+>- Just an open connection that lives so long as neither of the two machines close it or so long as the network is healthy.
+>- Going back to the example of chat app, your server would push messages, new messages, through this connection, to your client and that's gonna be, the streaming in action.
+>- So basically your client is streaming data, from your server.
+>- Now the key point, to retain about streaming is that unlike with polling where your client is the one requesting data from your server and your server only sends data to your client, when it receives a request, with streaming, your client is merely saying, *"Hey server, I'm listening to you if you wanna give me data, I'm not requesting for data, I'm just listening, I'm here, you can talk to me."*
+>- And then it is the server's job to actually send that data out to the client, whenever the server wants to or whenever the server has an update here basically you have to implement your business logic, on the server side.
+>- Your server will no longer be the sort of passive thing in your system instead, it'll have to proactively send data to the client.
+>- And by the way, you may have heard the term pushing used before and if not, you are hearing it now, people will often call this act of having servers send data proactively so, to clients as pushing. Instead of basically waiting to get a request, they will proactively push data, to clients.
+
+>- What streaming allows you to do, is it allows you to have a continuous stream of data.
+>- So if we're going back to the example of the chat app, it would allow your clients to continuously receive new messages so long as our server correctly pushes new messages the second that it gets them but it would allow your clients to continuously get these new messages without having to repeatedly request them from your server.
+>- And so suddenly you can have that instantaneous experience in your chat app without having to issue 10 requests per second, per client, but just by having, one long lived connection, per client.
+
+> *Now it is important to note that streaming is not necessarily better than polling, here based on the chat app example, streaming definitely comes across as superior to polling. But the truth is, depending on your use case, depending on the product or service that your system supports, polling might actually be better than streaming or of course streaming might be better than polling. So here's its gonna be your job in a systems design interview to understand what functionality your system is gonna support and to then decide accordingly whether you should use polling, streaming or neither.*
+
+> The general rule of thumb is gonna be that if you need some instantaneous experience or if you need data updated, very frequently, then you're likely gonna use streaming but if you need data updated not too frequently, maybe every 30 seconds, maybe every minute, maybe every five minutes, then polling might be more useful.
+
+>- So if you're building a system for currency exchange, maybe you're gonna need live updates to your currency pairs, to the prices of currencies, then you're probably gonna wanna use streaming.
+>- If you're building a chat app and you need that instantaneous type of experience then you're probably gonna need streaming, but if you're building maybe a dashboard that monitors stock prices but more to give you a snapshot of stock prices at any given point in time, but not necessarily to allow your users to do live trading, then maybe you don't need to stream there because maybe you only need your prices updated every 30 seconds or every five minutes and so there you might prefer polling or maybe you're building that application that monitors temperature changes, in that case you might prefer polling because there might be no real need to have an open connection, at all times between clients and servers in that case.
+
+> The main thing is that you're gonna wanna know what functionality, your system has to support, and depending on that, you're gonna have to decide whether you wanna go with the polling approach, a streaming approach, or something entirely different.
+
+---

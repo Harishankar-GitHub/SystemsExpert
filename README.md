@@ -31,3 +31,4 @@
 15. [Replication And Sharding](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#15-replication-and-sharding)
 16. [Leader Election](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#16-leader-election)
 17. [Peer-To-Peer Networks](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#17-peer-to-peer-networks)
+18. [Polling And Streaming](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#18-polling-and-streaming)
