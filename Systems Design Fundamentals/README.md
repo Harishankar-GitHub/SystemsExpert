@@ -1879,3 +1879,102 @@ represented as a grid filled with rectangles that are recursively subdivided int
 >- We can then take advantage of that high availability and of that strong consistency to implement our own leader election in our system in a much simpler way.
 
 ---
+
+### 17. Peer-To-Peer Networks
+>- Equality for all.
+>- Sharing is caring.
+>- Unity makes strength.
+>- The more the merrier.
+>- Teamwork makes the dream work.
+>- Welcome to peer-to-peer networks!
+
+#### 2 Key Terms
+
+- ***Peer-To-Peer Network***
+> A collection of machines referred to as peers that divide a workload between themselves to presumably complete the workload faster than would otherwise be possible. Peer-to-peer networks are often used in file-distribution systems.
+
+- ***Gossip Protocol***
+> When a set of machines talk to each other in a uncoordinated manner in a cluster to spread information through a system without requiring a central source of data.
+
+---
+
+>- Peer-to-peer networks is a very cool topic in systems design and in general computing, it's a very interesting one. It's also relatively advanced which makes it all the more useful to know about for systems design interviews and that's why we cover it here on SystemsExpert.
+>- So perhaps the best way to understand what a peer-to-peer network is and how it works, is to look at a use case.
+
+>- And so here, I want you to imagine that you are designing a system for some big tech company where you're gonna want to be able to deploy or transfer large files to thousands of machines at once.
+
+>- For example, a video file from security cam every 15 mins or so.
+>- And since we're building this system for a big tech company, we can assume that the system is gonna live in a powerful data center owned by the big tech company and so we're gonna assume that our system has a total network throughput of 40 gigabits per second.
+>- *And 40 gigabits per second comes down to five gigabytes per second. There are eight bits in one byte, so you divide 40 by eight and you get five gigabytes per second.*
+>- This is a reasonable network throughput to assume for an advanced data center.
+>- But okay, so now we've got all of our requirements and all of the info that we need to really understand how good the system really is and how well it's gonna operate, and so with just some simple math, we can see that at any point when we're wanna actually transfer a five gigabyte file, if we have a network throughput for our system of five gigabytes per second, and we wanna send the five gigabyte file to 1,000 machines, then this operation of transferring the file to 1,000 machines is gonna take 1,000 seconds.
+>- It'll take one second to transfer the five gigabyte file to the first machine, another second to transfer the five gigabyte file to the second machine and so on and so forth, 1,000 times 1,000 seconds.
+>- And 1,000 seconds comes down to roughly 17 minutes. 17 minutes is actually quite long for this type of operation, especially if you assume that we might do this repeatedly throughout the day.
+>- Maybe we're gonna do this transfer of five gigabyte files every 15 minutes and that's really bad if we have this operation that takes 17 minutes.
+
+>- So here we can clearly see that we have a **bottleneck** in our system.
+>- So how could we improve this system?
+>- Well, maybe instead of only having one machine serving these five gigabyte files, why don't we have multiple machines?
+>- So instead of having only one machine serving these five gigabyte files, we're gonna have let's say, 10 machines serving these five gigabyte files.
+>- And here we have our 1,000 machines that are now gonna be requesting the five gigabyte files in a distributed manner from these 10 machines.
+>- And so assuming that our 1,000 machines do so in a very balanced way between the 10 machines here, and this would basically speed up our system 10 times over.
+
+>- But we also run into a problem with this approach because, first of all, the speed of our operation of transferring a five gigabyte file still isn't great.
+>- 17 minutes divided by 10 is still roughly a minute and a half, which isn't amazing.
+>- It's not bad comparatively speaking, but it's not amazing depending on our use case it might actually be pretty bad.
+>- But also that means that these five gigabyte files now need to be replicated on all of these 10 machines.
+>- Do we wanna replicate that data across all of these machines ?
+
+>- Maybe not, maybe there's a better solution.
+>- What about **Sharding** ?
+>- Maybe we could shard our five gigabyte files, in other words, we could have some of the files live in one machine, oher files live in another machine and so on and so forth.
+>- But then we run back into the first issue of whenever we try to transfer one of the files, then all of the 1,000 machines are gonna be going to the same machine that has that particular file and we'll have once again a bottleneck and it won't be great, we'll be back with the 17 minute operation.
+
+> ***So, so far all of our approaches are problematic and this is where peer-to-peer networks come into play.***
+>- So let's see how we could improve this system using a peer-to-peer network.
+>- When you're dealing with a peer-to-peer network, you call the machines in that peer-to-peer network, **peers**.
+>- The idea is that they are peers that are gonna work together toward a common goal.
+>- So we'll go back to the first solution, we just have one machine trying to send this five gigabyte file to 1,000 machines and we saw that we had a bottleneck.
+>- Well, what if instead of sending this five gigabyte file to each and every one of the 1,000 machines, what if instead we were to split up this five gigabyte file?
+>- We were to split it up into very small chunks, very small pieces of the five gigabyte file and then we were to send these chunks to all of our peers and then we were to let our peers communicate with one another to grab the missing chunks that they all need to create the final file and let them basically build up their own total file.
+>- *That is the general gist of a peer-to-peer network.*
+
+>- More concretely, in this example, let's imagine that we were to divide our five gigabyte file into 1,000 five megabyte files.
+>- So divide 5GB into 1,000 and you get a bunch of 5MB files.
+>- Imagine that we were to send out one five megabyte file per machine.
+>- Since we have 1,000 five megabyte files and 1,000 machines, we could send out one five megabyte file to each machine.
+>- This would take one second because 1,000 five megabyte files is five gigabytes.
+>- It's effectively our five gigabyte file and if we have a network throughput of five gigabytes per second, then we can send five gigabytes in one second, we can send 1000 chunks of five megabytes in one second to 1,000 machines.
+
+> And here we're ignoring the overhead of establishing connections over the network or of handling network partitions. We're gonna put that aside for now 'cause that doesn't really matter that much to understand peer-to-peer networks.
+>- So we can transfer these 1,000 five megabyte files in one second and then you can imagine that for a single machine to get the entire five gigabyte file, if a single machine has one five megabyte file, it now needs the 999 other five megabyte files.
+>- And so, a single machine needs to talk to the 999 other machines to get all of the missing pieces that it doesn't have.
+
+> How long would this take for a single machine to do?
+>- It would take 0.999 seconds, one second divided by 1000 multiplied by 999.
+>- So for a single machine, it would take one second to get the rest of the five gigabyte file from all of the other machines.
+>- But the beauty in this is that, when two machines out of 1000 machines talk to each other, two other machines can talk to each other at the same time.
+>- The idea is that here you can parallelize five megabyte transfers because while two of your machines are talking to each other and one of them is transferring five megabytes of the file, two other machines can simultaneously talk to each other and have one of them transfer five megabytes of the file.
+
+>- So the idea is, compared to our first solution where we had the single machine, sending five gigabytes to one machine, then to another machine, then to a third machine, and we had this bottleneck.
+>- Whereas with our new tentative solution, the peer-to-peer network solution, we have a bunch of arrows or a bunch of communications happening all at once.
+>- That's how a peer-to-peer network works at a high level.
+>- So this is how the **gossip protocol** or **epidemic protocol** basically works.
+>- And this idea of having pieces of information that are effectively mappings, effectively pieces of a hash table, this is actually known as a **D**istributed **H**ash **T**able (**DHT**).
+
+>- Peer-to-peer networks often operate by having a distributed hash table of what peers hold what pieces of data.
+>- But so all in all, this is how peer-to-peer systems work.
+>- They're very fast and they have lots of applications.
+>- One good example is a system called Kraken that was created by Uber and that's used at Uber.
+
+>- And really one way to think about it, conceptually to think about why this is so, so much better than our naive solution that we talked about at the beginning is just because of all of the connections that you can establish between peers when you have the peers communicating with one another instead of when you have them just communicating with one single machine.
+
+> And on a final note, peer-to-peer networks really have far reaching applications.
+
+> Beyond the above examples, one example of the peer-to-peer network application that you may very well be familiar with is the example of ***torrenting***.
+>- Torrenting basically involves one person or one machine that has a piece of data, typically a large file like a movie and spreading that file in chunks to a bunch of peers, to a bunch of other machines all over the world, presumably.
+>- And then having these peers work together to obtain all of the missing pieces that they need to puzzle them back together and then to finally get the end product, the full file.
+
+>- And amongst other things, what it accomplishes is that, that main person or main machine that had the original file, doesn't need to send the full file to thousands or hundreds of thousands of people, all that it needs to do is send all of the chunks of the file and then the peers are just gonna take over.
+
+---
