@@ -2253,3 +2253,88 @@ represented as a grid filled with rectangles that are recursively subdivided int
 >- It's certainly doable but it's a little bit more complicated.
 
 ---
+
+### 21. Logging And Monitoring
+> In order to properly understand and diagnose issues that crop up within a system, it's critical to have mechanisms in place that create audit trails of various events that occur within said system.
+
+#### 3 Key Terms
+
+- ***Logging***
+> The act of collecting and storing logs--useful information about events in your system. Typically your programs will output log messages to its STDOUT or STDERR pipes, which will automatically get aggregated into a **centralized logging solution**.
+
+- ***Monitoring***
+> The process of having visibility into a system's key metrics, monitoring is typically implemented by collecting important events in a system and aggregating them in human-readable charts.
+
+- ***Alerting***
+> The process through which system administrators get notified when critical system issues occur. Alerting can be set up by defining specific thresholds on monitoring charts, past which alerts are sent to a communication channel like Slack.
+
+---
+
+>- Logging and monitoring are another two concepts or things in systems design that are very simple, very easy to grasp but that are nonetheless very important.
+>- Especially as your system grows larger and larger with more and more users.
+
+#### What is logging?
+>- Well, first of all lets look at a scenario that you might find yourself in if you are building a system or rather managing a system.
+>- Let's imagine that you are running a website like AlgoExpert, meaning a service where you sell some sort of product and you charge users money for that product.
+>- You could imagine that as your system grows larger and larger, one day you might have a customer reach out to you and tell you, *"Hey, I just tried purchasing your product, I got a success message, telling me that I did in fact purchase your product. My credit card got charged, but I don't have access to the product. I tried refreshing the page, I don't have access. What is going on?"*
+>- And of course, this would be a really bad issue and its the type of issue that might be tough to understand because you might be thinking, well this has never happened before, we've got tens of thousands of users, no one has ever experienced this, we're not sure how to reproduce this.
+>- We can't really tell the customer, *"hey could you retry purchasing the product."*
+>- We have no real visibility into what caused the issue, but clearly this seems like a very edge case issue, something that happens only once every so often but it's still a very bad issue.
+
+>- How would we go about debugging this? And of course, this is where logging comes into play.
+>- If you were dealing with this type of issue in lets say a coding interview problem, or as you were developing your service, as you are writing your front end code or as you are writing your API, you would likely debug this issue by putting logs.
+>- If you are writing in Python, you would put print statements. If you are writing in JavaScript, you would use the console.log function.
+>- The point is, you would log stuff to get more information about your code and to try and debug this issue.
+>- And so here with your customer who got incorrectly charged, wouldn't it be great if you had access to logs related to that user's operations, or that user's behavior.
+>- Logs that showed you what exactly happened when they tried purchasing your product and got charged, even though they weren't given access to your product.
+
+>- And so in the context of systems design, we talk about logging, we are referring to literally logging stuff in your code, but we're also referring to somehow, having some sort of system or service in place that is going to collect all of your logs and store them in some kind of database so that you can go to that database and look through the logs at a later time to debug issues like this one that we just talked about.
+> That's what logging is.
+
+>- And so the way this works in practice is when you're writing your application code, you're going to put log statements in your code to log important information, things like errors, or important operations or requests that your users are performing and depending on the language that you are writing your application in, you might use a special library to format these logs because you really want to make sure that your logs have as much useful information in them as possible and so here two popular formats for logs that are often used in systems are Syslog or JSON.
+>- So you would sprinkle your code with these logs and then you would have a service that collects these logs and stores them in some database.
+>- So all that to say, logging while very simple, is incredibly important because it's what will allow you to actually debug issues at scale when you're dealing with a huge system.
+>- And typically, if you work at a large company, or at a company that has rigorous engineering practices in place, you are going to have to have logs in your system.
+
+#### What is monitoring?
+>- Monitoring is similar to logging in the sense that it's a tool or a thing that makes managing a system a lot easier and a lot better.
+>- You could imagine that if you've built a system that's growing, that's becoming bigger and bigger with more and more users.
+>- You are going to want to have visibility into your system's health, your system's performance, your system's general status.
+>- And how can you have that visibility? By making sure that you've designed your system in such a way that you gather meaningful metrics and that you have tools to monitor those metrics.
+
+>- So for instance, imagine that you've designed and built a system like AlgoExpert. You could imagine that as AlgoExpert grows and grows, you're going to want to have visibility into a lot of operations on AlgoExpert.
+
+> For instance, you might want to be able to see how your code execution engine is doing. Are users getting a lot of errors when they're running code? Are users getting a lot of latency when they're running code? What about your payment service? What about your authentication service? How many sales are you getting per week, per day, per hour? How many people are logging into your platform every day? What authentication service are they using? Is Facebook authentication more popular? Is GitHub authentication more popular? Google authentication, all of these things are the kinds of insights that you could imagine might be useful if you are designing, building and maintaining a system like AlgoExpert.
+>- So basically, in the context or systems design and systems design interviews, monitoring comes down to making sure that in your overall system you've got systems in play to monitor important metrics about your overall system.
+>- And so there are a lot of ways that you can gather metrics, one of them, which is kind of simple is to build some sort of service or perhaps you can use a pre-built tool that'll do that for you.
+>- To scrape your logs, so you have to make sure that you've got robust logging in place. And to create metrics out of them.
+>- As you can imagine, your logs might contain information that you could use to create meaningful metrics about your system.
+>- Now the problem with this is that, first of all you are limited by your logs. In other words, you need to make sure that your logs contain the information that you want visibility over in your metrics.
+
+>- As an example, if you want to measure the latency of specific requests in your system, you need to make sure that you log the latency of each request in your system.
+>- An another limitation of this way of gathering metrics is that, if you ever decide to change your logs, you risk breaking your metrics system or your monitoring system and that's obviously not ideal.
+>- So another popular way of gathering metrics is to use a time-series database, which is basically a specialized database specifically tailored for data that is related to time or data that might be measured over time and a few popular examples of time-series databases include InfluxDB, Graphite, Prometheus.
+
+>- But so the point is, you use these specialized databases and you have your servers periodically send metrics to these databases or to this one central database that you might have.
+>- And then you can query that database and usually that involves using a special query language.
+>- You can also use tools that'll make pretty graphs out of the values stored in the database.
+
+> And what's great about gathering metrics is that you can really build robust monitoring services that you can customize and they're not necessarily tied to your logging service or your logging system, so this can be a nice serve at perhaps more involved way of building monitoring into your system.
+
+> And then one final thing that also important to note is **alerting**.
+>- When you do have nice monitoring built into your system, you could imagine that you want this monitoring to be really useful for you.
+>- So for instance, if you are looking at error rates, you might want to know when your error rates spike up past the threshold that you would deem unacceptable.
+>- And so ideally, you would want to be alerted when something like that happens.
+>- And this is where you can pretty cool things like for instance, you can hook up your monitoring system into something like Slack, the popular chat app that a lot of companies use.
+>- So you can hook up your monitoring system in there such that when there is something that you deem valuable or important to know about, it will alert you.
+>- It'll send a message on Slack, telling you, *"hey you've gotten two purchase errors in the past minute, something might be wrong, go check it out. Or hey, the average latency of your last a hundred run code operations on AlgoExpert exceeded two seconds. This is something that's abnormal, go check it out."*
+
+>- So having a great alerting system can go hand in hand with having a great monitoring system.
+>- All in all, logging and monitoring are two pretty simple concepts to grasp they can become really important when you've built a big system.
+>- They're the kind of things that might not be important on day one when your system doesn't have that much activity or that much usage but they're also the kind of things that can quickly become extremely important as you grow, because if you do ever find yourself in the situation for instance where the customer got incorrectly charged or if you find yourself in a situation where you've got a bunch of errors but you don't know about them because you don't have proper monitoring in place.
+>- Then your not going to be in a good situation.
+
+> So in a systems design interview, while logging and monitoring might not be the most critical components of the system that you're designing.
+> They're great tools to have in your tool belt to really polish your system and to make it the best system possible.
+
+---
