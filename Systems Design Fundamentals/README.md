@@ -2055,3 +2055,90 @@ represented as a grid filled with rectangles that are recursively subdivided int
 > The main thing is that you're gonna wanna know what functionality, your system has to support, and depending on that, you're gonna have to decide whether you wanna go with the polling approach, a streaming approach, or something entirely different.
 
 ---
+
+### 19. Configuration
+> The config file is like the genome of a computer application; it stores parameters that define your system's critical settings, much like your DNA stores the genes that define your physical characteristics.
+
+> Unlike its biological counterpart though, the config file is easily editable. No gene therapy needed!
+
+#### 3 Prerequisites
+
+- ***JSON***
+> A file format heavily used in APIs and configuration. Stands for **J**ava**S**cript **O**bject **N**otation, Example:
+```
+{
+	"version": 1.0,
+	"name": "AlgoExpert Configuration"
+}
+```
+
+- ***YAML***
+> A file format mostly used in configuration. Example:
+```
+	version: 1.0,
+	name: AlgoExpert Configuration
+```
+
+- ***Key-Value Store***
+> A Key-Value Store is a flexible NoSQL database that's often used for caching and dynamic configuration. Popular options include DynamoDB, Etcd, Redis and ZooKeeper.
+
+---
+
+#### 1 Key Term
+
+- ***Configuration***
+> A set of parameters or constants that are critical to a system. Configuration is typically written in **JSON** or **YAML** and can be either **static**, meaning that it's hard-coded in and shipped with your system's application code (like frontend code, for instance), or **dynamic**, meaning that it lives outside of your system's application code.
+
+---
+
+>- Configuration is a very simple part of systems design.
+>- And it's often overlooked because of it's simplicity, but despite it's simplicity, it is very important.
+>- In fact, most large scale distributed systems are gonna be relying a lot on configuration, so it's very important for you to know how configuration works, to know what it is, and to have it as a tool in your tool belt when you are in a systems design interview.
+
+- **So what is configuration?**
+>- Well, to put it simply, configuration is a set of parameters or a set of constants that your system or application are going to use.
+>- But instead of having these parameters or these constants deeply intertwined in your code, you're going to write them or configure them elsewhere in a seemingly isolated file.
+
+>- Typically, configuration is written in JSON format or in YAML format.
+>- This makes it very easy to read and to edit regardless of the language that your underlying application is using or written in.
+>- So really, a very simple way to think about configuration is just a set of constants that you use in your application.
+>- And this is why configuration is often overlooked because it seems so simple at face value.
+
+>- Now, one thing that's important to note about configuration is that they're two primary types of configuration.
+>- There's what's known as ***static configuration***, and what's known as ***dynamic configuration***.
+
+>- Static configuration is configuration that's gonna be bundled or packaged with your application code.
+>- So, basically what that means is that, if you wanna change some configuration, you should deploy the entire code because the config file would be packaged with your code.
+>- This is both pros and cons.
+
+>- Some of the pros are that, typically, when you submit a change to your code base, it's gonna go through a thorough code review process.
+>- At least if you're working as part of a large team that has proper code review practices set up.
+
+>- This means that if your configuration change happens to break your application, that breakage will likely be caught in tests that you might have written or in quality assurance testing that might happen before you deploy your application.
+>- So basically, static configuration tends to be a little safer, but it's also gonna make it a little bit slower to see changes related to your configuration happen because you'll have to wait for your entire application to be redeployed.
+
+>- On the other hand, dynamic configuration is configuration that is completely separated from your application code.
+>- This means that you can change your configuration and at a moment's notice, the configuration changes are gonna take effect and have ramifications on your system.
+>- So, dynamic configuration is a little bit more complex because it naturally has to be backed by some sort of database that your application or your system is gonna be querying to see, basically, what the current configuration is.
+
+>- But then, dynamic configuration gives you a lot of power and flexibility because you can imagine you could actually build a user interface, a UI, on top of your configuration which can then allow your team, your engineers, your systems administrators to make changes to the configuration with the click of a button.
+
+>- Now as you can imagine, this comes with both pros and cons.
+>- The pros are that you can make changes to your configuration and see those changes take effect or have an impact very quickly, meaning that you can deploy new features or deploy new things very fast.
+>- But, this also comes with a lot more risk.
+>- Suddenly, you might not have a lot of thorough review when someone wants to make a configuration change.
+>- You might not have tests that run when your configuration changes, and that might be bad for your system as a whole.
+
+>- Now, what ends up happening typically in big companies is that you do have dynamic configuration because it comes with so many benefits, but then you build tools around that dynamic configuration to still make it safe.
+>- So for instance, you might build a review system on top of the configuration user interface.
+>- You might implement access controls to only allow certain people in your organization to make configuration changes.
+>- You might even build deployment systems around configuration.
+
+>- At large companies like Google, you can build very complex systems such that when you make a configuration change, it only gets deployed to maybe 1% of users or 10% of users.
+>- That way, even though your configuration change has impact on your application very quickly, it only effects a few users.
+>- That way, you can more safely roll out changes externally.
+
+>- So basically, the key point to take away from dynamic configuration is that it gives you a lot of power, but to quote our friendly neighborhood Spiderman, with great power comes great responsibility.
+>- And having a system that relies on dynamic configuration often means that either you really have to have that great responsibility or you have to build slightly complex tools to enforce that great responsibility on your team and organization.
+
+---
