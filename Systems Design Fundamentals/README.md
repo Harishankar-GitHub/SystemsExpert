@@ -2142,3 +2142,114 @@ represented as a grid filled with rectangles that are recursively subdivided int
 >- And having a system that relies on dynamic configuration often means that either you really have to have that great responsibility or you have to build slightly complex tools to enforce that great responsibility on your team and organization.
 
 ---
+
+### 20. Rate Limiting
+>- *Poke*
+>- *Poke*
+>- *Poke*
+>- *Po--*
+
+> Too many pokes! You just got rate limited.
+
+#### 4 Key Terms
+
+- ***Rate Limiting***
+> The act of limiting the number of requests sent to or from a system. Rate limiting is most often used to limit the number of incoming requests in order to prevent **DoS attacks** and can be enforced at the IP-address level, at the user-account level, or at the region level, for example. Rate limiting can also be implemented in tiers; for instance, a type of network request could be limited to 1 per second, 5 per 10 seconds, and 10 per minute.
+
+- ***DoS Attack***
+> Short for *"denial-of-service attack"*, a DoS attack is an attack in which a malicious user tries to bring down or damage a system in order to render it unavailable to users. Much of the time, it consists of flooding it with traffic. Some DoS attacks are easily preventable with rate limiting, while others can be far trickier to defend against.
+
+- ***DDoS Attack***
+> Short for *"distributed denial-of-service attack"*, a DDoS attack is a DoS attack in which the traffic flooding the target system comes from many different sources (like thousands of machines), making it much harder to defend against.
+
+- ***Redis***
+> An in-memory key-value store. Does offer some persistent storage options but is typically used as a really fast, best-effort caching solution. Redis is also often used to implement **rate limiting**.
+
+> Learn more: [https://redis.io/](https://redis.io/)
+
+---
+
+>- Rate limiting is a pretty simple concept to grasp, but it's very important in systems design especially when dealing with large-scale systems.
+>- Mainly because it has a lot of ramifications including security ramifications and performance ramifications.
+>- So to put it simply, rate limiting is basically setting some sort of threshold on certain operations, past which these operations will return errors.
+>- Or an even simpler way to put it is, rate limiting is limiting the amount of operations that can be performed in a given amount of time.
+
+>- So if we look at a very simple system, we've got a client or a set of clients that interact with a server or a set of servers and then the servers speak to a database.
+>- Which returns data to the servers which then returns the data back to the clients, very simple system.
+>- And so if you wanted to rate limit this system, you could imagine that maybe you would say, I only want to allow let's say two requests every 10 seconds in this system.
+>- So if a client issued a request to the server, the server would say, *"Okay this is the first request in 10 seconds, I'm gonna go to the database."*
+>- The database would return data and then the server would return that data back to the client.
+>- Then a second request would come through, the server would say, *"Okay, second request in 10 seconds, that's fine I'm gonna go to the database."*
+>- The database would return the data and then the server would return that data to the client.
+>- And then if the client or one of the clients issued a third request within those 10 seconds, the server would say, *"Wait a second, we don't allow more than two requests within 10 seconds, so I'm immediately gonna return an error."* I'm immediately gonna say, *"Hey, you've issued too many requests, I can't handle this right now."*
+>- And if the clients continued to issue requests within these 10 seconds, the server would continue to return errors, saying, *"Hey we won't accept these requests right now."*
+
+>- Now the reason rate limiting is so important is that if you don't rate limit certain operations in a system, you run the risk of having your system basically be brought down by malicious actors.
+>- There's a very common attack in systems design or in computing in general rather known as a Denial of Service attack or a DOS attack D-o-S.
+>- And what a Denial of Service attack is, is when a bad actor floods a system with a bunch of requests, a bunch of traffic and basically brings the system down.
+>- Because the system can't handle traffic anymore or can't handle it properly, can't handle it as fast as it should be, because basically the bad actor is clogging the system.
+>- The system doesn't have enough throughput to handle all of the traffic.
+
+>- Rate limiting can help prevent that from happening, because rate limiting will protect you from getting flooded with traffic.
+>- Past a certain point you'll just throw back errors and say, *"Nope we're not handling this, we're not gonna go clog or database or clog our servers with this stuff, we're just gonna return errors."*
+
+>- And so a **good example** of rate limiting in real life or in a real system is on AlgoExpert for our code execution engine.
+>- As you might imagine, we don't want users to be spamming the code execution engine needlessly.
+>- So we have some rate limiting in place to prevent users from doing just that.
+>- Because we don't want people to abuse the system and to spam the run code operation.
+
+>- But to be clear, rate limiting is useful for all sorts of operations, not necessarily obviously taxing operations like running code on AlgoExpert.
+>- Even things like issuing a request to get a web page can be operations that would be worth rate limiting.
+>- And by the way, you can rate limit on a bunch of different things.
+
+>- For instance, you can rate limit based on users. For instance you will identify a certain user that a request is coming from, and you'll do so maybe by looking at headers in a request, you might see authentication credentials that'll allow you to identify the user or something else.
+>- But once you've identified the user you'll say, *"Okay, for this particular user, we will rate limit an operation at let's say, three operations per minute."*
+
+>- You could also rate limit on IP address, you could rate limit on region, you could rate limit on your entire system as a whole.
+>- For instance you might say, *"Hey we don't want our servers to ever handle more than 10,000 requests per minute. So if we ever exceed that number, we're just gonna start returning errors."*
+>- Maybe this is because you have some sort of internal quota that you have to satisfy, and you just cannot handle more than 10,000 requests per minute.
+>- Maybe it's for another reason, maybe you wanna prevent a certain region of the world or a certain organization that falls under the same IP address from abusing your system.
+>- Who knows but the point is you can rate limit on a bunch of different factors or things.
+
+> ***It is important to note that rate limiting, while very important and very effective, isn't the ultimate way to protect your system from attacks.***
+>- If we're talking about Denial of Service attacks, while simple Denial of Service attacks may be thwarted by rate limiting.
+>- If your system becomes the target of a more complicated attack like, a Distributed Denial of Service attack, a DDoS attack, then things get a lot more complicated.
+>- Because a DDoS attack tries to circumnavigate something like rate limiting, by having a bunch of different machines that might not be identifiable as being part of the same organization or the same group and having all of these machines, inundate your system with traffic.
+>- And then it becomes a lot tougher to be able to rate limit because you can't necessarily recognize that those machines are working together.
+>- So that's just something important to keep in mind and this is why you still see to this day, huge companies, huge systems like Wikipedia or Blizzard Entertainment, the video game company that get their servers brought down by DDoS attacks.
+
+>- In distributed systems, you typically handle your rate limiting not in-memory in your servers but rather in a separated service or database that all of your servers are gonna be able to speak to you.
+>- And so one popular option for this that is actually used on AlgoExpert, is something called Redis.
+>- You can think of Redis as an in-memory key value database or key value store, that can be used for rate limiting.
+>- And basically when your clients would issue requests to your servers, your servers would first check Redis.
+>- It would first check Redis and say, *"Hey, are we doing fine from the rate limiting point of view?"*
+>- Then Redis would respond and say, *"Hey we're doing fine or Hey, we're not doing fine."*
+>- And if you're not doing fine which means that you've hit the maximum amount of operations in a given time, then your server would go back to the client with an error.
+>- Or if you haven't, if you're fine you're doing fine, you're under the threshold, then your server would go to the database, and then of course the rest of the operation would go smoothly from there.
+
+>- Okay and the last thing that's important to know about rate limiting is that you can make your rate limiting a lot more complicated than what we've seen here.
+>- So far we've just looked at rate limiting operations based on a single number of operations, in a given amount of time.
+>- Like in our example before, one request every five seconds. But you could imagine that depending on your use case, you might want a rate limit a little bit differently.
+
+>- So let's look at the use case for us on AlgoExpert with the code execution engine.
+>- On the one hand, we don't want users to spam the run code button or to spam the run code operation. Because that just doesn't make sense and it would not be good for our system.
+>- On the other hand, we do want users to be able to press the run code button repeatedly. Because you can imagine that that's a nice thing for users to be able to do, at least to press the run code button maybe twice or three times in a row consecutively very quickly.
+>- That's something that you might want to allow your users to do.
+>- So maybe we're gonna say, *"Okay we'll rate limit the run code operation to once every 0.5 seconds."*
+>- That way a user will not be able to really abuse it and spam the run code operation non-stop. But they'll be able to do it, every 0.5 seconds, so they'll be able to click it a few times in a row.
+
+>- But then you might tell yourself, well wait a second that's good, we don't allow them to completely abuse it and spam it, but they'll still be able to spam it every 0.5 seconds.
+>- So you could imagine that a user could just stay there and click the run code button, or write a script that hits our API every 0.5 seconds and that wouldn't be great.
+
+>- So maybe we're gonna also put another limit, to I don't know, let's say three operations, three run code operations in the span of 10 seconds.
+>- So we have tiers, we say you can only run code every 0.5 seconds, but you can only run code three times in 10 seconds.
+>- And then you might have an even bigger tier, of say, you can only run code 10 times in one minute, because beyond ten times in a minute, there's something fishy going on.
+>- You're clearly no longer just using the platform as intended, you're trying to do something malicious or something weird.
+
+> So this concept of tier-based rate limiting, is a thing and it's very important. You can definitely imagine use cases where you would want to do that.
+>- The only thing to keep in mind is that it complicates your rate limiting a lot.
+>- Your rate limiting is gonna be a lot more complicated to code out than the simple example that we had earlier.
+>- You'll have to keep track of windows of time and perform a lot more logic in your code.
+>- It's certainly doable but it's a little bit more complicated.
+
+---
