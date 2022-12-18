@@ -35,3 +35,4 @@
 19. [Configuration](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#19-configuration)
 20. [Rate Limiting](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#20-rate-limiting)
 21. [Logging and Monitoring](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#21-logging-and-monitoring)
+22. [Publish/Subscribe Pattern]()

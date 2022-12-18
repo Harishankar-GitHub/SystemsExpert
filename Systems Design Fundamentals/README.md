@@ -2338,3 +2338,129 @@ represented as a grid filled with rectangles that are recursively subdivided int
 > They're great tools to have in your tool belt to really polish your system and to make it the best system possible.
 
 ---
+
+### 22. Publish/Subscribe Pattern
+> Publish/Subscribe. Press/Tug. Produce/Consume. Push/Pull. Send/Receive. Throw/Catch. Thrust/Retrieve.
+> Three of these can be used interchangeably in the context of systems design. The others cannot.
+
+#### 4 Key Terms
+
+- ***Publish/Subscribe Pattern***
+> Often shortened as **Pub/Sub**, the Publish/Subscribe pattern is a popular messaging model that consists of **publishers** and **subscribers**. Publishers publish messages to special **topics** (sometimes called **channels**) without caring about or even knowing who will read those messages, and subscribers subscribe to topics and read messages coming through those topics.
+
+> Pub/Sub systems often come with very powerful guarantees like **at-least-once delivery, persistant storage, ordering** of messages, and **replayability** of messages.
+
+- ***Idempotent Operation***
+> An operation that has the same ultimate outcome regardless of how many times it's performed. If an operation can be performed multiple times without changing its overall effect, it's idempotent. Operations performed through a **Pub/Sub** messaging system typically have to be idempotent, since Pub/Sub systems tend to allow the same messages to be consumed multiple times.
+
+> For example, increasing an integer value in a database is *not* an idempotent operation, since repeating this operation will not have the same effect as if it had been performed only once. Conversely, setting a value to "COMPLETE" *is* an idempotent operation, since repeating this operation will always yield the same result: the value will be "COMPLETE".
+
+- ***Apache Kafka***
+> A distributed messaging system created by LinkedIn. Very useful when using the **streaming** paradigm as oppossed to **polling**.
+> Learn more: [https://kafka.apache.org/](https://kafka.apache.org/)
+
+- ***Cloud Pub/Sub***
+> A highly-scalable Pub/Sub messaging service created by Google. Guarantees **at-least-once delivery** of messages and supports "rewinding" in order to reprocess messages.
+> Learn more: [https://cloud.google.com/pubsub/](https://cloud.google.com/pubsub/)
+
+---
+
+> In order to fully understand the pub/sub pattern, and in order to appreciate its use, we have to remind ourselves of another concept in systems design, which is streaming.
+>- Where we would have clients establishing long-lived connections with servers and effectively listening for data from those servers. In the case of our chat application, that data consisted of messages, like texts sent from a user.
+>- Now that example worked very well for that super simple system, but what would happen if we wanted to expand that system? What would happen if we wanted that system to become a large-scale distributed system, which is likely what we would want, if we were building a real product.
+>- Well, we would probably encounter some issues pretty quickly. Because the second that our system becomes a distributed system, we have to start asking ourselves, how are we gonna handle network partitions, for example? What do we do if our clients lose their connection with the servers? What do we do if our servers die? What happens to the messages? Do the messages just disappear? Will our clients be able to retrieve messages if they've lost a connection?
+>- These are all really important questions. And in a lot of large-scale systems, the answer to that is, those messages stay, we have access to those messages, somehow, our clients are indeed able to retrieve those messages.
+
+>- And perhaps here the chat application (discussed in the above topics) is not the best example because it doesn't really invoke a sense of hyper importance or urgency, but let's say we were dealing with a stockbroker.
+>- And we had clients who were streaming or listening to servers for data about stock prices, and they were relying on those stock prices to execute really important trades with a lot of money on the table.
+>- What would happen if there were network partition? Well, we certainly wouldn't want to suddenly lose access to a bunch of data/stock prices.
+
+>- So what I'm hinting at here is that the second that we get into distributed systems, we start to have to deal with persistent storage for a lot of parts of our system. Because if we want our clients to be able to retrieve some form of data, then that data will almost certainly have to have been stored in persistent storage.
+>- So at this point, you might be thinking, okay, great, just store the data in a database.
+>- But a database might not be what you necessarily want, or at least your typical database might not be what you necessarily want, for any and all applications.
+>- Maybe the data that we're really concerned with storing here is some form of asynchronous operation, like imagine a client basically triggers an asynchronous operation, some operation that doesn't block them from doing other stuff, and that operation, goes to the servers and then has to take some time to happen and then eventually, once it completes, it has to go back to the client or the response of that operation, the result of that operation, eventually, once it completes, has to go back to the clients.
+
+>- That might not be something that you would wanna store in your typical database solution. So maybe at that point, you're thinking, well, okay, why don't we implement some form of storage solution at our server level, the servers that our clients are streaming from, or the servers that our clients are issuing these asynchronous operations to, but then you start to run into the issue of, you probably don't want to have your storage solution or this custom-built storage solution at the server level.
+>- Your business logic which is effectively what your server is doing, should likely be separated out from your storage solution, probably you're gonna wanna have nice separation of duties in your system, and so that kind of falls apart.
+> And so all that to say this is where a pub/sub pattern comes into play.
+
+>- So the pub/sub pattern is the paradigm that consists of four entities.
+>- The first entity is gonna be the publisher.
+>- The second entity is gonna be the subscribers.
+>- The third entity is what's called a topic.
+>- Finally, the fourth entity is what's called a message.
+
+> So what are these entities? what are their rules? What do they represent?
+>- Well, the publishers are effectively gonna be the servers in the previous example of the chat application or the stock broker application.
+>- And the servers, their job is to publish data to these topics.
+>- You can think of the topics kind of like channels, conceptually speaking, they are channels of specific information.
+```
+       T1
+P1 =========> S1
+
+       T2
+P2 =========> S2
+
+       T3
+P3 =========> S3
+```
+
+>- So here in topic 1 (T1) you might be publishing a specific type of data and in T2, you might be publishing a different type of data and so on and so forth.
+>- Then the subscribers are gonna be the clients, that were originally listening for data from the servers, now these subscribers are gonna subscribe to topics.
+>- So they are gonna be listening for data or for information from topics.
+
+>- So taking a step back here, in the streaming example, we had our clients who were streaming directly from the servers.
+>- But here with the pub/sub pattern, this is different. The subscribers do not communicate with the servers, they subscribe to topics and the publishers don't communicate with clients or with subscribers, they just publish data to topics.
+>- So this is a very important concent in the pub/sub model.
+
+>- It's the idea of the publishers and the subscribers don't really know about each other.
+>- They just know about these topics.
+>- The topics act as intermediary between the publishers and the subscribers.
+
+> And then the fourth and final entity is messages.
+>- These messages represent some form of data or some operation that is gonna be relevant to the subscribers and that the subscribers are basically gonna be listening for.
+>- So the overarching flow is the publisher publishes data or rather publishes a message to a topic, the subscriber(s), subscribe to that topic, and as messages come into the topic, they are sent out to the subscribers that are subscribed to the topic.
+
+> The message here, is not like a chat message. It refers to a data block. This could contain a chat message like a piece of text, but it could also represent an operation, to execute a stock trade, for example, or anything else. 
+> So that is the pub/sub pattern in a nutshell.
+
+>- These topics here that act as intermediaries between publishers and subscribers are effectively like a database solution.
+>- All of the messages that are gonna be published to topics are going to effectively be stored in persistent storage in those topics, and what that means is that with a pub/sub system, you're guaranteed at-least-once delivery of the messages in a particular topic.
+>- Every message that's sent or published to a topic is probably gonna keep track of some sort of index, or an ID representing all of the subscribers or each of the subscribers rather, that is listening to the topic, and when a message is pushed out to all of the subscribers, the subscribers are then likely going to acknowledge receipt of the message, it'll send back an ACK to the topic, and then the messages are gonna basically flip some sort of flag saying, oh, I've been consumed by subscriber one or I have been consumed by subscriber two, and that's sort of how it might work under the hood.
+
+>- Now, one thing that's very important to note here, which is very much tied to the concept of at-least-once delivery being guaranteed, and the concept of persistent storage, which is the foundation of these topics, because you have these characteristics in a pub/sub system, what that means is that sometimes your messages might actually be sent more than once.
+>- It is at-least-once delivery and not exactly-once delivery.
+>- Exactly once delivery is something that's basically impossible to achieve in a distributed system. At least once delivery is possible, but what that means is that, you might encounter a situation where a message like M1 here gets pushed out to the subscribers, let's say to subscriber S1, but just as it gets pushed out, subscriber S1 maybe loses its connection to this topic. And what happens is S1 gets the message, but it doesn't send back an ACK to topic one. So subscriber S1 has received message one, but it isn't able to tell topic one that it has received message one.
+>- And so what that means is that when subscriber one is eventually gonna reconnect to topic one or re-subscribe to it, message one in topic one is gonna realize that it hasn't been sent to subscriber one, or it'll think that it hasn't been received by subscriber one, and it might be sent a second time.
+>- You see, this is why we have guaranteed at-least-once delivery, that message will be delivered to subscriber one at least once, but it might actually be delivered twice or three times, and this introduces a new concept that's very important to be aware of, when you're dealing with a pub/sub system.
+>- It's the concept of an idempotent operation, or the concept of idempotency.
+>- An idempotent operation is an operation that has the same ultimate outcome regardless of how many times it's performed.
+>- So if a message gets delivered multiple times and it has an non-idempotent operation, that's gonna be bad for the system.
+>- It's possible that even a non-idempotent operation might not be that bad. It's possible that you might be okay with a non-idempotent operation being performed multiple times.
+>- But this is something to keep in mind because oftentimes you won't want to perform non-idempotent operations multiple times, and in those cases, a pub/sub system might have some drawbacks.
+
+>- Now going back to the main characteristics of a pub/sub system, apart from the guaranteed at least once delivery of messages, which really stems from the persistent storage, the fact that these messages are stored in persistent storage, what's nice about a pub/sub system and about the topics is that they also give you ordering of messages. So as you send or publish messages to topics, they will be then pushed to your subscribers in the same order. So this is kind of like a queue.
+>- And this is oftentimes very useful in a system if you're dealing with a chat application, you probably want chat messages to appear sequentially and in the order that they were sent.
+>- If you are dealing with a stock broker application, and you're sending execution orders in your pub/sub system, you're probably gonna want these execution orders or these trade executions to be performed sequentially.
+>- Or if you're sending stock prices to clients, you probably want those stock prices to appear sequentially in the order that you received them in at the publisher level.
+
+>- So the ordering of messages is a very nice property of a pub/sub system.
+>- And another really nice property of pub/sub systems that once again, stems from the underlying persistent storage is the fact that you can oftentimes replay messages in a pub/sub topic if you want to. There are a lot of pub/sub solutions out there that will give you this really nice characteristic or functionality of replayability or rewinding to a previous message, or to a previous snapshot in time of your topic, and that's something that can be useful sometimes, depending on the use case.
+
+#### Why we have multiple topics ?
+> The pub/sub system is effectively a database solution, a database that's got a bit of a different API than your typical database. It's also got this bi-directional concept to it. You've got subscribers, getting data from the database, and you've got publishers pushing data to the database. So it's a bit of a different concept than your normal database, but because this is effectively a database, you might be storing very different types of data in this database.
+>- And so that's why it really makes sense to have multiple topics that might represent different types of data. They might not, you might be publishing to different topics, based on something completely different. Like, for instance, the location of the publishers, or the name of the publishers, etc., but you might also be publishing to different topics, just different types of data like you might be publishing stock prices to T1, and news alerts to T2.
+>- And this ends up working in the favor of the systems designer or the systems administrator, because it's generally often really nice to have this ***clear separation of concerns and separation of duties*** even at the database level, or at the operations level.
+
+>- Also, what's really nice with pub/sub systems is that you can then add stuff on to them. So for example, you can then add on content-based filtering at the subscriber level.
+>- So you get the idea, you can basically add on more features or more functionality on top of a pub/sub system.
+>- Also, there are a lot of very popular and very powerful pub/sub tools or pub/sub solutions out there, one very popular one is Apache Kafka. Another one is Google Cloud Pub/Sub, and these solutions often give you things out of the box.
+
+>- So for example, Google Cloud Pub/Sub basically tells you that everything auto scales, because typically, you might have topics like T1, T2, T3, that themselves are sharded into different partitions.
+>- Because this is a database solution ultimately, so T1 might actually be sharded into multiple shards.
+>- But with something like Google Cloud Pub/Sub, you're basically told, don't worry about that. Your topics are just gonna scale automatically, you just have to think of T1, T2, T3, don't worry about sharding at the topic level, that's all taken care of, you don't even need to know about it.
+>- Other things that might come out of the box like end-to-end encryption. A lot of these pub/sub offerings in the cloud, like in Google Cloud Platform, or AWS, will give you the ability to encrypt your messages such that over the network, they're encrypted, and then only subscribers know how to read them, you can make sure that messages only reach the relevant individuals, the people that you want to have received these messages so all that to say, there are really a lot of features, there's a lot of functionality that you can add to your pub/sub systems, or that come out of the box for free with the popular pub/sub offerings out there.
+
+> And so all of these things, paired with the foundational characteristics of a pub/sub system or of the publish/subscribe pattern, all of these things put together, make the pub/sub pattern, an extremely powerful tool that you're really gonna want to have in your tool belt for systems design interviews.
+
+---
