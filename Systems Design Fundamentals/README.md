@@ -2464,3 +2464,98 @@ P3 =========> S3
 > And so all of these things, paired with the foundational characteristics of a pub/sub system or of the publish/subscribe pattern, all of these things put together, make the pub/sub pattern, an extremely powerful tool that you're really gonna want to have in your tool belt for systems design interviews.
 
 ---
+
+### 23. MapReduce
+> "MapReduce is a programming model for processing and generating big data sets with a parallel, distributed algorithm on a cluster."
+
+#### 1 Prerequisite
+
+- ***File System***
+> An abstraction over a storage medium that defines how to manage data. While there exist many different types of file systems, most follow a hierarchical strutcure that consists of directories and files, like the **Unix file system**'s structure.
+
+#### 3 Key Terms
+
+- ***MapReduce***
+> A popular framework for processing very large scale datasets in a distributed setting efficiently, quickly, and in a fault-tolerant manner. A MapReduce job is comprised of 3 main steps:
+>	- the **Map** step, which runs a **map function** on the various chunks of the dataset and transforms these chunks into intermediate **key-value pairs**.
+>	- the **Shuffle** step, which reorganizes the intermediate **key-value pairs** such that pairs of the same key are routed to the same machine in the final step.
+>	- the **Reduce** step, which runs a **reduce function** on the newly shuffled **key-value pairs** and transforms them into more meaningful data.
+
+> The canonical example of a MapReduce use case is counting the number of occurrences of words in a large text file.
+
+> When dealing with a MapReduce library, engineers and/or systems administrators only need to worry about the map and reduce functions, as well as their inputs and outputs. All other concerns, including the parallelization of tasks and the fault-tolerance of the MapReduce job, are abstracted away and taken care of by the MapReduce implementation.
+
+- ***Distributed File System***
+> A Distributed File System is an abstraction over a (usually large) cluster of machines that allows them to act like one large file system. The two most popular implementations of DFS are the **Google File System** (GFS) and the **Hadoop Distributed File System** (HDFS).
+
+> Typically, DFSs take care of the classic **availability** and **replication** guarantees that can be tricky to obtain in a distributed-system setting. The overarching idea is that files are split into chunks of a certain size (4MB or 64MB, for instance), and those chunks are sharded across a large cluster of machines. A central control plane is in charge of deciding where each chunk resides, routing reads to the right nodes, and handling communication between machines.
+
+> Different DFS implementations have slightly different APIs and semantics, but they achieve the same common goal: extremely large-scale persistent storage.
+
+- ***Hadoop***
+> A popular, open-source framework that supports MapReduce jobs and many other kinds of data-processing pipelines. Its central component is **HDFS** (Hadoop Distributed File System), on top of which other technologies have been developed.
+> Learn more: [https://hadoop.apache.org/](https://hadoop.apache.org/)
+
+---
+
+> As with many other systems design topics, MapReduce is pretty simple at face value, but it gets very complicated once you dive into its details.
+>- The good news is that once again as with many other systems design topics, in the context of systems design interviews, what you need to know about MapReduce is actually relatively straightforward, relatively simple and it doesn't touch too much on those very complicated details.
+
+> Now in order to fully understand what MapReduce really is, we have to go back in history all the way to the early 2000s when Google engineers were faced with a challenge, and the challenge that they were faced with was that they were dealing with very, very large data sets.
+>- And as you might imagine, they had to process these data sets, and as you can imagine there's only so much vertical scaling that you can do when you're dealing with large data sets.
+>- When you have a very large data sets, you eventually have to horizontally scale your system, you have to add machines to your system.
+>- So these Google engineers had to process large data sets that were stored across hundreds if not thousands of machines.
+>- Processing a data set that's stored across hundreds or thousands of machines is very difficult, it's a non-trivial task, you have to parallelize the processing across these hundreds or thousands of machines, you have to handle failures like network partitions or machine failures.
+>- All of these things are difficult and these Google engineers had to figure out a way to process these large data sets in a distributed setting, efficiently, quickly and in a fault-tolerant manner, and so that's where MapReduce comes into play.
+
+> In 2004 two very well-known Google engineers released a white paper on the MapReduce model, it was exactly that, it was a framework that allowed engineers or systems administrators to process very large data sets that were spread across hundreds or thousands of machines, so in a distributed setting, very efficiently, quickly and in a fault-tolerant manner.
+>- Now the premise behind the MapReduce model, the premise that these engineers operated on was that the majority of data processing tasks could be split up or refactored so to speak into two steps; ***a Map step and a Reduce step***.
+>- And these two steps of the Map and the Reduce were inspired by the Map and Reduce functions that a lot of functional programming languages have.
+>- Now here in the context of MapReduce and in a distributed system setting, the Map and Reduce are a little bit different.
+>- Those engineers created a library that would basically allow an engineer or a systems administrator to process huge data sets in the order of terabytes, spread across hundreds of thousands of machines very easily.
+
+> So how did or how does this MapReduce model work?
+>- Well, basically you've got your data and here we assume that we are in a distributed system, more specifically we have a distributed file system, in other words our data is stored across multiple machines.
+
+>- The Map function is gonna transform the data into key value pairs.
+>- And the fact that these are key value pairs is gonna be very important.
+>- These key value pairs are gonna be the intermediate key value pairs because they live at the intermediate step in the entire MapReduce job or MapReduce process.
+>- And then these key value pairs are gonna be shuffled around and reorganized in a way that makes sense, and here in the final step the Reduce step, they're gonna be reduced into some final output, and this output might be some file that you'll then use elsewhere in your system.
+
+> And so at this point, as you can see, the concept of MapReduce is actually pretty simple.
+>- You've got a data set that's spread across multiple machines you have some Map function that you, the engineer or systems administrator is gonna specify, that Map function is gonna transform your data set into intermediate values, the key value pairs, and then these key value pairs as for being reorganized in some way are gonna be reduced in some final step into some final output.
+
+> **Few important points to note about MapReduce:**
+
+1. >- The first one is that when we're dealing with a MapReduce model, we assume that we have a distributed file system, this means that we've got some large data set that is split up into chunks, these chunks are likely replicated and spread out across multiple machines in the order of hundreds or thousands of machines and then our distributed file system has some sort of central control plane that is aware of everything going on in the MapReduce job or process.
+	>- What that means is that the central control plane knows where all of the chunks of data reside, it knows how to communicate with the various machines that store all of this data, it knows how to communicate with the machines that are gonna be performing the Map operations, you sometimes call them worker machines, same thing for the Reduce step, it knows how to communicate with the various reduce workers, it knows where your output is gonna live and so on and so forth.
+
+2. >- The second thing that's important to note is that oftentimes because we're dealing with very large datasets, we don't actually want to move the large data set. We want to leave the data set wherever it resides, and what we do is we have the Map functions or the Map programs move to the data and operate on the data locally.
+	>- So instead of grabbing all the data and maybe aggregating it and moving it elsewhere, we send the Map programs to the data, just in order to avoid moving all of this very large data.
+
+3. >- The third thing that's very important to note about the MapReduce model, is that the key value pairs structure of the data that is in the intermediate step is very important.
+	>- The reason it's important is because naturally when you perform a Reduce, when you reduce data values, especially data values that come from multiple chunks of the same data set, you're likely looking for some sort of commonality in these various pieces of data.
+	>- Because when you've got key value pairs, then naturally you've got some keys that are gonna be common, and you can then aggregate them together and reduce them into one single meaningful value based on that key or relevant to that key.
+
+4. >- Now the fourth thing that's very important to note about the MapReduce model is that one of the main things that this model ***tries to accomplish is to handle faults, to handle failures***.
+	>- Like for instance, if there's a network partition or a machine failure.
+	>- In order to handle machine failures, what a MapReduce job is gonna do is it's basically just gonna re-perform a Map operation or Reduce operation where a failure occurred.
+	>- Now what that assumes is that our Map function is idempotent that's really important.
+	>- When we're talking about the MapReduce model, we almost always assume or rather we almost always require that the Map function and that the Reduce function be idempotent, in other words if we repeat a Map function or Reduce function multiple time, we need the outcome to be the same regardless of how many times we've repeated that Map function or that Reduce function.
+	>- So that's really important the idempotency of your Map and Reduce functions.
+
+5. >- And then the final point that's very important to note about the MapReduce model is that as the engineer or the systems administrator who's dealing with a MapReduce job, the main thing that you care about is what Map function you're gonna specify, what Reduce function you're gonna specify, and what the various inputs and outputs of those functions is gonna be, that's really all you care about.
+
+> So as you can see this framework simplifies a lot of things for engineers, that just means that engineers have to worry about what the various inputs and outputs of their data is gonna be, which is what they were concerned with in the first place when they thought of processing a data set and that's it.
+>- They don't have to worry about all of the intricacies of processing a data set in a distributed system, because that's when the MapReduce framework or rather the MapReduce library at this point.
+
+> And as you can probably imagine this MapReduce model can be applied to all sorts of problems.
+>- Like for example, imagine you had a bunch of YouTube videos stored in some data set and you had metadata about those YouTube videos, and you wanted to get maybe the total number of views or of likes per user or per YouTube channel.
+>- You might use a MapReduce job to get that data from that huge data set of YouTube videos.
+>- Or maybe imagine if you had some huge data set of logs in your system, so imagine you had a bunch of logs from various services in your system like logs from your payment service, logs from your authentication service and you wanted to maybe count the total number of logs per service, or the total number of logs in some interval of time. You might use a MapReduce job to accomplish just that.
+
+> There are so many data processing tasks that can be expressed in the MapReduce model.
+
+> So this is what MapReduce is, it's an incredibly useful concept or framework when you're processing large datasets in a distributed setting and it's definitely gonna be a tool that you're gonna want in your tool belt when you jump into a systems design interview.
+
+---
