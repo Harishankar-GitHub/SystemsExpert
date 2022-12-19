@@ -2741,3 +2741,110 @@ P3 =========> S3
 > This is how modern day systems can have security or at least security in their communication.
 
 ---
+
+### 25. API Design
+
+#### 1 Prerequisite
+
+- ***ACL***
+> Short for Access-Control List. This term is often used to refer to a permissioning model: which users in a system can perform which operations. For instance, APIs often come with ACLs defining which users can delete, edit, or view certain entities.
+
+#### 2 Key Terms
+
+- ***Pagination***
+> When a network request potentially warrants a really large response, the relevant API might be designed to return only a single **page** of that response (i.e., a limited portion of the response), accompanied by an identifier or token for the client to request the next page if desired.
+
+> Pagination is often used when designing **List** endpoints. For instance, an endpoint to list videos on the YouTube Trending page could return a huge list of videos. This wouldn't perform very well on mobile devices due to the lower network speeds and simply wouldn't be optimal, since most users will only ever scroll through the first ten or twenty videos. So, the API could be designed to respond with only the first few videos of that list; in this case, we would say that the API response is **paginated**.
+
+- ***CRUD Operations***
+> Stands for **Create, Read, Update, Delete** Operations. These four operations often serve as the bedrock of a functioning system and therefore find themselves at the core of many APIs. The term **CRUD** is very likely to come up during an API-design interview.
+
+---
+
+> ***API design is distinct from systems design.***
+> ***Specifically, API design is not a subset of systems design, but instead it's a sibling of systems design.***
+
+> In fact, if you interview at a big tech company or at a tech startup, you will usually in a set of technical interviews, be given either a systems design interview or an API design interview.
+>- This sort of confirms the idea that API design is a sibling of systems design and not a subset of systems design.
+>- It's important to understand why API design interviews even exist.
+
+> Systems design is so important because when you've got a software product or service that you are building, especially at scale, the system that is going to enable that product or service is going to be very complex and it's important to be able to design it well.
+
+> *But what about APIs? Are APIs all that important? Is designing an API all that important? - YES**
+>- In order to understand that you can just think of any product or service out there, specifically a software based product or service, and you'll quickly realize that there is an API that backs that product or service.
+>- If you think of YouTube, Twitter, Facebook AlgoExpert, the very website that you're on right now for all of these software products and services there is an API that backs them. There might even be multiple APIs that back of them.
+>- But the point is there is at least one API, and it really is at the core of the product or service because without that API you just wouldn't have most of the functionality for all of these products and taking it a step even further there are some software products or services like Stripe, for example.
+>	- Stripe is a company that provides a payments processing solution for businesses.
+>	- And one of their core products, is effectively an API.
+>	- So their actual product is the API. It's not even like the API backs their product. Their product is the API.
+>	- Of course, they also have auxiliary products, they have dashboards, all sorts of things, but the point is some products and services literally sell access to an API.
+>- So APIs are extremely important and now if we talk about designing APIs, obviously if APIs are this important then designing them well is gonna be really important, but something that's really worth noting here is that when you are dealing with an API, there is a sense of permanence to it.
+>- Let's say that you develop an API and you release it to the world and suddenly you've got customers who are using that API, be they external customers, people outside of your company, or perhaps engineers within your company who are consuming your API, or maybe other products and services that are integrating with your API and consuming it, relying on it for their operations, as soon as that happens, making changes to your API or removing parts of your API, removing your API altogether all of these things become extremely difficult if not impossible, just because you have so many people, so many products and services relying on your API, and that makes designing an API all the more important.
+>- It means that any design decision in your API, even the most seemingly trivial detail like the name of a parameter in an endpoint or the ordering of parameters in an endpoint, all of these minor details become extremely important because suddenly they're gonna have long lasting consequences on a lot of people, and a lot of other products and services and that's why a big tech companies like Google for example, when a new API is being developed by some team at Google, that API goes through a very rigorous not only design process but also review process where you've got typically very high level engineers, external to the team that's developing the API, who review that API, who review the design choices, really dissect the API, challenge every little detail that you could think about the API and it's just a very long process, which goes to show you just how important API design is.
+
+> So the main way in which these two genres (*Systems design and API design*) of interviews are similar is in the way that the first 10 minutes of an interview in both genres goes.
+>- Imagine that you had a systems design interview at some company, you might be asked to design Twitter, or to design Stripe.
+>- And then as the interviewee you would have to ask a lot of clarifying questions.
+>- You would have to disambiguate the problem statement, really ask what part of Twitter are we designing? What part of Stripe are we designing?
+>- You know, what functionality do we really want to support?
+>- And then of course you would ask a few questions about maybe the scale of the system, maybe what regions we're gonna be supporting, et cetera.
+
+> Well, equivalent API design interview questions would probably be something like design the Twitter API, or design the Stripe API, similarly ambiguous, similarly vague and you would still have to as the interviewee ask a lot of clarifying questions like, well, what part of Twitter are we designing this API for? What part of Stripe?
+>- Are we just designing the API that supports the functionality on the home page of Twitter?
+>- Is it for the trending tab? Is it for the settings tab? Who's gonna be consuming our API?
+>- So you see, you're asking very similar questions and you're really trying to get a lot more information that you can use to then actually design this API.
+>- Because without this information you can't properly design this API, you don't really know what you're about to do.
+
+>- And then once this introduction is over, once you've gotten all information that you need, then you jump into the meat of the interview and here the two interviews start to diverge a lot. They look quite a bit different, but they still share a few similarities.
+
+> In a systems design interview this is when you would probably start to draw out some diagrams, talk about the various systems components.
+> Maybe you would write out things like, you know, what a SQL table looks like if you're relying on a SQL table for storage, but that's generally the gist of the systems design interview.
+
+> The API design interview is gonna look a lot different. You're not really gonna be drawing out diagrams.
+>- You're not at all gonna be relying on systems designed components.
+>- Instead, what you'll be doing is you will be writing an outline of sorts of the API.
+>- So you're likely gonna be writing out the various entities or resources that this API is gonna rely on.
+>- So for example, if we're talking about Twitter, there would likely be a tweet resource or entity.
+>- If we're talking about Stripe, there would likely be a charge or payment resource or entity, a customer entity, and you would write out what these resources or entities look like, what properties or attributes they have.
+>- Then you would write out an outline for the various API end points that your API needs to have.
+>- You would write out the various parameters that the API end points take, the various responses that the API end points return.
+>- But what you wouldn't do is you wouldn't write out any logic.
+>- You wouldn't be actually implementing the API end points, just outlining them.
+
+> ***This is where the two genres (Systems design and API design) of interviews diverge but they do still share the similarity of there isn't really a right or wrong answer in an API design interview or in a systems design interview. Obviously this is within reason.***
+
+> For example, if you're in a systems design interview and you tell your interviewer that you're gonna store, you know, all historical messages or posts on Twitter in memory, on a single server, that's probably not gonna be like an acceptable solution.
+>- Your ***systems design choices need to actually be sound***.
+>- They ***need to be backed by logic or arguments***.
+>- You **need to be able to defend them properly**.
+
+> But ***otherwise, if you can defend*** your decision for some systems design choice, ***then anything is kind of fair game***.
+
+> Similarly for API design not every API is gonna look the same.
+>- What one interviewee might give for a design for a particular API might look very different from what another interviewee might give.
+>- And both of them might be defensible.
+>- Both of them might be sound so long as you can actually explain why you're doing things and there isn't really a right or wrong answer.
+>- ***This is much more about having a conversation with your interviewer, telling them why you're making certain decisions, being open to their feedback and their criticism just as you would be if you were say at Google developing an API and an API reviewer came to you and gave you a bunch of criticism, constructive criticism, you would probably have a conversation with them, maybe a little bit of a debate around why you made certain choices.***
+>- Well, that's what we're looking for in an API design interview.
+
+> Mostly in an API design interview, just the outline of an API is expected.
+>- Very simple, very straightforward, not necessarily easy, right?
+>- This is still a lot of stuff to come up with and to design in a 45 minute interview, or let's say even 35 minutes, if you've spent 10 minutes kind of disambiguating the problem statement, but it isn't too complicated.
+>- It's not like there is too much to do.
+>- Now depending on your preferences and your background, what you're used to, if you've designed APIs in the past, you might want to write out your API outline in a different format such as Swagger.
+
+>- [Swagger](https://swagger.io/), I suppose is the official way to define APIs.
+>- It is an interface description launguage.
+>- It's a format to describe APIs.
+
+> But so if you are someone who's used to swagger, for example, or if you like things being a little bit more verbose and it helps you better organize your thoughts, then this type of format might be good.
+>- At the end of the day the key thing is whatever you're most comfortable with and whatever your interviewer is okay with.
+>- So you would likely ask them, is it okay if I just go with this approach?
+
+> ***But so all in all, this is what you can expect to deliver in an API design interview.***
+
+#### Few publicly available API documentations
+- [Stripe API](https://stripe.com/docs/api)
+- [Twitter API](https://developer.twitter.com/en/docs/twitter-api/getting-started/about-twitter-api)
+
+---
