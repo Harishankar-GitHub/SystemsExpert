@@ -37,3 +37,4 @@
 21. [Logging and Monitoring](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#21-logging-and-monitoring)
 22. [Publish/Subscribe Pattern](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#22-publishsubscribe-pattern)
 23. [MapReduce](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#23-mapreduce)
+24. [Security And HTTPS](https://github.com/Harishankar-GitHub/SystemsExpert/tree/main/Systems%20Design%20Fundamentals#24-security-and-https)

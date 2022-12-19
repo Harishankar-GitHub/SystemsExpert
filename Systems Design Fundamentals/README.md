@@ -2559,3 +2559,185 @@ P3 =========> S3
 > So this is what MapReduce is, it's an incredibly useful concept or framework when you're processing large datasets in a distributed setting and it's definitely gonna be a tool that you're gonna want in your tool belt when you jump into a systems design interview.
 
 ---
+
+### 24. Security And HTTPS
+> While network security is of critical importance to virtually any system, it's beyond the scope of most system design interviews.
+
+> That being said, having even a cursory understanding of a few key concepts could very well materialize into the edge you need to ace your interview and secure--pun perhaps intended--a job offer.
+
+#### 9 Key Terms
+
+- ***Man-In-The-Middle Attack***
+> An attack in which the attacker intercepts a line of communication that is thought to be private by its two communicating parties.
+
+> If a malicious actor intercepted and mutated an IP packet on its way from a client to a server, that would be a man-in-the-middle attack.
+
+> MITM attacks are the primary threat that encryption and **HTTPS** aim to defend against.
+
+- ***Symmetric Encryption***
+> A type of encryption that relies on only a single key to both encrypt and decrypt data. The key must be known to all parties involved in communication and must therefore typically be shared between the parties at one point or another.
+
+> Symmetric-key algorithms tend to be faster than their asymmetric counterparts.
+
+> The most widely used symmetric-key algorithms are part of the Advanced Encryption Standard (**AES**).
+
+- ***Asymmetric Encryption***
+> Also known as public-key encryption, asymmetric encryption relies on two keys--a public key and a private key--to encrypt and decrypt data. The keys are generated using cryptographic algorithms and are mathematically connected such that data encrypted with the public key can only be decrypted with the private key.
+
+> While the private key must be kept secure to maintain the fidelity of this encryption paradigm, the public keyy can be openly shared.
+
+> Asymmetric-key algorithms tend to be slower than their symmetric counterparts.
+
+- ***AES***
+> Stands for **Advanced Encryption Standard**. AES is a widely used encryption standard that has three symmetric-key algorithms (AES-128, AES-192, and AES-256).
+
+> Of note, AES is considered to be the "gold standard" in encryption and is even used by the U.S. National Securty Agency to encrypt top secret information.
+
+- ***HTTPS***
+> The **H**yper**T**ext **T**ransfer **P**rotocol **S**ecure is an extension of **HTTP** that's used for secure communication online. It requires servers to have trusted certificates (usually **SSL certificates**) and uses the Transport Layer Security (**TLS**), a security protocol built on top of **TCP**, to encrypt data communicated between a client and a server.
+
+- ***TLS***
+> The **T**ransport **L**ayer **S**ecurity is a security protocol over which **HTTP** runs in order to achieve secure communication online. "HTTP over TLS" is also known as **HTTPS**.
+
+- ***SSL Certificate***
+> A digital certificate granted to a server by a **certificate authority**. Contains the server's public key, to be used as part of the **TLS handshake** process in an **HTTPS** connection.
+
+> An SSL certificate effectively confirms that a public key belongs to the server claiming it belongs to them. SSL certificates are a crucial defense against **man-in-the-middle attacks**.
+
+- ***Certificate Authority***
+> A trusted entity that signs digital certificates--namely, SSL certificates that are relied on in **HTTPS** connections.
+
+- ***TLS Handshake***
+> The process through which a client and a server communicating over **HTTPS** exchange encryption-related information and establish a secure communication. The typical steps in a TLS handshake are roughly as follows:
+>- The client sends a **client hello**, a string of random bytes to the server.
+>- The server responds with a **server hello**, another string of random bytes as well as its **SSL certificate**, which contains its **public key**.
+>- The client verifies that the certificate was issued by a **certificate authority** and sends a **premaster secret**, yet another string of random bytes, this time encrypted with the server's public key to the server.
+>- The client and the server use the client hello, the server hello, and the premaster secret to then generate the same **symmetric-encryption** session keys, to be used to encrypt and decrypt all data communicated during the remainder of the connection.
+
+---
+
+#### 1st Disclaimer
+> Security is one of those concepts that you don't actually quite need in a systems design interview.
+>- In other words, whereas these other concepts you're almost certainly gonna run into in a systems design interview, and you are gonna be expected to know them.
+>- Security you are unlikely to run into in a systems design interview.
+>- And you're almost certainly not going to be expected to know that much about security.
+>- That being said, it is very good to be familiar with security at a high level at least.
+>- Because, as you know, systems design interviews can go in many different directions.
+>- And it's very possible that depending on your systems design interview, you might start having a conversation with your interviewer that leads into some topic about security or something related to security.
+>- And if you're familiar with security, if you have a decent understanding of the building blocks of security, then you will be ahead of the game.
+>- It will be objectively better for you to have that knowledge.
+>- So you can treat security kind of like a bonus topic.
+>- That's really good for you to know but that's not something that you should stress too much about.
+
+#### 2nd Disclaimer
+> Security is one of those fields where you're typically either an expert or someone who actually doesn't really know much about the field.
+> Because it's just a very domain expertise, heavy type of field and a very complicated type of field.
+
+> Let's jump into the topic of security and HTTPS.
+>- In the modern day and age in modern day systems, most machines communicate with one another over HTTP.
+>- HTTP is a communications protocol that offers an abstraction over or on top of TCP.
+>- It's really nice for developers because it's much more easy to manipulate and to kind of extend and it's basically what the internet runs on.
+>- So when you've got a client interacting with a server online they usually do so over HTTP.
+
+>- Now speaking of a client interacting or communicating with a server online over HTTP, when we think of that, when we think of that communication or interaction, there's this implied assumption of privacy.
+>- In other words, you would expect that any message that's sent from a client to a server over HTTP or from a server to a client over HTTP would be private between the two parties communicating between the client and the server.
+>- That's just something that you probably assume because you just think that, hey, if you've got two parties communicating just with one another, their communication should be private.
+>- We obviously want it to be private, because they might be exchanging sensitive information. And so that's what we assume.
+
+> But that would actually be an incorrect assumption.
+>- Because it turns out that when you've got two machines, let's say a client and a server communicating over HTTP, a malicious actor who is well trained or who has access to the correct tools, can actually hijack this communications channel between the client and the server.
+>- Can intercept the underlying IP packets that are being transferred between the client and the server.
+>- And can either eavesdrop on them by just reading them and not telling anybody, which is really bad.
+>- If we're talking about private information, even information that's not particularly private.
+>- Again, there's this assumption that a communication between two parties should be private.
+>- So a malicious actor could intercept an IP packet or a set of IP packets could read the messages or the data and those IP packets could even alter them and relay them to either the server or the client in an alternate fashion.
+>- In any case, this is obviously bad.
+>- This is a breach of privacy or security, whatever you wanna call it.
+
+> Some third party, basically intercepting a communication between two other parties that is expected to be private or that the two other parties don't realize is being breached.
+> This is known as a man-in-the-middle attack.
+
+>- It is a well known occurrence in the field of security, which is why it's got a name.
+>- And sometimes you'll see it written by its acronym MITM attack, man-in-the-middle attack.
+>- And so this is really at the core of what we're trying to solve with security.
+>- We're trying to prevent a man-in-the-middle attack or not necessarily prevent a man-in-the-middle attack, but prevent the consequences of a man in the middle attack.
+>- Namely, the consequences of having an unwanted third party read on our communication between a client and a server.
+>- Communication that we want to be private, communication that we want to be secure.
+
+> So HTTPS is gonna be the same as HTTP, except it's gonna have secure after it. We're gonna have to figure out, why is it secure? Or rather, how is it secure?
+> Because clearly right now, when you've got a client and a server communicating over HTTP, their communication is anything but secure.
+
+> Encryption is gonna be a key component to the secure aspect of HTTPS.
+>- So encryption, let's say that we've got our client communicating with our server.
+>- And the client is sending a message to the server that it wants to be private.
+>- Let's say that the client is sending a simple string, just the string hello to the server.
+>- But it obviously doesn't want anybody except for the server to be able to read that message.
+>- Naturally, you would want to somehow hide that message or obfuscate that message.
+>- And that's where encryption comes into play.
+
+> The idea behind encryption is that you can somehow encrypt a message, meaning you turn it into a random string of characters or a seemingly random string of characters something that is illegible.
+>- And this isn't even necessarily a string of characters. It's simply any form of the data that is no longer legible that cannot be tied back to the original data at least at first once.
+>- And then that encrypted data should be able to be decrypted by a particular party.
+>- So in this case, it would be the server.
+>- So again, the idea behind encryption is you've got a message let's say hello. you encrypt it somehow into some random piece of data or string of characters that nobody can really understand.
+>- And then the server can decrypt that random message somehow.
+>- And decrypting it will return the original underlying message, hello.
+
+> Now here we're gonna talk about two primary families or systems of encryption, called symmetric encryption and asymmetric encryption.
+> And here mini disclaimer that this is where we're gonna start to really just talk about this at a high level because this part of security encryption gets very complicated very fast and it's very math heavy, we're not gonna get into that.
+
+> But so from a high level, what is symmetric encryption? What is asymmetric encryption?
+>- Symmetric encryption is a type of encryption that relies on symmetric key algorithms.
+>- Symmetric key algorithms are a type of cryptographic algorithm that relies on a single key.
+>- And a key might be a special string, a single key to both encrypt and decrypt data.
+
+>- So for example, imagine I've got a key which is the string foobar, I can use a special symmetric key algorithm to encrypt a message to encrypt some data using that key foobar.
+>- And the only way that data or rather that that encrypted data can be decrypted is using that same key foobar.
+>- And in practice, symmetric encryption usually uses something called AES, Advanced Encryption Standard.
+>- And AES is basically a specification of encryption and it uses or describes a symmetric key algorithm that uses or relies on a single key to both encrypt and decrypt data.
+
+> And one really nice thing about symmetric encryption is that it's very, very fast.
+>- It's very fast to both encrypt and decrypt messages.
+>- In fact, it's faster than its asymmetric counterpart.
+>- Because it relies on only one key, that one key has to be shared between the two parties that are communicating.
+>- And while that might be fine, in certain cases like for example, imagine that you had a friend, and you wanted to communicate by email using symmetric encryption, you can maybe decide on a key in person, tell your friend the key out loud, only you two have ever heard the key, and then you use that key to encrypt and decrypt messages by email.
+>- That would be fine, no one else would be able to find that key.
+
+> But now if we go back to systems design, let's say that we're dealing with a client and a server communicating with one another over the network.
+>- How do the client and the server establish a common key? That key will have to be shared between them.
+>- And in order to be shared, you need it to be shared over a security communications channel.
+>- Otherwise, you're still vulnerable to a man-in-the-middle attack.
+>- Because for example, you could say, okay, when a client, let's say a browser connects to a website server, the very first thing that the server does is give the client some key that they can use for symmetric encryption.
+>- Okay, great. But what if there's a malicious actor in the middle that intercepts that message, grabs the key and can now decrypt any encrypted message, you're left with the same problem.
+>- So clearly symmetric encryption, while really nice alone doesn't actually solve our HTTP vulnerability.
+
+> So now let's talk about asymmetric encryption.
+>- Asymmetric encryption, which is also known as public key encryption is a different type of encryption where instead of relying on a single key to encrypt and decrypt messages, you rely on two keys to encrypt and decrypt messages.
+>- Specifically, you have a pair of keys that are generated together. We call one of them the public key, and the other one, the private key.
+>- And so these two keys or this pair of keys is generated mathematically using some cryptographic algorithms.
+>- And they are mathematically bound, such that if you encrypt a message using the public key, that message can only be decrypted using the private key.
+>- These are really complex algorithms, complex math, but that's the key point to remember.
+>- That any message which is encrypted using the public key of a public private key pair that's been generated mathematically, any such message can only be decrypted using the private key.
+>- And as the names public and private suggest, if you're an entity, let's say you're a server, and you own a public private key pair, you will make the public key publicly available. So anybody can see your public key.
+>- And presumably, anybody can encrypt messages using that public key. But then the only person who has access to the private key is you or is the server in this case.
+>- So the server would be the only person or the only entity who is able to decrypt messages that have been encrypted using the publicly available public key because the server is the only entity that has access to the private key.
+>- So asymmetric encryption is very interesting, quite a bit different from symmetric encryption because it relies on two keys rather than one.
+>- And also, it's slower than symmetric encryption.
+
+> But so this all brings us to HTTPS, which is really the main thing that we're interested in here. How do we make HTTP secure?
+>- Okay, so HTTPS is an extension of HTTP that runs on top of something called TLS.
+>- TLS stands for Transport Layer Security. And TLS is basically a security protocol.
+>- Which is why by the way, sometimes you'll hear HTTPS referred to as HTTP on top of TLS. Or another way to word it is that with HTTPS communication is encrypted using TLS.
+>- And by the way, it turns out that the predecessor protocol to TLS was something called SSL, which stands for Secure Sockets Layer.
+
+> SSL certificates are certificates that are granted by a trusted third party called a certificate authority.
+>- This is a trusted third party that we as a collective humanity, or rather developers has agreed to trust.
+>- This might be a nonprofit organization or even a for profit organization. But the point is, they are trustworthy.
+>- And they will give out these SSL certificates to parties like algo expert, for example.
+>- So the algo expert servers will have the algo expert SSL certificate.
+>- And the certificate is basically a digital item that a certificate authority a trusted third party has signed and that serves to assure the client that is gonna rely on the certificate that the server is who they say they are.
+
+> And this is how HTTPS works.
+> This is how modern day systems can have security or at least security in their communication.
+
+---
