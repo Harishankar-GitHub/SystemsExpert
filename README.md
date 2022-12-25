@@ -8,12 +8,14 @@
 ---
 
 ## Few playlists on Systems Design
-- [Gaurav Sen - Youtube](https://www.youtube.com/playlist?list=PLMCXHnjXnTnvo6alSjVkgxV-VH6EPyvoX)
-- [Gaurav Sen - High Level Design - Youtube](https://www.youtube.com/playlist?list=PLMCXHnjXnTnvZBRQGkIAuZkPMK4SpE1fq)
-- [Tech Dummies Narendra L - Youtube](https://www.youtube.com/c/TechDummiesNarendraL/playlists)
-- [Rachit Jain - Youtube](https://www.youtube.com/playlist?list=PLfBJlB6T2eOukvc2lrkAbeZBqUS94ji1r)
-- [Exponent - Youtube](https://www.youtube.com/playlist?list=PLrtCHHeadkHp92TyPt1Fj452_VGLipJnL)
-- [Udit Agarwal - Youtube](https://www.youtube.com/playlist?list=PL564gOx0bCLqLVWPkSqC2eIkprh0EC7AF)
+- [Gaurav Sen - Systems Design](https://www.youtube.com/playlist?list=PLMCXHnjXnTnvo6alSjVkgxV-VH6EPyvoX)
+- [Gaurav Sen - High Level Design](https://www.youtube.com/playlist?list=PLMCXHnjXnTnvZBRQGkIAuZkPMK4SpE1fq)
+- [Keerti Purswani](https://www.youtube.com/playlist?list=PLliXPok7ZonlxlIKG0nyRkBsG-KrobGOx)
+- [Tech Dummies Narendra L](https://www.youtube.com/c/TechDummiesNarendraL/playlists)
+- [Rachit Jain](https://www.youtube.com/playlist?list=PLfBJlB6T2eOukvc2lrkAbeZBqUS94ji1r)
+- [Exponent](https://www.youtube.com/playlist?list=PLrtCHHeadkHp92TyPt1Fj452_VGLipJnL)
+- [Udit Agarwal](https://www.youtube.com/playlist?list=PL564gOx0bCLqLVWPkSqC2eIkprh0EC7AF)
+- [Success in Tech](https://www.youtube.com/playlist?list=PLA8lYuzFlBqAy6dkZHj5VxUAaqr4vwrka)
 
 ---
 
