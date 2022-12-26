@@ -16,6 +16,7 @@
 - [Exponent](https://www.youtube.com/playlist?list=PLrtCHHeadkHp92TyPt1Fj452_VGLipJnL)
 - [Udit Agarwal](https://www.youtube.com/playlist?list=PL564gOx0bCLqLVWPkSqC2eIkprh0EC7AF)
 - [Success in Tech](https://www.youtube.com/playlist?list=PLA8lYuzFlBqAy6dkZHj5VxUAaqr4vwrka)
+- [Concept && Coding](https://www.youtube.com/playlist?list=PL6W8uoQQ2c63W58rpNFDwdrBnq5G3EfT7)
 
 ---
 
